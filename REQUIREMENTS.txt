@@ -1,0 +1,4 @@
+matplotlib
+time
+tkinter
+statistics

@@ -40,8 +40,8 @@ import numpy as np
 import pandas as pd
 
 # stato di ritorno dalle funzioni
-BAD = False
-GOOD = True
+#BAD = False
+#GOOD = True
 
 # parametri da settare all'inizio
 
@@ -257,13 +257,13 @@ class Trigger:
                 Qcharge_flag_port=1
                 #self.Qcharge_flag=1
                 #Qcharge_flag=1
-            return BAD
+            return False
             return (nstart, tpeak, const_frac, intercept, slope, quality_flag, Qcharge_flag, peak_value)
         else:
             Qcharge_flag_port=0
             #self.Qcharge_flag=0
             #Qcharge_flag=0
-            return GOOD
+            return True
             return (nstart, tpeak, const_frac, intercept, slope, quality_flag, Qcharge_flag, peak_value)
     def LeggiTrigger(self):
         # leggo header e lo ritorno in self, se EOF ritorno None, altrimenti 0
@@ -333,7 +333,7 @@ class Trigger:
             # if MyDebug>=2:
             #     print("Sample n. %d: %d ossia %X"% (i, isamp, isamp))
         rc = self.Check_charge()
-        if rc== BAD:
+        if rc== False:
             MyData.nWarning_charge += 1
         return  rc  # tutto bene
 

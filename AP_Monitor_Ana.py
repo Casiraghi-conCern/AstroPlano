@@ -42,8 +42,8 @@ import numpy as np
 import pandas as pd
 
 # stato di ritorno dalle funzioni
-BAD = False
-GOOD = True
+#BAD = False
+#GOOD = True
 
 # parametri da settare all'inizio
 
@@ -73,7 +73,7 @@ rate_scan = 900     #intervallo di tempo su cui fare la media rate per scan temp
 MyDebug    = 0      # 0 no debug, 1 minimale, 2 esteso, 3 tutto
 MyPlot     = 0
 PlotMonitor = 1    # 0 no plot, 1 plot si
-testsimp_s =0      #modilità calibrazione sipm Angolari
+testsimp_s =0      #modilitï¿½ calibrazione sipm Angolari
 PlotStop = 0
 AngPlot = 0         #0 no distrbuzione angolare, 1 set binari, 2 set alternativo, 3 set ravvicinato sinistra (e 8-10 a sinistra), 4 come tre ma con 8 e 10 a destra 
 Decadimento = 0
