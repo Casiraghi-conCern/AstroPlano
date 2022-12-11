@@ -26,8 +26,8 @@ from matplotlib.ticker import (MultipleLocator, FormatStrFormatter,
 #######################################################################################################
 #Stefano: libreria necessaria per fare grafico se non funziona mgr.canvas.height() e mgr.canvas.width()
 #######################################################################################################
-import tkinter as tk 
-root = tk.Tk()
+# import tkinter as tk 
+# root = tk.Tk()
 #######################################################################################################
 from matplotlib.backends.backend_pdf import PdfPages
 import matplotlib.mlab as mlab
