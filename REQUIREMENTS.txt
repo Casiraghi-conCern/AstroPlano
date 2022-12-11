@@ -1,4 +1,3 @@
 matplotlib
-time
-tkinter
-statistics
+numpy
+scipy
