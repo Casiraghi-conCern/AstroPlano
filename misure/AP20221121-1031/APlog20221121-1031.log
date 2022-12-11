@@ -1,0 +1,4402 @@
+
+Ho letto il file di configurazione
+
+Mon Nov 21 10:32:50 2022 
+Scrivo file di configurazione
+
+Mon Nov 21 10:33:05 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  'date -s 2022.11.21-10:34:27 >> test.out' 
+Mon Nov 21 10:34:27 2022 
+
+Astroplano starting
+Oggi: 2022.11.21-10:34:27
+Mon Nov 21 10:34:30 2022 
+
+Astroplano starting
+Oggi: 21  11  2022 , ore 10:34:30
+Mon Nov 21 10:34:30 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  'date -s "2022-11-21 10:34:30" >> test.out' 
+Mon Nov 21 10:34:30 2022 
+
+Astroplano starting
+Oggi: 21  11  2022 , ore 10:34:30
+Mon Nov 21 10:34:32 2022 
+
+Output file: ./AP20221121-1031.bin
+
+Mon Nov 21 10:34:32 2022 
+Inizia il run: Mon Nov 21 10:34:32 2022 
+
+Mon Nov 21 10:34:32 2022 
+durata 1200 m. 
+Mon Nov 21 10:34:32 2022 
+***           Header        ***
+      Mon 21-11-2022 @ 10:34:32
+
+Voltages 
+56.2  55.8  56.2  55.5  55.75  55.7  55.45  56.2  56.55  56.5  56.5  56.9  
+Start threshold 
+10.0  10.0  10.0  10.0  17.0  16.0  16.0  16.0  16.0  14.0  15.0  14.0  
+Stop_threshold 
+5.0  5.0  5.0  5.0  5.0  5.0  5.0  5.0  5.0  5.0  5.0  5.0  
+Leading
+ 15  
+Trailing
+ 25  
+Gain 
+  0 
+Pedestal
+  3E00 
+Treference Tempco Correction_Flag
+   20.0   54.000  1
+Sensori T dei SiPM: 
+ 21.69  21.81  21.62  21.06 
+Sensore ambientale: T, P, rh
+ 23.55 1003.9 37.8
+***      End of Header     ***
+
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  './DaqReadTcp 2>&1 >tcp_out.txt &  >> test.out' 
+Mon Nov 21 10:34:32 2022 
+
+StartRun: Ora nc (netcat) ------------------------
+Mon Nov 21 10:34:35 2022 
+
+eseguo comando:  nc -v 169.254.180.39 5000 > ./AP20221121-1031.bin & 
+Mon Nov 21 10:34:35 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  'bash daq_set_pedestal.sh -N "{0..11}" -P 15872 >> test.out' 
+Mon Nov 21 10:34:35 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14287  14592  14287  14819  14630  14667  14858  14287  14022  14060  14060  13756  "  >> test.out' 
+Mon Nov 21 10:34:39 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  'bash gslaFF.sh  >> test.out' 
+Mon Nov 21 10:34:55 2022 
+      Mon 21-11-2022 @ 10:34:58
+
+T2:   21.6 , T3:   21.1 , T media alta:   21.3 , Delta V alta:  0.073 
+
+Mon Nov 21 10:34:58 2022 
+T0:   21.7 , T1:   21.8 , T media bassa:   21.8 , Delta V bassa:  0.095 
+
+Mon Nov 21 10:34:58 2022 
+Pressione:  1003.9 hPa
+Mon Nov 21 10:34:58 2022 
+SiPM n. 0 :  V corretta:  56.273
+Mon Nov 21 10:34:58 2022 
+SiPM n. 1 :  V corretta:  55.873
+Mon Nov 21 10:34:58 2022 
+SiPM n. 2 :  V corretta:  56.273
+Mon Nov 21 10:34:58 2022 
+SiPM n. 3 :  V corretta:  55.573
+Mon Nov 21 10:34:58 2022 
+SiPM n. 4 :  V corretta:  55.844
+Mon Nov 21 10:34:58 2022 
+SiPM n. 5 :  V corretta:  55.794
+Mon Nov 21 10:34:58 2022 
+SiPM n. 6 :  V corretta:  55.544
+Mon Nov 21 10:34:58 2022 
+SiPM n. 7 :  V corretta:  56.294
+Mon Nov 21 10:34:58 2022 
+SiPM n. 8 :  V corretta:  56.623
+Mon Nov 21 10:34:58 2022 
+SiPM n. 9 :  V corretta:  56.573
+Mon Nov 21 10:34:58 2022 
+SiPM n. 10 :  V corretta:  56.594
+Mon Nov 21 10:34:58 2022 
+SiPM n. 11 :  V corretta:  56.995
+Mon Nov 21 10:34:58 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  'bash daq_run_launch.sh -N "{0..11}" -S " 0x3D6D 0x3D6D 0x3D6D 0x3D6D 0x3D07 0x3D16 0x3D16 0x3D16 0x3D16 0x3D33 0x3D24 0x3D33" -P " 0x3DB6 0x3DB6 0x3DB6 0x3DB6 0x3DB6 0x3DB6 0x3DB6 0x3DB6 0x3DB6 0x3DB6 0x3DB6 0x3DB6" -L 0xF  -T 0x19  -I 0x0810  >/dev/null >> test.out' 
+Mon Nov 21 10:34:58 2022 
+      Mon 21-11-2022 @ 10:35:03
+
+T2:   21.6 , T3:   21.1 , T media alta:   21.3 , Delta V alta:  0.073 
+
+Mon Nov 21 10:35:04 2022 
+T0:   21.7 , T1:   21.8 , T media bassa:   21.8 , Delta V bassa:  0.095 
+
+Mon Nov 21 10:35:04 2022 
+Pressione:  1003.9 hPa
+Mon Nov 21 10:35:04 2022 
+SiPM n. 0 :  V corretta:  56.273
+Mon Nov 21 10:35:04 2022 
+SiPM n. 1 :  V corretta:  55.873
+Mon Nov 21 10:35:04 2022 
+SiPM n. 2 :  V corretta:  56.273
+Mon Nov 21 10:35:04 2022 
+SiPM n. 3 :  V corretta:  55.573
+Mon Nov 21 10:35:04 2022 
+SiPM n. 4 :  V corretta:  55.844
+Mon Nov 21 10:35:04 2022 
+SiPM n. 5 :  V corretta:  55.794
+Mon Nov 21 10:35:04 2022 
+SiPM n. 6 :  V corretta:  55.544
+Mon Nov 21 10:35:04 2022 
+SiPM n. 7 :  V corretta:  56.294
+Mon Nov 21 10:35:04 2022 
+SiPM n. 8 :  V corretta:  56.623
+Mon Nov 21 10:35:04 2022 
+SiPM n. 9 :  V corretta:  56.573
+Mon Nov 21 10:35:04 2022 
+SiPM n. 10 :  V corretta:  56.594
+Mon Nov 21 10:35:04 2022 
+SiPM n. 11 :  V corretta:  56.995
+Mon Nov 21 10:35:04 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14232  14536  14232  14764  14558  14596  14786  14216  13966  14004  13988  13684  "  >> test.out' 
+Mon Nov 21 10:35:04 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 10:35:10 2022 
+Durata del run 1200 m 
+
+Mon Nov 21 10:35:10 2022 
+
+Sensore temperatura n.:  0  T=  22.1
+Mon Nov 21 10:46:56 2022 
+
+Sensore temperatura n.:  1  T=  21.9
+Mon Nov 21 10:46:56 2022 
+
+Sensore temperatura n.:  2  T=  21.7
+Mon Nov 21 10:46:56 2022 
+
+Sensore temperatura n.:  3  T=  21.2
+Mon Nov 21 10:46:56 2022 
+      Mon 21-11-2022 @ 10:46:56
+
+T2:   21.7 , T3:   21.2 , T media alta:   21.5 , Delta V alta:  0.079 
+
+Mon Nov 21 10:46:56 2022 
+T0:   22.1 , T1:   22.0 , T media bassa:   22.1 , Delta V bassa:  0.111 
+
+Mon Nov 21 10:46:56 2022 
+Pressione:  1003.9 hPa
+Mon Nov 21 10:46:56 2022 
+SiPM n. 0 :  V corretta:  56.279
+Mon Nov 21 10:46:56 2022 
+SiPM n. 1 :  V corretta:  55.879
+Mon Nov 21 10:46:56 2022 
+SiPM n. 2 :  V corretta:  56.279
+Mon Nov 21 10:46:56 2022 
+SiPM n. 3 :  V corretta:  55.579
+Mon Nov 21 10:46:56 2022 
+SiPM n. 4 :  V corretta:  55.861
+Mon Nov 21 10:46:56 2022 
+SiPM n. 5 :  V corretta:  55.811
+Mon Nov 21 10:46:56 2022 
+SiPM n. 6 :  V corretta:  55.561
+Mon Nov 21 10:46:56 2022 
+SiPM n. 7 :  V corretta:  56.311
+Mon Nov 21 10:46:56 2022 
+SiPM n. 8 :  V corretta:  56.629
+Mon Nov 21 10:46:56 2022 
+SiPM n. 9 :  V corretta:  56.579
+Mon Nov 21 10:46:56 2022 
+SiPM n. 10 :  V corretta:  56.611
+Mon Nov 21 10:46:56 2022 
+SiPM n. 11 :  V corretta:  57.011
+Mon Nov 21 10:46:56 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14227  14531  14227  14759  14545  14583  14773  14203  13961  13999  13975  13671  "  >> test.out' 
+Mon Nov 21 10:46:56 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 10:47:02 2022 
+
+Sensore temperatura n.:  0  T=  22.3
+Mon Nov 21 11:02:03 2022 
+
+Sensore temperatura n.:  1  T=  22.1
+Mon Nov 21 11:02:03 2022 
+
+Sensore temperatura n.:  2  T=  21.8
+Mon Nov 21 11:02:03 2022 
+
+Sensore temperatura n.:  3  T=  21.5
+Mon Nov 21 11:02:03 2022 
+      Mon 21-11-2022 @ 11:02:03
+
+T2:   21.8 , T3:   21.5 , T media alta:   21.7 , Delta V alta:  0.089 
+
+Mon Nov 21 11:02:03 2022 
+T0:   22.3 , T1:   22.1 , T media bassa:   22.2 , Delta V bassa:  0.120 
+
+Mon Nov 21 11:02:03 2022 
+Pressione:  1003.7 hPa
+Mon Nov 21 11:02:03 2022 
+SiPM n. 0 :  V corretta:  56.289
+Mon Nov 21 11:02:03 2022 
+SiPM n. 1 :  V corretta:  55.889
+Mon Nov 21 11:02:03 2022 
+SiPM n. 2 :  V corretta:  56.289
+Mon Nov 21 11:02:03 2022 
+SiPM n. 3 :  V corretta:  55.589
+Mon Nov 21 11:02:03 2022 
+SiPM n. 4 :  V corretta:  55.870
+Mon Nov 21 11:02:03 2022 
+SiPM n. 5 :  V corretta:  55.820
+Mon Nov 21 11:02:03 2022 
+SiPM n. 6 :  V corretta:  55.570
+Mon Nov 21 11:02:03 2022 
+SiPM n. 7 :  V corretta:  56.320
+Mon Nov 21 11:02:03 2022 
+SiPM n. 8 :  V corretta:  56.639
+Mon Nov 21 11:02:03 2022 
+SiPM n. 9 :  V corretta:  56.589
+Mon Nov 21 11:02:03 2022 
+SiPM n. 10 :  V corretta:  56.620
+Mon Nov 21 11:02:03 2022 
+SiPM n. 11 :  V corretta:  57.020
+Mon Nov 21 11:02:03 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14220  14524  14220  14752  14538  14576  14766  14196  13954  13992  13968  13664  "  >> test.out' 
+Mon Nov 21 11:02:03 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 11:02:09 2022 
+
+Sensore temperatura n.:  0  T=  22.4
+Mon Nov 21 11:17:10 2022 
+
+Sensore temperatura n.:  1  T=  22.2
+Mon Nov 21 11:17:10 2022 
+
+Sensore temperatura n.:  2  T=  22.0
+Mon Nov 21 11:17:10 2022 
+
+Sensore temperatura n.:  3  T=  21.6
+Mon Nov 21 11:17:10 2022 
+      Mon 21-11-2022 @ 11:17:10
+
+T2:   22.0 , T3:   21.6 , T media alta:   21.8 , Delta V alta:  0.098 
+
+Mon Nov 21 11:17:10 2022 
+T0:   22.4 , T1:   22.2 , T media bassa:   22.3 , Delta V bassa:  0.127 
+
+Mon Nov 21 11:17:10 2022 
+Pressione:  1003.4 hPa
+Mon Nov 21 11:17:10 2022 
+SiPM n. 0 :  V corretta:  56.298
+Mon Nov 21 11:17:10 2022 
+SiPM n. 1 :  V corretta:  55.898
+Mon Nov 21 11:17:10 2022 
+SiPM n. 2 :  V corretta:  56.298
+Mon Nov 21 11:17:10 2022 
+SiPM n. 3 :  V corretta:  55.598
+Mon Nov 21 11:17:10 2022 
+SiPM n. 4 :  V corretta:  55.877
+Mon Nov 21 11:17:10 2022 
+SiPM n. 5 :  V corretta:  55.827
+Mon Nov 21 11:17:10 2022 
+SiPM n. 6 :  V corretta:  55.577
+Mon Nov 21 11:17:10 2022 
+SiPM n. 7 :  V corretta:  56.327
+Mon Nov 21 11:17:10 2022 
+SiPM n. 8 :  V corretta:  56.648
+Mon Nov 21 11:17:10 2022 
+SiPM n. 9 :  V corretta:  56.598
+Mon Nov 21 11:17:10 2022 
+SiPM n. 10 :  V corretta:  56.627
+Mon Nov 21 11:17:10 2022 
+SiPM n. 11 :  V corretta:  57.027
+Mon Nov 21 11:17:10 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14213  14517  14213  14745  14533  14571  14761  14191  13947  13985  13963  13659  "  >> test.out' 
+Mon Nov 21 11:17:10 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 11:17:16 2022 
+
+Sensore temperatura n.:  0  T=  22.6
+Mon Nov 21 11:32:17 2022 
+
+Sensore temperatura n.:  1  T=  22.4
+Mon Nov 21 11:32:17 2022 
+
+Sensore temperatura n.:  2  T=  22.1
+Mon Nov 21 11:32:17 2022 
+
+Sensore temperatura n.:  3  T=  21.8
+Mon Nov 21 11:32:17 2022 
+      Mon 21-11-2022 @ 11:32:17
+
+T2:   22.1 , T3:   21.8 , T media alta:   22.0 , Delta V alta:  0.106 
+
+Mon Nov 21 11:32:17 2022 
+T0:   22.6 , T1:   22.4 , T media bassa:   22.5 , Delta V bassa:  0.133 
+
+Mon Nov 21 11:32:17 2022 
+Pressione:  1003.1 hPa
+Mon Nov 21 11:32:17 2022 
+SiPM n. 0 :  V corretta:  56.306
+Mon Nov 21 11:32:17 2022 
+SiPM n. 1 :  V corretta:  55.906
+Mon Nov 21 11:32:17 2022 
+SiPM n. 2 :  V corretta:  56.306
+Mon Nov 21 11:32:17 2022 
+SiPM n. 3 :  V corretta:  55.606
+Mon Nov 21 11:32:17 2022 
+SiPM n. 4 :  V corretta:  55.883
+Mon Nov 21 11:32:17 2022 
+SiPM n. 5 :  V corretta:  55.833
+Mon Nov 21 11:32:17 2022 
+SiPM n. 6 :  V corretta:  55.583
+Mon Nov 21 11:32:17 2022 
+SiPM n. 7 :  V corretta:  56.333
+Mon Nov 21 11:32:17 2022 
+SiPM n. 8 :  V corretta:  56.656
+Mon Nov 21 11:32:17 2022 
+SiPM n. 9 :  V corretta:  56.606
+Mon Nov 21 11:32:17 2022 
+SiPM n. 10 :  V corretta:  56.633
+Mon Nov 21 11:32:17 2022 
+SiPM n. 11 :  V corretta:  57.033
+Mon Nov 21 11:32:17 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14207  14511  14207  14739  14528  14566  14756  14186  13941  13979  13958  13654  "  >> test.out' 
+Mon Nov 21 11:32:17 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 11:32:23 2022 
+
+Sensore temperatura n.:  0  T=  22.7
+Mon Nov 21 11:47:24 2022 
+
+Sensore temperatura n.:  1  T=  22.5
+Mon Nov 21 11:47:24 2022 
+
+Sensore temperatura n.:  2  T=  22.2
+Mon Nov 21 11:47:24 2022 
+
+Sensore temperatura n.:  3  T=  21.9
+Mon Nov 21 11:47:24 2022 
+      Mon 21-11-2022 @ 11:47:24
+
+T2:   22.2 , T3:   21.9 , T media alta:   22.0 , Delta V alta:  0.110 
+
+Mon Nov 21 11:47:24 2022 
+T0:   22.7 , T1:   22.5 , T media bassa:   22.6 , Delta V bassa:  0.140 
+
+Mon Nov 21 11:47:24 2022 
+Pressione:  1002.9 hPa
+Mon Nov 21 11:47:24 2022 
+SiPM n. 0 :  V corretta:  56.310
+Mon Nov 21 11:47:24 2022 
+SiPM n. 1 :  V corretta:  55.910
+Mon Nov 21 11:47:24 2022 
+SiPM n. 2 :  V corretta:  56.310
+Mon Nov 21 11:47:24 2022 
+SiPM n. 3 :  V corretta:  55.610
+Mon Nov 21 11:47:24 2022 
+SiPM n. 4 :  V corretta:  55.890
+Mon Nov 21 11:47:24 2022 
+SiPM n. 5 :  V corretta:  55.840
+Mon Nov 21 11:47:24 2022 
+SiPM n. 6 :  V corretta:  55.590
+Mon Nov 21 11:47:24 2022 
+SiPM n. 7 :  V corretta:  56.340
+Mon Nov 21 11:47:24 2022 
+SiPM n. 8 :  V corretta:  56.660
+Mon Nov 21 11:47:24 2022 
+SiPM n. 9 :  V corretta:  56.610
+Mon Nov 21 11:47:24 2022 
+SiPM n. 10 :  V corretta:  56.640
+Mon Nov 21 11:47:24 2022 
+SiPM n. 11 :  V corretta:  57.040
+Mon Nov 21 11:47:24 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14204  14508  14204  14736  14523  14561  14751  14181  13938  13976  13953  13649  "  >> test.out' 
+Mon Nov 21 11:47:24 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 11:47:30 2022 
+
+Sensore temperatura n.:  0  T=  22.8
+Mon Nov 21 12:02:31 2022 
+
+Sensore temperatura n.:  1  T=  22.7
+Mon Nov 21 12:02:31 2022 
+
+Sensore temperatura n.:  2  T=  22.4
+Mon Nov 21 12:02:31 2022 
+
+Sensore temperatura n.:  3  T=  22.0
+Mon Nov 21 12:02:31 2022 
+      Mon 21-11-2022 @ 12:02:31
+
+T2:   22.4 , T3:   22.0 , T media alta:   22.2 , Delta V alta:  0.118 
+
+Mon Nov 21 12:02:31 2022 
+T0:   22.8 , T1:   22.7 , T media bassa:   22.7 , Delta V bassa:  0.147 
+
+Mon Nov 21 12:02:31 2022 
+Pressione:  1002.7 hPa
+Mon Nov 21 12:02:31 2022 
+SiPM n. 0 :  V corretta:  56.318
+Mon Nov 21 12:02:31 2022 
+SiPM n. 1 :  V corretta:  55.918
+Mon Nov 21 12:02:31 2022 
+SiPM n. 2 :  V corretta:  56.318
+Mon Nov 21 12:02:31 2022 
+SiPM n. 3 :  V corretta:  55.618
+Mon Nov 21 12:02:31 2022 
+SiPM n. 4 :  V corretta:  55.897
+Mon Nov 21 12:02:31 2022 
+SiPM n. 5 :  V corretta:  55.847
+Mon Nov 21 12:02:31 2022 
+SiPM n. 6 :  V corretta:  55.597
+Mon Nov 21 12:02:31 2022 
+SiPM n. 7 :  V corretta:  56.347
+Mon Nov 21 12:02:31 2022 
+SiPM n. 8 :  V corretta:  56.668
+Mon Nov 21 12:02:31 2022 
+SiPM n. 9 :  V corretta:  56.618
+Mon Nov 21 12:02:31 2022 
+SiPM n. 10 :  V corretta:  56.647
+Mon Nov 21 12:02:31 2022 
+SiPM n. 11 :  V corretta:  57.047
+Mon Nov 21 12:02:31 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14198  14502  14198  14730  14518  14556  14746  14176  13932  13970  13948  13644  "  >> test.out' 
+Mon Nov 21 12:02:31 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 12:02:37 2022 
+
+Sensore temperatura n.:  0  T=  22.9
+Mon Nov 21 12:17:37 2022 
+
+Sensore temperatura n.:  1  T=  22.8
+Mon Nov 21 12:17:37 2022 
+
+Sensore temperatura n.:  2  T=  22.5
+Mon Nov 21 12:17:37 2022 
+
+Sensore temperatura n.:  3  T=  22.1
+Mon Nov 21 12:17:37 2022 
+      Mon 21-11-2022 @ 12:17:38
+
+T2:   22.5 , T3:   22.1 , T media alta:   22.3 , Delta V alta:  0.125 
+
+Mon Nov 21 12:17:38 2022 
+T0:   22.9 , T1:   22.8 , T media bassa:   22.8 , Delta V bassa:  0.152 
+
+Mon Nov 21 12:17:38 2022 
+Pressione:  1002.3 hPa
+Mon Nov 21 12:17:38 2022 
+SiPM n. 0 :  V corretta:  56.325
+Mon Nov 21 12:17:38 2022 
+SiPM n. 1 :  V corretta:  55.925
+Mon Nov 21 12:17:38 2022 
+SiPM n. 2 :  V corretta:  56.325
+Mon Nov 21 12:17:38 2022 
+SiPM n. 3 :  V corretta:  55.625
+Mon Nov 21 12:17:38 2022 
+SiPM n. 4 :  V corretta:  55.902
+Mon Nov 21 12:17:38 2022 
+SiPM n. 5 :  V corretta:  55.852
+Mon Nov 21 12:17:38 2022 
+SiPM n. 6 :  V corretta:  55.602
+Mon Nov 21 12:17:38 2022 
+SiPM n. 7 :  V corretta:  56.352
+Mon Nov 21 12:17:38 2022 
+SiPM n. 8 :  V corretta:  56.675
+Mon Nov 21 12:17:38 2022 
+SiPM n. 9 :  V corretta:  56.625
+Mon Nov 21 12:17:38 2022 
+SiPM n. 10 :  V corretta:  56.652
+Mon Nov 21 12:17:38 2022 
+SiPM n. 11 :  V corretta:  57.052
+Mon Nov 21 12:17:38 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14193  14497  14193  14725  14514  14552  14742  14172  13927  13965  13944  13640  "  >> test.out' 
+Mon Nov 21 12:17:38 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 12:17:44 2022 
+
+Sensore temperatura n.:  0  T=  22.9
+Mon Nov 21 12:32:44 2022 
+
+Sensore temperatura n.:  1  T=  22.8
+Mon Nov 21 12:32:44 2022 
+
+Sensore temperatura n.:  2  T=  22.6
+Mon Nov 21 12:32:44 2022 
+
+Sensore temperatura n.:  3  T=  22.1
+Mon Nov 21 12:32:44 2022 
+      Mon 21-11-2022 @ 12:32:44
+
+T2:   22.6 , T3:   22.1 , T media alta:   22.3 , Delta V alta:  0.127 
+
+Mon Nov 21 12:32:44 2022 
+T0:   22.9 , T1:   22.8 , T media bassa:   22.9 , Delta V bassa:  0.155 
+
+Mon Nov 21 12:32:44 2022 
+Pressione:  1002.0 hPa
+Mon Nov 21 12:32:44 2022 
+SiPM n. 0 :  V corretta:  56.327
+Mon Nov 21 12:32:44 2022 
+SiPM n. 1 :  V corretta:  55.927
+Mon Nov 21 12:32:44 2022 
+SiPM n. 2 :  V corretta:  56.327
+Mon Nov 21 12:32:44 2022 
+SiPM n. 3 :  V corretta:  55.627
+Mon Nov 21 12:32:44 2022 
+SiPM n. 4 :  V corretta:  55.905
+Mon Nov 21 12:32:44 2022 
+SiPM n. 5 :  V corretta:  55.855
+Mon Nov 21 12:32:44 2022 
+SiPM n. 6 :  V corretta:  55.605
+Mon Nov 21 12:32:44 2022 
+SiPM n. 7 :  V corretta:  56.355
+Mon Nov 21 12:32:44 2022 
+SiPM n. 8 :  V corretta:  56.677
+Mon Nov 21 12:32:44 2022 
+SiPM n. 9 :  V corretta:  56.627
+Mon Nov 21 12:32:44 2022 
+SiPM n. 10 :  V corretta:  56.655
+Mon Nov 21 12:32:44 2022 
+SiPM n. 11 :  V corretta:  57.055
+Mon Nov 21 12:32:44 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14191  14495  14191  14723  14511  14549  14739  14169  13925  13963  13941  13637  "  >> test.out' 
+Mon Nov 21 12:32:44 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 12:32:51 2022 
+
+Sensore temperatura n.:  0  T=  23.0
+Mon Nov 21 12:47:51 2022 
+
+Sensore temperatura n.:  1  T=  22.9
+Mon Nov 21 12:47:51 2022 
+
+Sensore temperatura n.:  2  T=  22.6
+Mon Nov 21 12:47:51 2022 
+
+Sensore temperatura n.:  3  T=  22.2
+Mon Nov 21 12:47:51 2022 
+      Mon 21-11-2022 @ 12:47:51
+
+T2:   22.6 , T3:   22.2 , T media alta:   22.4 , Delta V alta:  0.132 
+
+Mon Nov 21 12:47:51 2022 
+T0:   23.0 , T1:   22.9 , T media bassa:   22.9 , Delta V bassa:  0.159 
+
+Mon Nov 21 12:47:51 2022 
+Pressione:  1001.7 hPa
+Mon Nov 21 12:47:51 2022 
+SiPM n. 0 :  V corretta:  56.332
+Mon Nov 21 12:47:51 2022 
+SiPM n. 1 :  V corretta:  55.932
+Mon Nov 21 12:47:51 2022 
+SiPM n. 2 :  V corretta:  56.332
+Mon Nov 21 12:47:51 2022 
+SiPM n. 3 :  V corretta:  55.632
+Mon Nov 21 12:47:51 2022 
+SiPM n. 4 :  V corretta:  55.909
+Mon Nov 21 12:47:51 2022 
+SiPM n. 5 :  V corretta:  55.859
+Mon Nov 21 12:47:51 2022 
+SiPM n. 6 :  V corretta:  55.609
+Mon Nov 21 12:47:51 2022 
+SiPM n. 7 :  V corretta:  56.359
+Mon Nov 21 12:47:51 2022 
+SiPM n. 8 :  V corretta:  56.682
+Mon Nov 21 12:47:51 2022 
+SiPM n. 9 :  V corretta:  56.632
+Mon Nov 21 12:47:51 2022 
+SiPM n. 10 :  V corretta:  56.659
+Mon Nov 21 12:47:51 2022 
+SiPM n. 11 :  V corretta:  57.059
+Mon Nov 21 12:47:51 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14187  14491  14187  14719  14509  14547  14737  14167  13921  13959  13939  13635  "  >> test.out' 
+Mon Nov 21 12:47:51 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 12:47:58 2022 
+
+Sensore temperatura n.:  0  T=  23.0
+Mon Nov 21 13:02:58 2022 
+
+Sensore temperatura n.:  1  T=  22.9
+Mon Nov 21 13:02:58 2022 
+
+Sensore temperatura n.:  2  T=  22.7
+Mon Nov 21 13:02:58 2022 
+
+Sensore temperatura n.:  3  T=  22.2
+Mon Nov 21 13:02:58 2022 
+      Mon 21-11-2022 @ 13:02:58
+
+T2:   22.7 , T3:   22.2 , T media alta:   22.5 , Delta V alta:  0.133 
+
+Mon Nov 21 13:02:58 2022 
+T0:   23.0 , T1:   22.9 , T media bassa:   23.0 , Delta V bassa:  0.160 
+
+Mon Nov 21 13:02:58 2022 
+Pressione:  1001.5 hPa
+Mon Nov 21 13:02:58 2022 
+SiPM n. 0 :  V corretta:  56.333
+Mon Nov 21 13:02:58 2022 
+SiPM n. 1 :  V corretta:  55.933
+Mon Nov 21 13:02:58 2022 
+SiPM n. 2 :  V corretta:  56.333
+Mon Nov 21 13:02:58 2022 
+SiPM n. 3 :  V corretta:  55.633
+Mon Nov 21 13:02:58 2022 
+SiPM n. 4 :  V corretta:  55.910
+Mon Nov 21 13:02:58 2022 
+SiPM n. 5 :  V corretta:  55.860
+Mon Nov 21 13:02:58 2022 
+SiPM n. 6 :  V corretta:  55.610
+Mon Nov 21 13:02:58 2022 
+SiPM n. 7 :  V corretta:  56.360
+Mon Nov 21 13:02:58 2022 
+SiPM n. 8 :  V corretta:  56.683
+Mon Nov 21 13:02:58 2022 
+SiPM n. 9 :  V corretta:  56.633
+Mon Nov 21 13:02:58 2022 
+SiPM n. 10 :  V corretta:  56.660
+Mon Nov 21 13:02:58 2022 
+SiPM n. 11 :  V corretta:  57.060
+Mon Nov 21 13:02:58 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14186  14490  14186  14718  14508  14546  14736  14166  13920  13958  13938  13634  "  >> test.out' 
+Mon Nov 21 13:02:58 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 13:03:05 2022 
+
+Sensore temperatura n.:  0  T=  23.1
+Mon Nov 21 13:18:05 2022 
+
+Sensore temperatura n.:  1  T=  23.0
+Mon Nov 21 13:18:05 2022 
+
+Sensore temperatura n.:  2  T=  22.7
+Mon Nov 21 13:18:05 2022 
+
+Sensore temperatura n.:  3  T=  22.4
+Mon Nov 21 13:18:05 2022 
+      Mon 21-11-2022 @ 13:18:05
+
+T2:   22.7 , T3:   22.4 , T media alta:   22.5 , Delta V alta:  0.137 
+
+Mon Nov 21 13:18:05 2022 
+T0:   23.1 , T1:   23.0 , T media bassa:   23.0 , Delta V bassa:  0.164 
+
+Mon Nov 21 13:18:05 2022 
+Pressione:  1001.3 hPa
+Mon Nov 21 13:18:05 2022 
+SiPM n. 0 :  V corretta:  56.337
+Mon Nov 21 13:18:05 2022 
+SiPM n. 1 :  V corretta:  55.937
+Mon Nov 21 13:18:05 2022 
+SiPM n. 2 :  V corretta:  56.337
+Mon Nov 21 13:18:05 2022 
+SiPM n. 3 :  V corretta:  55.637
+Mon Nov 21 13:18:05 2022 
+SiPM n. 4 :  V corretta:  55.914
+Mon Nov 21 13:18:05 2022 
+SiPM n. 5 :  V corretta:  55.864
+Mon Nov 21 13:18:05 2022 
+SiPM n. 6 :  V corretta:  55.614
+Mon Nov 21 13:18:05 2022 
+SiPM n. 7 :  V corretta:  56.364
+Mon Nov 21 13:18:05 2022 
+SiPM n. 8 :  V corretta:  56.687
+Mon Nov 21 13:18:05 2022 
+SiPM n. 9 :  V corretta:  56.637
+Mon Nov 21 13:18:05 2022 
+SiPM n. 10 :  V corretta:  56.664
+Mon Nov 21 13:18:05 2022 
+SiPM n. 11 :  V corretta:  57.064
+Mon Nov 21 13:18:05 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14184  14488  14184  14716  14505  14543  14733  14163  13918  13956  13935  13631  "  >> test.out' 
+Mon Nov 21 13:18:05 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 13:18:12 2022 
+
+Sensore temperatura n.:  0  T=  23.2
+Mon Nov 21 13:33:12 2022 
+
+Sensore temperatura n.:  1  T=  23.0
+Mon Nov 21 13:33:12 2022 
+
+Sensore temperatura n.:  2  T=  22.8
+Mon Nov 21 13:33:12 2022 
+
+Sensore temperatura n.:  3  T=  22.5
+Mon Nov 21 13:33:12 2022 
+      Mon 21-11-2022 @ 13:33:12
+
+T2:   22.8 , T3:   22.5 , T media alta:   22.7 , Delta V alta:  0.143 
+
+Mon Nov 21 13:33:12 2022 
+T0:   23.2 , T1:   23.1 , T media bassa:   23.1 , Delta V bassa:  0.169 
+
+Mon Nov 21 13:33:12 2022 
+Pressione:  1001.1 hPa
+Mon Nov 21 13:33:12 2022 
+SiPM n. 0 :  V corretta:  56.343
+Mon Nov 21 13:33:12 2022 
+SiPM n. 1 :  V corretta:  55.943
+Mon Nov 21 13:33:12 2022 
+SiPM n. 2 :  V corretta:  56.343
+Mon Nov 21 13:33:12 2022 
+SiPM n. 3 :  V corretta:  55.643
+Mon Nov 21 13:33:12 2022 
+SiPM n. 4 :  V corretta:  55.919
+Mon Nov 21 13:33:12 2022 
+SiPM n. 5 :  V corretta:  55.869
+Mon Nov 21 13:33:12 2022 
+SiPM n. 6 :  V corretta:  55.619
+Mon Nov 21 13:33:12 2022 
+SiPM n. 7 :  V corretta:  56.369
+Mon Nov 21 13:33:12 2022 
+SiPM n. 8 :  V corretta:  56.693
+Mon Nov 21 13:33:12 2022 
+SiPM n. 9 :  V corretta:  56.643
+Mon Nov 21 13:33:12 2022 
+SiPM n. 10 :  V corretta:  56.669
+Mon Nov 21 13:33:12 2022 
+SiPM n. 11 :  V corretta:  57.069
+Mon Nov 21 13:33:12 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14179  14483  14179  14711  14501  14539  14729  14159  13913  13951  13931  13627  "  >> test.out' 
+Mon Nov 21 13:33:12 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 13:33:19 2022 
+
+Sensore temperatura n.:  0  T=  23.4
+Mon Nov 21 13:48:19 2022 
+
+Sensore temperatura n.:  1  T=  23.2
+Mon Nov 21 13:48:19 2022 
+
+Sensore temperatura n.:  2  T=  23.1
+Mon Nov 21 13:48:19 2022 
+
+Sensore temperatura n.:  3  T=  22.7
+Mon Nov 21 13:48:19 2022 
+      Mon 21-11-2022 @ 13:48:19
+
+T2:   23.1 , T3:   22.7 , T media alta:   22.9 , Delta V alta:  0.155 
+
+Mon Nov 21 13:48:19 2022 
+T0:   23.4 , T1:   23.2 , T media bassa:   23.3 , Delta V bassa:  0.181 
+
+Mon Nov 21 13:48:19 2022 
+Pressione:  1000.9 hPa
+Mon Nov 21 13:48:19 2022 
+SiPM n. 0 :  V corretta:  56.355
+Mon Nov 21 13:48:19 2022 
+SiPM n. 1 :  V corretta:  55.955
+Mon Nov 21 13:48:19 2022 
+SiPM n. 2 :  V corretta:  56.355
+Mon Nov 21 13:48:19 2022 
+SiPM n. 3 :  V corretta:  55.655
+Mon Nov 21 13:48:19 2022 
+SiPM n. 4 :  V corretta:  55.931
+Mon Nov 21 13:48:19 2022 
+SiPM n. 5 :  V corretta:  55.881
+Mon Nov 21 13:48:19 2022 
+SiPM n. 6 :  V corretta:  55.631
+Mon Nov 21 13:48:19 2022 
+SiPM n. 7 :  V corretta:  56.381
+Mon Nov 21 13:48:19 2022 
+SiPM n. 8 :  V corretta:  56.705
+Mon Nov 21 13:48:19 2022 
+SiPM n. 9 :  V corretta:  56.655
+Mon Nov 21 13:48:19 2022 
+SiPM n. 10 :  V corretta:  56.681
+Mon Nov 21 13:48:19 2022 
+SiPM n. 11 :  V corretta:  57.081
+Mon Nov 21 13:48:19 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14169  14474  14169  14701  14492  14530  14720  14150  13904  13941  13922  13618  "  >> test.out' 
+Mon Nov 21 13:48:19 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 13:48:25 2022 
+
+Sensore temperatura n.:  0  T=  23.5
+Mon Nov 21 14:03:26 2022 
+
+Sensore temperatura n.:  1  T=  23.4
+Mon Nov 21 14:03:26 2022 
+
+Sensore temperatura n.:  2  T=  23.2
+Mon Nov 21 14:03:26 2022 
+
+Sensore temperatura n.:  3  T=  22.8
+Mon Nov 21 14:03:26 2022 
+      Mon 21-11-2022 @ 14:03:26
+
+T2:   23.2 , T3:   22.8 , T media alta:   23.0 , Delta V alta:  0.162 
+
+Mon Nov 21 14:03:26 2022 
+T0:   23.5 , T1:   23.4 , T media bassa:   23.4 , Delta V bassa:  0.186 
+
+Mon Nov 21 14:03:26 2022 
+Pressione:  1000.6 hPa
+Mon Nov 21 14:03:26 2022 
+SiPM n. 0 :  V corretta:  56.362
+Mon Nov 21 14:03:26 2022 
+SiPM n. 1 :  V corretta:  55.962
+Mon Nov 21 14:03:26 2022 
+SiPM n. 2 :  V corretta:  56.362
+Mon Nov 21 14:03:26 2022 
+SiPM n. 3 :  V corretta:  55.662
+Mon Nov 21 14:03:26 2022 
+SiPM n. 4 :  V corretta:  55.936
+Mon Nov 21 14:03:26 2022 
+SiPM n. 5 :  V corretta:  55.886
+Mon Nov 21 14:03:26 2022 
+SiPM n. 6 :  V corretta:  55.636
+Mon Nov 21 14:03:26 2022 
+SiPM n. 7 :  V corretta:  56.386
+Mon Nov 21 14:03:26 2022 
+SiPM n. 8 :  V corretta:  56.712
+Mon Nov 21 14:03:26 2022 
+SiPM n. 9 :  V corretta:  56.662
+Mon Nov 21 14:03:26 2022 
+SiPM n. 10 :  V corretta:  56.686
+Mon Nov 21 14:03:26 2022 
+SiPM n. 11 :  V corretta:  57.086
+Mon Nov 21 14:03:26 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14164  14468  14164  14696  14488  14526  14716  14146  13898  13936  13918  13614  "  >> test.out' 
+Mon Nov 21 14:03:26 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 14:03:32 2022 
+
+Sensore temperatura n.:  0  T=  23.5
+Mon Nov 21 14:18:33 2022 
+
+Sensore temperatura n.:  1  T=  23.4
+Mon Nov 21 14:18:33 2022 
+
+Sensore temperatura n.:  2  T=  23.2
+Mon Nov 21 14:18:33 2022 
+
+Sensore temperatura n.:  3  T=  22.8
+Mon Nov 21 14:18:33 2022 
+      Mon 21-11-2022 @ 14:18:33
+
+T2:   23.2 , T3:   22.8 , T media alta:   23.0 , Delta V alta:  0.162 
+
+Mon Nov 21 14:18:33 2022 
+T0:   23.5 , T1:   23.4 , T media bassa:   23.5 , Delta V bassa:  0.187 
+
+Mon Nov 21 14:18:33 2022 
+Pressione:  1000.3 hPa
+Mon Nov 21 14:18:33 2022 
+SiPM n. 0 :  V corretta:  56.362
+Mon Nov 21 14:18:33 2022 
+SiPM n. 1 :  V corretta:  55.962
+Mon Nov 21 14:18:33 2022 
+SiPM n. 2 :  V corretta:  56.362
+Mon Nov 21 14:18:33 2022 
+SiPM n. 3 :  V corretta:  55.662
+Mon Nov 21 14:18:33 2022 
+SiPM n. 4 :  V corretta:  55.937
+Mon Nov 21 14:18:33 2022 
+SiPM n. 5 :  V corretta:  55.887
+Mon Nov 21 14:18:33 2022 
+SiPM n. 6 :  V corretta:  55.637
+Mon Nov 21 14:18:33 2022 
+SiPM n. 7 :  V corretta:  56.387
+Mon Nov 21 14:18:33 2022 
+SiPM n. 8 :  V corretta:  56.712
+Mon Nov 21 14:18:33 2022 
+SiPM n. 9 :  V corretta:  56.662
+Mon Nov 21 14:18:33 2022 
+SiPM n. 10 :  V corretta:  56.687
+Mon Nov 21 14:18:33 2022 
+SiPM n. 11 :  V corretta:  57.087
+Mon Nov 21 14:18:33 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14164  14468  14164  14696  14487  14525  14715  14145  13898  13936  13917  13613  "  >> test.out' 
+Mon Nov 21 14:18:33 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 14:18:39 2022 
+
+Sensore temperatura n.:  0  T=  23.5
+Mon Nov 21 14:33:40 2022 
+
+Sensore temperatura n.:  1  T=  23.4
+Mon Nov 21 14:33:40 2022 
+
+Sensore temperatura n.:  2  T=  23.2
+Mon Nov 21 14:33:40 2022 
+
+Sensore temperatura n.:  3  T=  22.8
+Mon Nov 21 14:33:40 2022 
+      Mon 21-11-2022 @ 14:33:40
+
+T2:   23.2 , T3:   22.8 , T media alta:   23.0 , Delta V alta:  0.160 
+
+Mon Nov 21 14:33:40 2022 
+T0:   23.5 , T1:   23.4 , T media bassa:   23.5 , Delta V bassa:  0.187 
+
+Mon Nov 21 14:33:40 2022 
+Pressione:  1000.1 hPa
+Mon Nov 21 14:33:40 2022 
+SiPM n. 0 :  V corretta:  56.360
+Mon Nov 21 14:33:40 2022 
+SiPM n. 1 :  V corretta:  55.960
+Mon Nov 21 14:33:40 2022 
+SiPM n. 2 :  V corretta:  56.360
+Mon Nov 21 14:33:40 2022 
+SiPM n. 3 :  V corretta:  55.660
+Mon Nov 21 14:33:40 2022 
+SiPM n. 4 :  V corretta:  55.937
+Mon Nov 21 14:33:40 2022 
+SiPM n. 5 :  V corretta:  55.887
+Mon Nov 21 14:33:40 2022 
+SiPM n. 6 :  V corretta:  55.637
+Mon Nov 21 14:33:40 2022 
+SiPM n. 7 :  V corretta:  56.387
+Mon Nov 21 14:33:40 2022 
+SiPM n. 8 :  V corretta:  56.710
+Mon Nov 21 14:33:40 2022 
+SiPM n. 9 :  V corretta:  56.660
+Mon Nov 21 14:33:40 2022 
+SiPM n. 10 :  V corretta:  56.687
+Mon Nov 21 14:33:40 2022 
+SiPM n. 11 :  V corretta:  57.087
+Mon Nov 21 14:33:40 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14166  14470  14166  14698  14487  14525  14715  14145  13900  13938  13917  13613  "  >> test.out' 
+Mon Nov 21 14:33:40 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 14:33:46 2022 
+
+Sensore temperatura n.:  0  T=  23.5
+Mon Nov 21 14:48:47 2022 
+
+Sensore temperatura n.:  1  T=  23.4
+Mon Nov 21 14:48:47 2022 
+
+Sensore temperatura n.:  2  T=  23.2
+Mon Nov 21 14:48:47 2022 
+
+Sensore temperatura n.:  3  T=  22.8
+Mon Nov 21 14:48:47 2022 
+      Mon 21-11-2022 @ 14:48:47
+
+T2:   23.2 , T3:   22.8 , T media alta:   23.0 , Delta V alta:  0.164 
+
+Mon Nov 21 14:48:47 2022 
+T0:   23.5 , T1:   23.4 , T media bassa:   23.5 , Delta V bassa:  0.187 
+
+Mon Nov 21 14:48:47 2022 
+Pressione:  1000.0 hPa
+Mon Nov 21 14:48:47 2022 
+SiPM n. 0 :  V corretta:  56.364
+Mon Nov 21 14:48:47 2022 
+SiPM n. 1 :  V corretta:  55.964
+Mon Nov 21 14:48:47 2022 
+SiPM n. 2 :  V corretta:  56.364
+Mon Nov 21 14:48:47 2022 
+SiPM n. 3 :  V corretta:  55.664
+Mon Nov 21 14:48:47 2022 
+SiPM n. 4 :  V corretta:  55.937
+Mon Nov 21 14:48:47 2022 
+SiPM n. 5 :  V corretta:  55.887
+Mon Nov 21 14:48:47 2022 
+SiPM n. 6 :  V corretta:  55.637
+Mon Nov 21 14:48:47 2022 
+SiPM n. 7 :  V corretta:  56.387
+Mon Nov 21 14:48:47 2022 
+SiPM n. 8 :  V corretta:  56.714
+Mon Nov 21 14:48:47 2022 
+SiPM n. 9 :  V corretta:  56.664
+Mon Nov 21 14:48:47 2022 
+SiPM n. 10 :  V corretta:  56.687
+Mon Nov 21 14:48:47 2022 
+SiPM n. 11 :  V corretta:  57.087
+Mon Nov 21 14:48:47 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14163  14467  14163  14695  14487  14525  14715  14145  13897  13935  13917  13613  "  >> test.out' 
+Mon Nov 21 14:48:47 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 14:48:53 2022 
+
+Sensore temperatura n.:  0  T=  23.6
+Mon Nov 21 15:03:54 2022 
+
+Sensore temperatura n.:  1  T=  23.4
+Mon Nov 21 15:03:54 2022 
+
+Sensore temperatura n.:  2  T=  23.2
+Mon Nov 21 15:03:54 2022 
+
+Sensore temperatura n.:  3  T=  22.8
+Mon Nov 21 15:03:54 2022 
+      Mon 21-11-2022 @ 15:03:54
+
+T2:   23.2 , T3:   22.8 , T media alta:   23.0 , Delta V alta:  0.164 
+
+Mon Nov 21 15:03:54 2022 
+T0:   23.6 , T1:   23.4 , T media bassa:   23.5 , Delta V bassa:  0.189 
+
+Mon Nov 21 15:03:54 2022 
+Pressione:   999.7 hPa
+Mon Nov 21 15:03:54 2022 
+SiPM n. 0 :  V corretta:  56.364
+Mon Nov 21 15:03:54 2022 
+SiPM n. 1 :  V corretta:  55.964
+Mon Nov 21 15:03:54 2022 
+SiPM n. 2 :  V corretta:  56.364
+Mon Nov 21 15:03:54 2022 
+SiPM n. 3 :  V corretta:  55.664
+Mon Nov 21 15:03:54 2022 
+SiPM n. 4 :  V corretta:  55.939
+Mon Nov 21 15:03:54 2022 
+SiPM n. 5 :  V corretta:  55.889
+Mon Nov 21 15:03:54 2022 
+SiPM n. 6 :  V corretta:  55.639
+Mon Nov 21 15:03:54 2022 
+SiPM n. 7 :  V corretta:  56.389
+Mon Nov 21 15:03:54 2022 
+SiPM n. 8 :  V corretta:  56.714
+Mon Nov 21 15:03:54 2022 
+SiPM n. 9 :  V corretta:  56.664
+Mon Nov 21 15:03:54 2022 
+SiPM n. 10 :  V corretta:  56.689
+Mon Nov 21 15:03:54 2022 
+SiPM n. 11 :  V corretta:  57.089
+Mon Nov 21 15:03:54 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14163  14467  14163  14695  14486  14524  14714  14144  13897  13935  13916  13612  "  >> test.out' 
+Mon Nov 21 15:03:54 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 15:04:00 2022 
+
+Sensore temperatura n.:  0  T=  23.6
+Mon Nov 21 15:19:01 2022 
+
+Sensore temperatura n.:  1  T=  23.5
+Mon Nov 21 15:19:01 2022 
+
+Sensore temperatura n.:  2  T=  23.2
+Mon Nov 21 15:19:01 2022 
+
+Sensore temperatura n.:  3  T=  22.9
+Mon Nov 21 15:19:01 2022 
+      Mon 21-11-2022 @ 15:19:01
+
+T2:   23.2 , T3:   22.9 , T media alta:   23.1 , Delta V alta:  0.165 
+
+Mon Nov 21 15:19:01 2022 
+T0:   23.6 , T1:   23.5 , T media bassa:   23.5 , Delta V bassa:  0.191 
+
+Mon Nov 21 15:19:01 2022 
+Pressione:   999.4 hPa
+Mon Nov 21 15:19:01 2022 
+SiPM n. 0 :  V corretta:  56.365
+Mon Nov 21 15:19:01 2022 
+SiPM n. 1 :  V corretta:  55.965
+Mon Nov 21 15:19:01 2022 
+SiPM n. 2 :  V corretta:  56.365
+Mon Nov 21 15:19:01 2022 
+SiPM n. 3 :  V corretta:  55.665
+Mon Nov 21 15:19:01 2022 
+SiPM n. 4 :  V corretta:  55.941
+Mon Nov 21 15:19:01 2022 
+SiPM n. 5 :  V corretta:  55.891
+Mon Nov 21 15:19:01 2022 
+SiPM n. 6 :  V corretta:  55.641
+Mon Nov 21 15:19:01 2022 
+SiPM n. 7 :  V corretta:  56.391
+Mon Nov 21 15:19:01 2022 
+SiPM n. 8 :  V corretta:  56.715
+Mon Nov 21 15:19:01 2022 
+SiPM n. 9 :  V corretta:  56.665
+Mon Nov 21 15:19:01 2022 
+SiPM n. 10 :  V corretta:  56.691
+Mon Nov 21 15:19:01 2022 
+SiPM n. 11 :  V corretta:  57.091
+Mon Nov 21 15:19:01 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14162  14466  14162  14694  14485  14523  14713  14143  13896  13934  13915  13611  "  >> test.out' 
+Mon Nov 21 15:19:01 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 15:19:07 2022 
+
+Sensore temperatura n.:  0  T=  23.6
+Mon Nov 21 15:34:07 2022 
+
+Sensore temperatura n.:  1  T=  23.6
+Mon Nov 21 15:34:07 2022 
+
+Sensore temperatura n.:  2  T=  23.2
+Mon Nov 21 15:34:07 2022 
+
+Sensore temperatura n.:  3  T=  22.9
+Mon Nov 21 15:34:07 2022 
+      Mon 21-11-2022 @ 15:34:07
+
+T2:   23.2 , T3:   22.9 , T media alta:   23.1 , Delta V alta:  0.165 
+
+Mon Nov 21 15:34:08 2022 
+T0:   23.6 , T1:   23.5 , T media bassa:   23.5 , Delta V bassa:  0.191 
+
+Mon Nov 21 15:34:08 2022 
+Pressione:   999.5 hPa
+Mon Nov 21 15:34:08 2022 
+SiPM n. 0 :  V corretta:  56.365
+Mon Nov 21 15:34:08 2022 
+SiPM n. 1 :  V corretta:  55.965
+Mon Nov 21 15:34:08 2022 
+SiPM n. 2 :  V corretta:  56.365
+Mon Nov 21 15:34:08 2022 
+SiPM n. 3 :  V corretta:  55.665
+Mon Nov 21 15:34:08 2022 
+SiPM n. 4 :  V corretta:  55.941
+Mon Nov 21 15:34:08 2022 
+SiPM n. 5 :  V corretta:  55.891
+Mon Nov 21 15:34:08 2022 
+SiPM n. 6 :  V corretta:  55.641
+Mon Nov 21 15:34:08 2022 
+SiPM n. 7 :  V corretta:  56.391
+Mon Nov 21 15:34:08 2022 
+SiPM n. 8 :  V corretta:  56.715
+Mon Nov 21 15:34:08 2022 
+SiPM n. 9 :  V corretta:  56.665
+Mon Nov 21 15:34:08 2022 
+SiPM n. 10 :  V corretta:  56.691
+Mon Nov 21 15:34:08 2022 
+SiPM n. 11 :  V corretta:  57.091
+Mon Nov 21 15:34:08 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14162  14466  14162  14694  14485  14523  14713  14143  13896  13934  13915  13611  "  >> test.out' 
+Mon Nov 21 15:34:08 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 15:34:14 2022 
+
+Sensore temperatura n.:  0  T=  23.6
+Mon Nov 21 15:49:14 2022 
+
+Sensore temperatura n.:  1  T=  23.5
+Mon Nov 21 15:49:14 2022 
+
+Sensore temperatura n.:  2  T=  23.4
+Mon Nov 21 15:49:14 2022 
+
+Sensore temperatura n.:  3  T=  22.9
+Mon Nov 21 15:49:14 2022 
+      Mon 21-11-2022 @ 15:49:14
+
+T2:   23.4 , T3:   22.9 , T media alta:   23.2 , Delta V alta:  0.170 
+
+Mon Nov 21 15:49:14 2022 
+T0:   23.6 , T1:   23.5 , T media bassa:   23.5 , Delta V bassa:  0.191 
+
+Mon Nov 21 15:49:14 2022 
+Pressione:   999.5 hPa
+Mon Nov 21 15:49:14 2022 
+SiPM n. 0 :  V corretta:  56.370
+Mon Nov 21 15:49:14 2022 
+SiPM n. 1 :  V corretta:  55.970
+Mon Nov 21 15:49:14 2022 
+SiPM n. 2 :  V corretta:  56.370
+Mon Nov 21 15:49:14 2022 
+SiPM n. 3 :  V corretta:  55.670
+Mon Nov 21 15:49:14 2022 
+SiPM n. 4 :  V corretta:  55.941
+Mon Nov 21 15:49:14 2022 
+SiPM n. 5 :  V corretta:  55.891
+Mon Nov 21 15:49:14 2022 
+SiPM n. 6 :  V corretta:  55.641
+Mon Nov 21 15:49:14 2022 
+SiPM n. 7 :  V corretta:  56.391
+Mon Nov 21 15:49:14 2022 
+SiPM n. 8 :  V corretta:  56.720
+Mon Nov 21 15:49:14 2022 
+SiPM n. 9 :  V corretta:  56.670
+Mon Nov 21 15:49:14 2022 
+SiPM n. 10 :  V corretta:  56.691
+Mon Nov 21 15:49:14 2022 
+SiPM n. 11 :  V corretta:  57.091
+Mon Nov 21 15:49:14 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14158  14462  14158  14690  14485  14523  14713  14143  13892  13930  13915  13611  "  >> test.out' 
+Mon Nov 21 15:49:14 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 15:49:21 2022 
+
+Sensore temperatura n.:  0  T=  23.6
+Mon Nov 21 16:04:21 2022 
+
+Sensore temperatura n.:  1  T=  23.6
+Mon Nov 21 16:04:21 2022 
+
+Sensore temperatura n.:  2  T=  23.3
+Mon Nov 21 16:04:21 2022 
+
+Sensore temperatura n.:  3  T=  22.9
+Mon Nov 21 16:04:21 2022 
+      Mon 21-11-2022 @ 16:04:21
+
+T2:   23.3 , T3:   22.9 , T media alta:   23.1 , Delta V alta:  0.169 
+
+Mon Nov 21 16:04:21 2022 
+T0:   23.6 , T1:   23.6 , T media bassa:   23.6 , Delta V bassa:  0.194 
+
+Mon Nov 21 16:04:21 2022 
+Pressione:   999.3 hPa
+Mon Nov 21 16:04:21 2022 
+SiPM n. 0 :  V corretta:  56.369
+Mon Nov 21 16:04:21 2022 
+SiPM n. 1 :  V corretta:  55.969
+Mon Nov 21 16:04:21 2022 
+SiPM n. 2 :  V corretta:  56.369
+Mon Nov 21 16:04:21 2022 
+SiPM n. 3 :  V corretta:  55.669
+Mon Nov 21 16:04:21 2022 
+SiPM n. 4 :  V corretta:  55.944
+Mon Nov 21 16:04:21 2022 
+SiPM n. 5 :  V corretta:  55.894
+Mon Nov 21 16:04:21 2022 
+SiPM n. 6 :  V corretta:  55.644
+Mon Nov 21 16:04:21 2022 
+SiPM n. 7 :  V corretta:  56.394
+Mon Nov 21 16:04:21 2022 
+SiPM n. 8 :  V corretta:  56.719
+Mon Nov 21 16:04:21 2022 
+SiPM n. 9 :  V corretta:  56.669
+Mon Nov 21 16:04:21 2022 
+SiPM n. 10 :  V corretta:  56.694
+Mon Nov 21 16:04:21 2022 
+SiPM n. 11 :  V corretta:  57.094
+Mon Nov 21 16:04:21 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14159  14463  14159  14691  14482  14520  14710  14140  13893  13931  13912  13608  "  >> test.out' 
+Mon Nov 21 16:04:21 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 16:04:28 2022 
+
+Sensore temperatura n.:  0  T=  23.6
+Mon Nov 21 16:19:28 2022 
+
+Sensore temperatura n.:  1  T=  23.6
+Mon Nov 21 16:19:28 2022 
+
+Sensore temperatura n.:  2  T=  23.3
+Mon Nov 21 16:19:28 2022 
+
+Sensore temperatura n.:  3  T=  22.9
+Mon Nov 21 16:19:28 2022 
+      Mon 21-11-2022 @ 16:19:28
+
+T2:   23.3 , T3:   22.9 , T media alta:   23.1 , Delta V alta:  0.169 
+
+Mon Nov 21 16:19:28 2022 
+T0:   23.6 , T1:   23.6 , T media bassa:   23.6 , Delta V bassa:  0.194 
+
+Mon Nov 21 16:19:28 2022 
+Pressione:   999.4 hPa
+Mon Nov 21 16:19:28 2022 
+SiPM n. 0 :  V corretta:  56.369
+Mon Nov 21 16:19:28 2022 
+SiPM n. 1 :  V corretta:  55.969
+Mon Nov 21 16:19:28 2022 
+SiPM n. 2 :  V corretta:  56.369
+Mon Nov 21 16:19:28 2022 
+SiPM n. 3 :  V corretta:  55.669
+Mon Nov 21 16:19:28 2022 
+SiPM n. 4 :  V corretta:  55.944
+Mon Nov 21 16:19:28 2022 
+SiPM n. 5 :  V corretta:  55.894
+Mon Nov 21 16:19:28 2022 
+SiPM n. 6 :  V corretta:  55.644
+Mon Nov 21 16:19:28 2022 
+SiPM n. 7 :  V corretta:  56.394
+Mon Nov 21 16:19:28 2022 
+SiPM n. 8 :  V corretta:  56.719
+Mon Nov 21 16:19:28 2022 
+SiPM n. 9 :  V corretta:  56.669
+Mon Nov 21 16:19:28 2022 
+SiPM n. 10 :  V corretta:  56.694
+Mon Nov 21 16:19:28 2022 
+SiPM n. 11 :  V corretta:  57.094
+Mon Nov 21 16:19:28 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14159  14463  14159  14691  14482  14520  14710  14140  13893  13931  13912  13608  "  >> test.out' 
+Mon Nov 21 16:19:28 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 16:19:35 2022 
+
+Sensore temperatura n.:  0  T=  23.7
+Mon Nov 21 16:34:35 2022 
+
+Sensore temperatura n.:  1  T=  23.6
+Mon Nov 21 16:34:35 2022 
+
+Sensore temperatura n.:  2  T=  23.3
+Mon Nov 21 16:34:35 2022 
+
+Sensore temperatura n.:  3  T=  22.9
+Mon Nov 21 16:34:35 2022 
+      Mon 21-11-2022 @ 16:34:35
+
+T2:   23.3 , T3:   22.9 , T media alta:   23.1 , Delta V alta:  0.169 
+
+Mon Nov 21 16:34:35 2022 
+T0:   23.6 , T1:   23.6 , T media bassa:   23.6 , Delta V bassa:  0.194 
+
+Mon Nov 21 16:34:35 2022 
+Pressione:   999.0 hPa
+Mon Nov 21 16:34:35 2022 
+SiPM n. 0 :  V corretta:  56.369
+Mon Nov 21 16:34:35 2022 
+SiPM n. 1 :  V corretta:  55.969
+Mon Nov 21 16:34:35 2022 
+SiPM n. 2 :  V corretta:  56.369
+Mon Nov 21 16:34:35 2022 
+SiPM n. 3 :  V corretta:  55.669
+Mon Nov 21 16:34:35 2022 
+SiPM n. 4 :  V corretta:  55.944
+Mon Nov 21 16:34:35 2022 
+SiPM n. 5 :  V corretta:  55.894
+Mon Nov 21 16:34:35 2022 
+SiPM n. 6 :  V corretta:  55.644
+Mon Nov 21 16:34:35 2022 
+SiPM n. 7 :  V corretta:  56.394
+Mon Nov 21 16:34:35 2022 
+SiPM n. 8 :  V corretta:  56.719
+Mon Nov 21 16:34:35 2022 
+SiPM n. 9 :  V corretta:  56.669
+Mon Nov 21 16:34:35 2022 
+SiPM n. 10 :  V corretta:  56.694
+Mon Nov 21 16:34:35 2022 
+SiPM n. 11 :  V corretta:  57.094
+Mon Nov 21 16:34:35 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14159  14463  14159  14691  14482  14520  14710  14140  13893  13931  13912  13608  "  >> test.out' 
+Mon Nov 21 16:34:35 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 16:34:42 2022 
+
+Sensore temperatura n.:  0  T=  23.7
+Mon Nov 21 16:49:42 2022 
+
+Sensore temperatura n.:  1  T=  23.6
+Mon Nov 21 16:49:42 2022 
+
+Sensore temperatura n.:  2  T=  23.3
+Mon Nov 21 16:49:42 2022 
+
+Sensore temperatura n.:  3  T=  22.9
+Mon Nov 21 16:49:42 2022 
+      Mon 21-11-2022 @ 16:49:42
+
+T2:   23.3 , T3:   22.9 , T media alta:   23.1 , Delta V alta:  0.169 
+
+Mon Nov 21 16:49:42 2022 
+T0:   23.7 , T1:   23.6 , T media bassa:   23.6 , Delta V bassa:  0.196 
+
+Mon Nov 21 16:49:42 2022 
+Pressione:   998.7 hPa
+Mon Nov 21 16:49:42 2022 
+SiPM n. 0 :  V corretta:  56.369
+Mon Nov 21 16:49:42 2022 
+SiPM n. 1 :  V corretta:  55.969
+Mon Nov 21 16:49:42 2022 
+SiPM n. 2 :  V corretta:  56.369
+Mon Nov 21 16:49:42 2022 
+SiPM n. 3 :  V corretta:  55.669
+Mon Nov 21 16:49:42 2022 
+SiPM n. 4 :  V corretta:  55.946
+Mon Nov 21 16:49:42 2022 
+SiPM n. 5 :  V corretta:  55.896
+Mon Nov 21 16:49:42 2022 
+SiPM n. 6 :  V corretta:  55.646
+Mon Nov 21 16:49:42 2022 
+SiPM n. 7 :  V corretta:  56.396
+Mon Nov 21 16:49:42 2022 
+SiPM n. 8 :  V corretta:  56.719
+Mon Nov 21 16:49:42 2022 
+SiPM n. 9 :  V corretta:  56.669
+Mon Nov 21 16:49:42 2022 
+SiPM n. 10 :  V corretta:  56.696
+Mon Nov 21 16:49:42 2022 
+SiPM n. 11 :  V corretta:  57.096
+Mon Nov 21 16:49:42 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14159  14463  14159  14691  14481  14519  14709  14139  13893  13931  13911  13607  "  >> test.out' 
+Mon Nov 21 16:49:42 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 16:49:49 2022 
+
+Sensore temperatura n.:  0  T=  23.7
+Mon Nov 21 17:04:49 2022 
+
+Sensore temperatura n.:  1  T=  23.6
+Mon Nov 21 17:04:49 2022 
+
+Sensore temperatura n.:  2  T=  23.3
+Mon Nov 21 17:04:49 2022 
+
+Sensore temperatura n.:  3  T=  22.9
+Mon Nov 21 17:04:49 2022 
+      Mon 21-11-2022 @ 17:04:49
+
+T2:   23.3 , T3:   22.9 , T media alta:   23.1 , Delta V alta:  0.169 
+
+Mon Nov 21 17:04:49 2022 
+T0:   23.7 , T1:   23.6 , T media bassa:   23.7 , Delta V bassa:  0.197 
+
+Mon Nov 21 17:04:49 2022 
+Pressione:   998.6 hPa
+Mon Nov 21 17:04:49 2022 
+SiPM n. 0 :  V corretta:  56.369
+Mon Nov 21 17:04:49 2022 
+SiPM n. 1 :  V corretta:  55.969
+Mon Nov 21 17:04:49 2022 
+SiPM n. 2 :  V corretta:  56.369
+Mon Nov 21 17:04:49 2022 
+SiPM n. 3 :  V corretta:  55.669
+Mon Nov 21 17:04:49 2022 
+SiPM n. 4 :  V corretta:  55.947
+Mon Nov 21 17:04:49 2022 
+SiPM n. 5 :  V corretta:  55.897
+Mon Nov 21 17:04:49 2022 
+SiPM n. 6 :  V corretta:  55.647
+Mon Nov 21 17:04:49 2022 
+SiPM n. 7 :  V corretta:  56.397
+Mon Nov 21 17:04:49 2022 
+SiPM n. 8 :  V corretta:  56.719
+Mon Nov 21 17:04:49 2022 
+SiPM n. 9 :  V corretta:  56.669
+Mon Nov 21 17:04:49 2022 
+SiPM n. 10 :  V corretta:  56.697
+Mon Nov 21 17:04:49 2022 
+SiPM n. 11 :  V corretta:  57.097
+Mon Nov 21 17:04:49 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14159  14463  14159  14691  14479  14517  14707  14137  13893  13931  13909  13605  "  >> test.out' 
+Mon Nov 21 17:04:49 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 17:04:55 2022 
+
+Sensore temperatura n.:  0  T=  23.7
+Mon Nov 21 17:19:56 2022 
+
+Sensore temperatura n.:  1  T=  23.6
+Mon Nov 21 17:19:56 2022 
+
+Sensore temperatura n.:  2  T=  23.4
+Mon Nov 21 17:19:56 2022 
+
+Sensore temperatura n.:  3  T=  22.9
+Mon Nov 21 17:19:56 2022 
+      Mon 21-11-2022 @ 17:19:56
+
+T2:   23.4 , T3:   22.9 , T media alta:   23.2 , Delta V alta:  0.170 
+
+Mon Nov 21 17:19:56 2022 
+T0:   23.7 , T1:   23.6 , T media bassa:   23.6 , Delta V bassa:  0.196 
+
+Mon Nov 21 17:19:56 2022 
+Pressione:   998.5 hPa
+Mon Nov 21 17:19:56 2022 
+SiPM n. 0 :  V corretta:  56.370
+Mon Nov 21 17:19:56 2022 
+SiPM n. 1 :  V corretta:  55.970
+Mon Nov 21 17:19:56 2022 
+SiPM n. 2 :  V corretta:  56.370
+Mon Nov 21 17:19:56 2022 
+SiPM n. 3 :  V corretta:  55.670
+Mon Nov 21 17:19:56 2022 
+SiPM n. 4 :  V corretta:  55.946
+Mon Nov 21 17:19:56 2022 
+SiPM n. 5 :  V corretta:  55.896
+Mon Nov 21 17:19:56 2022 
+SiPM n. 6 :  V corretta:  55.646
+Mon Nov 21 17:19:56 2022 
+SiPM n. 7 :  V corretta:  56.396
+Mon Nov 21 17:19:56 2022 
+SiPM n. 8 :  V corretta:  56.720
+Mon Nov 21 17:19:56 2022 
+SiPM n. 9 :  V corretta:  56.670
+Mon Nov 21 17:19:56 2022 
+SiPM n. 10 :  V corretta:  56.696
+Mon Nov 21 17:19:56 2022 
+SiPM n. 11 :  V corretta:  57.096
+Mon Nov 21 17:19:56 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14158  14462  14158  14690  14481  14519  14709  14139  13892  13930  13911  13607  "  >> test.out' 
+Mon Nov 21 17:19:56 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 17:20:02 2022 
+
+Sensore temperatura n.:  0  T=  23.6
+Mon Nov 21 17:35:03 2022 
+
+Sensore temperatura n.:  1  T=  23.6
+Mon Nov 21 17:35:03 2022 
+
+Sensore temperatura n.:  2  T=  23.2
+Mon Nov 21 17:35:03 2022 
+
+Sensore temperatura n.:  3  T=  22.9
+Mon Nov 21 17:35:03 2022 
+      Mon 21-11-2022 @ 17:35:03
+
+T2:   23.2 , T3:   22.9 , T media alta:   23.1 , Delta V alta:  0.167 
+
+Mon Nov 21 17:35:03 2022 
+T0:   23.6 , T1:   23.6 , T media bassa:   23.6 , Delta V bassa:  0.194 
+
+Mon Nov 21 17:35:03 2022 
+Pressione:   998.3 hPa
+Mon Nov 21 17:35:03 2022 
+SiPM n. 0 :  V corretta:  56.367
+Mon Nov 21 17:35:03 2022 
+SiPM n. 1 :  V corretta:  55.967
+Mon Nov 21 17:35:03 2022 
+SiPM n. 2 :  V corretta:  56.367
+Mon Nov 21 17:35:03 2022 
+SiPM n. 3 :  V corretta:  55.667
+Mon Nov 21 17:35:03 2022 
+SiPM n. 4 :  V corretta:  55.944
+Mon Nov 21 17:35:03 2022 
+SiPM n. 5 :  V corretta:  55.894
+Mon Nov 21 17:35:03 2022 
+SiPM n. 6 :  V corretta:  55.644
+Mon Nov 21 17:35:03 2022 
+SiPM n. 7 :  V corretta:  56.394
+Mon Nov 21 17:35:03 2022 
+SiPM n. 8 :  V corretta:  56.717
+Mon Nov 21 17:35:03 2022 
+SiPM n. 9 :  V corretta:  56.667
+Mon Nov 21 17:35:03 2022 
+SiPM n. 10 :  V corretta:  56.694
+Mon Nov 21 17:35:03 2022 
+SiPM n. 11 :  V corretta:  57.094
+Mon Nov 21 17:35:03 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14161  14465  14161  14693  14482  14520  14710  14140  13895  13933  13912  13608  "  >> test.out' 
+Mon Nov 21 17:35:03 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 17:35:09 2022 
+
+Sensore temperatura n.:  0  T=  23.6
+Mon Nov 21 17:50:10 2022 
+
+Sensore temperatura n.:  1  T=  23.5
+Mon Nov 21 17:50:10 2022 
+
+Sensore temperatura n.:  2  T=  23.2
+Mon Nov 21 17:50:10 2022 
+
+Sensore temperatura n.:  3  T=  22.9
+Mon Nov 21 17:50:10 2022 
+      Mon 21-11-2022 @ 17:50:10
+
+T2:   23.2 , T3:   22.9 , T media alta:   23.1 , Delta V alta:  0.165 
+
+Mon Nov 21 17:50:10 2022 
+T0:   23.6 , T1:   23.5 , T media bassa:   23.5 , Delta V bassa:  0.191 
+
+Mon Nov 21 17:50:10 2022 
+Pressione:   998.0 hPa
+Mon Nov 21 17:50:10 2022 
+SiPM n. 0 :  V corretta:  56.365
+Mon Nov 21 17:50:10 2022 
+SiPM n. 1 :  V corretta:  55.965
+Mon Nov 21 17:50:10 2022 
+SiPM n. 2 :  V corretta:  56.365
+Mon Nov 21 17:50:10 2022 
+SiPM n. 3 :  V corretta:  55.665
+Mon Nov 21 17:50:10 2022 
+SiPM n. 4 :  V corretta:  55.941
+Mon Nov 21 17:50:10 2022 
+SiPM n. 5 :  V corretta:  55.891
+Mon Nov 21 17:50:10 2022 
+SiPM n. 6 :  V corretta:  55.641
+Mon Nov 21 17:50:10 2022 
+SiPM n. 7 :  V corretta:  56.391
+Mon Nov 21 17:50:10 2022 
+SiPM n. 8 :  V corretta:  56.715
+Mon Nov 21 17:50:10 2022 
+SiPM n. 9 :  V corretta:  56.665
+Mon Nov 21 17:50:10 2022 
+SiPM n. 10 :  V corretta:  56.691
+Mon Nov 21 17:50:10 2022 
+SiPM n. 11 :  V corretta:  57.091
+Mon Nov 21 17:50:10 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14162  14466  14162  14694  14485  14523  14713  14143  13896  13934  13915  13611  "  >> test.out' 
+Mon Nov 21 17:50:10 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 17:50:16 2022 
+
+Sensore temperatura n.:  0  T=  23.6
+Mon Nov 21 18:05:17 2022 
+
+Sensore temperatura n.:  1  T=  23.6
+Mon Nov 21 18:05:17 2022 
+
+Sensore temperatura n.:  2  T=  23.3
+Mon Nov 21 18:05:17 2022 
+
+Sensore temperatura n.:  3  T=  22.9
+Mon Nov 21 18:05:17 2022 
+      Mon 21-11-2022 @ 18:05:17
+
+T2:   23.3 , T3:   22.9 , T media alta:   23.1 , Delta V alta:  0.169 
+
+Mon Nov 21 18:05:17 2022 
+T0:   23.6 , T1:   23.6 , T media bassa:   23.6 , Delta V bassa:  0.194 
+
+Mon Nov 21 18:05:17 2022 
+Pressione:   997.8 hPa
+Mon Nov 21 18:05:17 2022 
+SiPM n. 0 :  V corretta:  56.369
+Mon Nov 21 18:05:17 2022 
+SiPM n. 1 :  V corretta:  55.969
+Mon Nov 21 18:05:17 2022 
+SiPM n. 2 :  V corretta:  56.369
+Mon Nov 21 18:05:17 2022 
+SiPM n. 3 :  V corretta:  55.669
+Mon Nov 21 18:05:17 2022 
+SiPM n. 4 :  V corretta:  55.944
+Mon Nov 21 18:05:17 2022 
+SiPM n. 5 :  V corretta:  55.894
+Mon Nov 21 18:05:17 2022 
+SiPM n. 6 :  V corretta:  55.644
+Mon Nov 21 18:05:17 2022 
+SiPM n. 7 :  V corretta:  56.394
+Mon Nov 21 18:05:17 2022 
+SiPM n. 8 :  V corretta:  56.719
+Mon Nov 21 18:05:17 2022 
+SiPM n. 9 :  V corretta:  56.669
+Mon Nov 21 18:05:17 2022 
+SiPM n. 10 :  V corretta:  56.694
+Mon Nov 21 18:05:17 2022 
+SiPM n. 11 :  V corretta:  57.094
+Mon Nov 21 18:05:17 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14159  14463  14159  14691  14482  14520  14710  14140  13893  13931  13912  13608  "  >> test.out' 
+Mon Nov 21 18:05:17 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 18:05:23 2022 
+
+Sensore temperatura n.:  0  T=  23.6
+Mon Nov 21 18:20:24 2022 
+
+Sensore temperatura n.:  1  T=  23.5
+Mon Nov 21 18:20:24 2022 
+
+Sensore temperatura n.:  2  T=  23.2
+Mon Nov 21 18:20:24 2022 
+
+Sensore temperatura n.:  3  T=  22.9
+Mon Nov 21 18:20:24 2022 
+      Mon 21-11-2022 @ 18:20:24
+
+T2:   23.2 , T3:   22.9 , T media alta:   23.1 , Delta V alta:  0.165 
+
+Mon Nov 21 18:20:24 2022 
+T0:   23.6 , T1:   23.5 , T media bassa:   23.5 , Delta V bassa:  0.191 
+
+Mon Nov 21 18:20:24 2022 
+Pressione:   997.8 hPa
+Mon Nov 21 18:20:24 2022 
+SiPM n. 0 :  V corretta:  56.365
+Mon Nov 21 18:20:24 2022 
+SiPM n. 1 :  V corretta:  55.965
+Mon Nov 21 18:20:24 2022 
+SiPM n. 2 :  V corretta:  56.365
+Mon Nov 21 18:20:24 2022 
+SiPM n. 3 :  V corretta:  55.665
+Mon Nov 21 18:20:24 2022 
+SiPM n. 4 :  V corretta:  55.941
+Mon Nov 21 18:20:24 2022 
+SiPM n. 5 :  V corretta:  55.891
+Mon Nov 21 18:20:24 2022 
+SiPM n. 6 :  V corretta:  55.641
+Mon Nov 21 18:20:24 2022 
+SiPM n. 7 :  V corretta:  56.391
+Mon Nov 21 18:20:24 2022 
+SiPM n. 8 :  V corretta:  56.715
+Mon Nov 21 18:20:24 2022 
+SiPM n. 9 :  V corretta:  56.665
+Mon Nov 21 18:20:24 2022 
+SiPM n. 10 :  V corretta:  56.691
+Mon Nov 21 18:20:24 2022 
+SiPM n. 11 :  V corretta:  57.091
+Mon Nov 21 18:20:24 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14162  14466  14162  14694  14485  14523  14713  14143  13896  13934  13915  13611  "  >> test.out' 
+Mon Nov 21 18:20:24 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 18:20:30 2022 
+
+Sensore temperatura n.:  0  T=  23.6
+Mon Nov 21 18:35:30 2022 
+
+Sensore temperatura n.:  1  T=  23.5
+Mon Nov 21 18:35:30 2022 
+
+Sensore temperatura n.:  2  T=  23.2
+Mon Nov 21 18:35:30 2022 
+
+Sensore temperatura n.:  3  T=  22.9
+Mon Nov 21 18:35:30 2022 
+      Mon 21-11-2022 @ 18:35:31
+
+T2:   23.2 , T3:   22.9 , T media alta:   23.1 , Delta V alta:  0.165 
+
+Mon Nov 21 18:35:31 2022 
+T0:   23.6 , T1:   23.5 , T media bassa:   23.5 , Delta V bassa:  0.191 
+
+Mon Nov 21 18:35:31 2022 
+Pressione:   997.7 hPa
+Mon Nov 21 18:35:31 2022 
+SiPM n. 0 :  V corretta:  56.365
+Mon Nov 21 18:35:31 2022 
+SiPM n. 1 :  V corretta:  55.965
+Mon Nov 21 18:35:31 2022 
+SiPM n. 2 :  V corretta:  56.365
+Mon Nov 21 18:35:31 2022 
+SiPM n. 3 :  V corretta:  55.665
+Mon Nov 21 18:35:31 2022 
+SiPM n. 4 :  V corretta:  55.941
+Mon Nov 21 18:35:31 2022 
+SiPM n. 5 :  V corretta:  55.891
+Mon Nov 21 18:35:31 2022 
+SiPM n. 6 :  V corretta:  55.641
+Mon Nov 21 18:35:31 2022 
+SiPM n. 7 :  V corretta:  56.391
+Mon Nov 21 18:35:31 2022 
+SiPM n. 8 :  V corretta:  56.715
+Mon Nov 21 18:35:31 2022 
+SiPM n. 9 :  V corretta:  56.665
+Mon Nov 21 18:35:31 2022 
+SiPM n. 10 :  V corretta:  56.691
+Mon Nov 21 18:35:31 2022 
+SiPM n. 11 :  V corretta:  57.091
+Mon Nov 21 18:35:31 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14162  14466  14162  14694  14485  14523  14713  14143  13896  13934  13915  13611  "  >> test.out' 
+Mon Nov 21 18:35:31 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 18:35:37 2022 
+
+Sensore temperatura n.:  0  T=  23.5
+Mon Nov 21 18:50:37 2022 
+
+Sensore temperatura n.:  1  T=  23.5
+Mon Nov 21 18:50:37 2022 
+
+Sensore temperatura n.:  2  T=  23.2
+Mon Nov 21 18:50:37 2022 
+
+Sensore temperatura n.:  3  T=  22.8
+Mon Nov 21 18:50:37 2022 
+      Mon 21-11-2022 @ 18:50:37
+
+T2:   23.2 , T3:   22.9 , T media alta:   23.1 , Delta V alta:  0.165 
+
+Mon Nov 21 18:50:37 2022 
+T0:   23.5 , T1:   23.5 , T media bassa:   23.5 , Delta V bassa:  0.189 
+
+Mon Nov 21 18:50:37 2022 
+Pressione:   997.4 hPa
+Mon Nov 21 18:50:37 2022 
+SiPM n. 0 :  V corretta:  56.365
+Mon Nov 21 18:50:37 2022 
+SiPM n. 1 :  V corretta:  55.965
+Mon Nov 21 18:50:37 2022 
+SiPM n. 2 :  V corretta:  56.365
+Mon Nov 21 18:50:37 2022 
+SiPM n. 3 :  V corretta:  55.665
+Mon Nov 21 18:50:37 2022 
+SiPM n. 4 :  V corretta:  55.939
+Mon Nov 21 18:50:37 2022 
+SiPM n. 5 :  V corretta:  55.889
+Mon Nov 21 18:50:37 2022 
+SiPM n. 6 :  V corretta:  55.639
+Mon Nov 21 18:50:37 2022 
+SiPM n. 7 :  V corretta:  56.389
+Mon Nov 21 18:50:37 2022 
+SiPM n. 8 :  V corretta:  56.715
+Mon Nov 21 18:50:37 2022 
+SiPM n. 9 :  V corretta:  56.665
+Mon Nov 21 18:50:37 2022 
+SiPM n. 10 :  V corretta:  56.689
+Mon Nov 21 18:50:37 2022 
+SiPM n. 11 :  V corretta:  57.089
+Mon Nov 21 18:50:37 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14162  14466  14162  14694  14486  14524  14714  14144  13896  13934  13916  13612  "  >> test.out' 
+Mon Nov 21 18:50:37 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 18:50:44 2022 
+
+Sensore temperatura n.:  0  T=  23.5
+Mon Nov 21 19:05:44 2022 
+
+Sensore temperatura n.:  1  T=  23.4
+Mon Nov 21 19:05:44 2022 
+
+Sensore temperatura n.:  2  T=  23.2
+Mon Nov 21 19:05:44 2022 
+
+Sensore temperatura n.:  3  T=  22.8
+Mon Nov 21 19:05:44 2022 
+      Mon 21-11-2022 @ 19:05:44
+
+T2:   23.2 , T3:   22.8 , T media alta:   23.0 , Delta V alta:  0.162 
+
+Mon Nov 21 19:05:44 2022 
+T0:   23.5 , T1:   23.4 , T media bassa:   23.5 , Delta V bassa:  0.187 
+
+Mon Nov 21 19:05:44 2022 
+Pressione:   997.2 hPa
+Mon Nov 21 19:05:44 2022 
+SiPM n. 0 :  V corretta:  56.362
+Mon Nov 21 19:05:44 2022 
+SiPM n. 1 :  V corretta:  55.962
+Mon Nov 21 19:05:44 2022 
+SiPM n. 2 :  V corretta:  56.362
+Mon Nov 21 19:05:44 2022 
+SiPM n. 3 :  V corretta:  55.662
+Mon Nov 21 19:05:44 2022 
+SiPM n. 4 :  V corretta:  55.937
+Mon Nov 21 19:05:44 2022 
+SiPM n. 5 :  V corretta:  55.887
+Mon Nov 21 19:05:44 2022 
+SiPM n. 6 :  V corretta:  55.637
+Mon Nov 21 19:05:44 2022 
+SiPM n. 7 :  V corretta:  56.387
+Mon Nov 21 19:05:44 2022 
+SiPM n. 8 :  V corretta:  56.712
+Mon Nov 21 19:05:44 2022 
+SiPM n. 9 :  V corretta:  56.662
+Mon Nov 21 19:05:44 2022 
+SiPM n. 10 :  V corretta:  56.687
+Mon Nov 21 19:05:44 2022 
+SiPM n. 11 :  V corretta:  57.087
+Mon Nov 21 19:05:44 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14164  14468  14164  14696  14487  14525  14715  14145  13898  13936  13917  13613  "  >> test.out' 
+Mon Nov 21 19:05:44 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 19:05:51 2022 
+
+Sensore temperatura n.:  0  T=  23.4
+Mon Nov 21 19:20:51 2022 
+
+Sensore temperatura n.:  1  T=  23.4
+Mon Nov 21 19:20:51 2022 
+
+Sensore temperatura n.:  2  T=  23.2
+Mon Nov 21 19:20:51 2022 
+
+Sensore temperatura n.:  3  T=  22.8
+Mon Nov 21 19:20:51 2022 
+      Mon 21-11-2022 @ 19:20:51
+
+T2:   23.2 , T3:   22.8 , T media alta:   23.0 , Delta V alta:  0.160 
+
+Mon Nov 21 19:20:51 2022 
+T0:   23.4 , T1:   23.4 , T media bassa:   23.4 , Delta V bassa:  0.184 
+
+Mon Nov 21 19:20:51 2022 
+Pressione:   997.1 hPa
+Mon Nov 21 19:20:51 2022 
+SiPM n. 0 :  V corretta:  56.360
+Mon Nov 21 19:20:51 2022 
+SiPM n. 1 :  V corretta:  55.960
+Mon Nov 21 19:20:51 2022 
+SiPM n. 2 :  V corretta:  56.360
+Mon Nov 21 19:20:51 2022 
+SiPM n. 3 :  V corretta:  55.660
+Mon Nov 21 19:20:51 2022 
+SiPM n. 4 :  V corretta:  55.934
+Mon Nov 21 19:20:51 2022 
+SiPM n. 5 :  V corretta:  55.884
+Mon Nov 21 19:20:51 2022 
+SiPM n. 6 :  V corretta:  55.634
+Mon Nov 21 19:20:51 2022 
+SiPM n. 7 :  V corretta:  56.384
+Mon Nov 21 19:20:51 2022 
+SiPM n. 8 :  V corretta:  56.710
+Mon Nov 21 19:20:51 2022 
+SiPM n. 9 :  V corretta:  56.660
+Mon Nov 21 19:20:51 2022 
+SiPM n. 10 :  V corretta:  56.684
+Mon Nov 21 19:20:51 2022 
+SiPM n. 11 :  V corretta:  57.084
+Mon Nov 21 19:20:51 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14166  14470  14166  14698  14490  14528  14718  14148  13900  13938  13920  13616  "  >> test.out' 
+Mon Nov 21 19:20:51 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 19:20:58 2022 
+
+Sensore temperatura n.:  0  T=  23.4
+Mon Nov 21 19:35:58 2022 
+
+Sensore temperatura n.:  1  T=  23.4
+Mon Nov 21 19:35:58 2022 
+
+Sensore temperatura n.:  2  T=  23.1
+Mon Nov 21 19:35:58 2022 
+
+Sensore temperatura n.:  3  T=  22.7
+Mon Nov 21 19:35:58 2022 
+      Mon 21-11-2022 @ 19:35:58
+
+T2:   23.1 , T3:   22.7 , T media alta:   22.9 , Delta V alta:  0.157 
+
+Mon Nov 21 19:35:58 2022 
+T0:   23.4 , T1:   23.4 , T media bassa:   23.4 , Delta V bassa:  0.184 
+
+Mon Nov 21 19:35:58 2022 
+Pressione:   997.0 hPa
+Mon Nov 21 19:35:58 2022 
+SiPM n. 0 :  V corretta:  56.357
+Mon Nov 21 19:35:58 2022 
+SiPM n. 1 :  V corretta:  55.957
+Mon Nov 21 19:35:58 2022 
+SiPM n. 2 :  V corretta:  56.357
+Mon Nov 21 19:35:58 2022 
+SiPM n. 3 :  V corretta:  55.657
+Mon Nov 21 19:35:58 2022 
+SiPM n. 4 :  V corretta:  55.934
+Mon Nov 21 19:35:58 2022 
+SiPM n. 5 :  V corretta:  55.884
+Mon Nov 21 19:35:58 2022 
+SiPM n. 6 :  V corretta:  55.634
+Mon Nov 21 19:35:58 2022 
+SiPM n. 7 :  V corretta:  56.384
+Mon Nov 21 19:35:58 2022 
+SiPM n. 8 :  V corretta:  56.707
+Mon Nov 21 19:35:58 2022 
+SiPM n. 9 :  V corretta:  56.657
+Mon Nov 21 19:35:58 2022 
+SiPM n. 10 :  V corretta:  56.684
+Mon Nov 21 19:35:58 2022 
+SiPM n. 11 :  V corretta:  57.084
+Mon Nov 21 19:35:58 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14168  14472  14168  14700  14490  14528  14718  14148  13902  13940  13920  13616  "  >> test.out' 
+Mon Nov 21 19:35:58 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 19:36:05 2022 
+
+Sensore temperatura n.:  0  T=  23.4
+Mon Nov 21 19:51:05 2022 
+
+Sensore temperatura n.:  1  T=  23.3
+Mon Nov 21 19:51:05 2022 
+
+Sensore temperatura n.:  2  T=  23.1
+Mon Nov 21 19:51:05 2022 
+
+Sensore temperatura n.:  3  T=  22.7
+Mon Nov 21 19:51:05 2022 
+      Mon 21-11-2022 @ 19:51:05
+
+T2:   23.1 , T3:   22.7 , T media alta:   22.9 , Delta V alta:  0.155 
+
+Mon Nov 21 19:51:05 2022 
+T0:   23.4 , T1:   23.3 , T media bassa:   23.3 , Delta V bassa:  0.181 
+
+Mon Nov 21 19:51:05 2022 
+Pressione:   996.8 hPa
+Mon Nov 21 19:51:05 2022 
+SiPM n. 0 :  V corretta:  56.355
+Mon Nov 21 19:51:05 2022 
+SiPM n. 1 :  V corretta:  55.955
+Mon Nov 21 19:51:05 2022 
+SiPM n. 2 :  V corretta:  56.355
+Mon Nov 21 19:51:05 2022 
+SiPM n. 3 :  V corretta:  55.655
+Mon Nov 21 19:51:05 2022 
+SiPM n. 4 :  V corretta:  55.931
+Mon Nov 21 19:51:05 2022 
+SiPM n. 5 :  V corretta:  55.881
+Mon Nov 21 19:51:05 2022 
+SiPM n. 6 :  V corretta:  55.631
+Mon Nov 21 19:51:05 2022 
+SiPM n. 7 :  V corretta:  56.381
+Mon Nov 21 19:51:05 2022 
+SiPM n. 8 :  V corretta:  56.705
+Mon Nov 21 19:51:05 2022 
+SiPM n. 9 :  V corretta:  56.655
+Mon Nov 21 19:51:05 2022 
+SiPM n. 10 :  V corretta:  56.681
+Mon Nov 21 19:51:05 2022 
+SiPM n. 11 :  V corretta:  57.081
+Mon Nov 21 19:51:05 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14169  14474  14169  14701  14492  14530  14720  14150  13904  13941  13922  13618  "  >> test.out' 
+Mon Nov 21 19:51:05 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 19:51:12 2022 
+
+Sensore temperatura n.:  0  T=  23.3
+Mon Nov 21 20:06:12 2022 
+
+Sensore temperatura n.:  1  T=  23.2
+Mon Nov 21 20:06:12 2022 
+
+Sensore temperatura n.:  2  T=  23.0
+Mon Nov 21 20:06:12 2022 
+
+Sensore temperatura n.:  3  T=  22.6
+Mon Nov 21 20:06:12 2022 
+      Mon 21-11-2022 @ 20:06:12
+
+T2:   23.0 , T3:   22.6 , T media alta:   22.8 , Delta V alta:  0.152 
+
+Mon Nov 21 20:06:12 2022 
+T0:   23.3 , T1:   23.2 , T media bassa:   23.3 , Delta V bassa:  0.177 
+
+Mon Nov 21 20:06:12 2022 
+Pressione:   996.5 hPa
+Mon Nov 21 20:06:12 2022 
+SiPM n. 0 :  V corretta:  56.352
+Mon Nov 21 20:06:12 2022 
+SiPM n. 1 :  V corretta:  55.952
+Mon Nov 21 20:06:12 2022 
+SiPM n. 2 :  V corretta:  56.352
+Mon Nov 21 20:06:12 2022 
+SiPM n. 3 :  V corretta:  55.652
+Mon Nov 21 20:06:12 2022 
+SiPM n. 4 :  V corretta:  55.927
+Mon Nov 21 20:06:12 2022 
+SiPM n. 5 :  V corretta:  55.877
+Mon Nov 21 20:06:12 2022 
+SiPM n. 6 :  V corretta:  55.627
+Mon Nov 21 20:06:12 2022 
+SiPM n. 7 :  V corretta:  56.377
+Mon Nov 21 20:06:12 2022 
+SiPM n. 8 :  V corretta:  56.702
+Mon Nov 21 20:06:12 2022 
+SiPM n. 9 :  V corretta:  56.652
+Mon Nov 21 20:06:12 2022 
+SiPM n. 10 :  V corretta:  56.677
+Mon Nov 21 20:06:12 2022 
+SiPM n. 11 :  V corretta:  57.077
+Mon Nov 21 20:06:12 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14172  14476  14172  14704  14495  14533  14723  14153  13906  13944  13925  13621  "  >> test.out' 
+Mon Nov 21 20:06:12 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 20:06:18 2022 
+
+Sensore temperatura n.:  0  T=  23.3
+Mon Nov 21 20:21:19 2022 
+
+Sensore temperatura n.:  1  T=  23.2
+Mon Nov 21 20:21:19 2022 
+
+Sensore temperatura n.:  2  T=  23.0
+Mon Nov 21 20:21:19 2022 
+
+Sensore temperatura n.:  3  T=  22.6
+Mon Nov 21 20:21:19 2022 
+      Mon 21-11-2022 @ 20:21:19
+
+T2:   23.0 , T3:   22.6 , T media alta:   22.8 , Delta V alta:  0.150 
+
+Mon Nov 21 20:21:19 2022 
+T0:   23.3 , T1:   23.2 , T media bassa:   23.3 , Delta V bassa:  0.177 
+
+Mon Nov 21 20:21:19 2022 
+Pressione:   996.2 hPa
+Mon Nov 21 20:21:19 2022 
+SiPM n. 0 :  V corretta:  56.350
+Mon Nov 21 20:21:19 2022 
+SiPM n. 1 :  V corretta:  55.950
+Mon Nov 21 20:21:19 2022 
+SiPM n. 2 :  V corretta:  56.350
+Mon Nov 21 20:21:19 2022 
+SiPM n. 3 :  V corretta:  55.650
+Mon Nov 21 20:21:19 2022 
+SiPM n. 4 :  V corretta:  55.927
+Mon Nov 21 20:21:19 2022 
+SiPM n. 5 :  V corretta:  55.877
+Mon Nov 21 20:21:19 2022 
+SiPM n. 6 :  V corretta:  55.627
+Mon Nov 21 20:21:19 2022 
+SiPM n. 7 :  V corretta:  56.377
+Mon Nov 21 20:21:19 2022 
+SiPM n. 8 :  V corretta:  56.700
+Mon Nov 21 20:21:19 2022 
+SiPM n. 9 :  V corretta:  56.650
+Mon Nov 21 20:21:19 2022 
+SiPM n. 10 :  V corretta:  56.677
+Mon Nov 21 20:21:19 2022 
+SiPM n. 11 :  V corretta:  57.077
+Mon Nov 21 20:21:19 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14173  14477  14173  14705  14495  14533  14723  14153  13907  13945  13925  13621  "  >> test.out' 
+Mon Nov 21 20:21:19 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 20:21:25 2022 
+
+Sensore temperatura n.:  0  T=  23.2
+Mon Nov 21 20:36:26 2022 
+
+Sensore temperatura n.:  1  T=  23.2
+Mon Nov 21 20:36:26 2022 
+
+Sensore temperatura n.:  2  T=  22.9
+Mon Nov 21 20:36:26 2022 
+
+Sensore temperatura n.:  3  T=  22.5
+Mon Nov 21 20:36:26 2022 
+      Mon 21-11-2022 @ 20:36:26
+
+T2:   22.9 , T3:   22.5 , T media alta:   22.7 , Delta V alta:  0.147 
+
+Mon Nov 21 20:36:26 2022 
+T0:   23.3 , T1:   23.2 , T media bassa:   23.2 , Delta V bassa:  0.175 
+
+Mon Nov 21 20:36:26 2022 
+Pressione:   995.9 hPa
+Mon Nov 21 20:36:26 2022 
+SiPM n. 0 :  V corretta:  56.347
+Mon Nov 21 20:36:26 2022 
+SiPM n. 1 :  V corretta:  55.947
+Mon Nov 21 20:36:26 2022 
+SiPM n. 2 :  V corretta:  56.347
+Mon Nov 21 20:36:26 2022 
+SiPM n. 3 :  V corretta:  55.647
+Mon Nov 21 20:36:26 2022 
+SiPM n. 4 :  V corretta:  55.925
+Mon Nov 21 20:36:26 2022 
+SiPM n. 5 :  V corretta:  55.876
+Mon Nov 21 20:36:26 2022 
+SiPM n. 6 :  V corretta:  55.626
+Mon Nov 21 20:36:26 2022 
+SiPM n. 7 :  V corretta:  56.376
+Mon Nov 21 20:36:26 2022 
+SiPM n. 8 :  V corretta:  56.697
+Mon Nov 21 20:36:26 2022 
+SiPM n. 9 :  V corretta:  56.647
+Mon Nov 21 20:36:26 2022 
+SiPM n. 10 :  V corretta:  56.675
+Mon Nov 21 20:36:26 2022 
+SiPM n. 11 :  V corretta:  57.075
+Mon Nov 21 20:36:26 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14176  14480  14176  14708  14496  14534  14724  14154  13910  13948  13926  13622  "  >> test.out' 
+Mon Nov 21 20:36:26 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 20:36:32 2022 
+
+Sensore temperatura n.:  0  T=  23.2
+Mon Nov 21 20:51:33 2022 
+
+Sensore temperatura n.:  1  T=  23.2
+Mon Nov 21 20:51:33 2022 
+
+Sensore temperatura n.:  2  T=  22.9
+Mon Nov 21 20:51:33 2022 
+
+Sensore temperatura n.:  3  T=  22.5
+Mon Nov 21 20:51:33 2022 
+      Mon 21-11-2022 @ 20:51:33
+
+T2:   22.9 , T3:   22.5 , T media alta:   22.7 , Delta V alta:  0.147 
+
+Mon Nov 21 20:51:33 2022 
+T0:   23.2 , T1:   23.2 , T media bassa:   23.2 , Delta V bassa:  0.174 
+
+Mon Nov 21 20:51:33 2022 
+Pressione:   995.7 hPa
+Mon Nov 21 20:51:33 2022 
+SiPM n. 0 :  V corretta:  56.347
+Mon Nov 21 20:51:33 2022 
+SiPM n. 1 :  V corretta:  55.947
+Mon Nov 21 20:51:33 2022 
+SiPM n. 2 :  V corretta:  56.347
+Mon Nov 21 20:51:33 2022 
+SiPM n. 3 :  V corretta:  55.647
+Mon Nov 21 20:51:33 2022 
+SiPM n. 4 :  V corretta:  55.924
+Mon Nov 21 20:51:33 2022 
+SiPM n. 5 :  V corretta:  55.874
+Mon Nov 21 20:51:33 2022 
+SiPM n. 6 :  V corretta:  55.624
+Mon Nov 21 20:51:33 2022 
+SiPM n. 7 :  V corretta:  56.374
+Mon Nov 21 20:51:33 2022 
+SiPM n. 8 :  V corretta:  56.697
+Mon Nov 21 20:51:33 2022 
+SiPM n. 9 :  V corretta:  56.647
+Mon Nov 21 20:51:33 2022 
+SiPM n. 10 :  V corretta:  56.674
+Mon Nov 21 20:51:33 2022 
+SiPM n. 11 :  V corretta:  57.074
+Mon Nov 21 20:51:33 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14176  14480  14176  14708  14497  14535  14725  14155  13910  13948  13927  13623  "  >> test.out' 
+Mon Nov 21 20:51:33 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 20:51:39 2022 
+
+Sensore temperatura n.:  0  T=  23.1
+Mon Nov 21 21:06:40 2022 
+
+Sensore temperatura n.:  1  T=  23.2
+Mon Nov 21 21:06:40 2022 
+
+Sensore temperatura n.:  2  T=  22.9
+Mon Nov 21 21:06:40 2022 
+
+Sensore temperatura n.:  3  T=  22.4
+Mon Nov 21 21:06:40 2022 
+      Mon 21-11-2022 @ 21:06:40
+
+T2:   22.9 , T3:   22.4 , T media alta:   22.7 , Delta V alta:  0.143 
+
+Mon Nov 21 21:06:40 2022 
+T0:   23.2 , T1:   23.2 , T media bassa:   23.2 , Delta V bassa:  0.172 
+
+Mon Nov 21 21:06:40 2022 
+Pressione:   995.4 hPa
+Mon Nov 21 21:06:40 2022 
+SiPM n. 0 :  V corretta:  56.343
+Mon Nov 21 21:06:40 2022 
+SiPM n. 1 :  V corretta:  55.943
+Mon Nov 21 21:06:40 2022 
+SiPM n. 2 :  V corretta:  56.343
+Mon Nov 21 21:06:40 2022 
+SiPM n. 3 :  V corretta:  55.643
+Mon Nov 21 21:06:40 2022 
+SiPM n. 4 :  V corretta:  55.922
+Mon Nov 21 21:06:40 2022 
+SiPM n. 5 :  V corretta:  55.872
+Mon Nov 21 21:06:40 2022 
+SiPM n. 6 :  V corretta:  55.622
+Mon Nov 21 21:06:40 2022 
+SiPM n. 7 :  V corretta:  56.372
+Mon Nov 21 21:06:40 2022 
+SiPM n. 8 :  V corretta:  56.693
+Mon Nov 21 21:06:40 2022 
+SiPM n. 9 :  V corretta:  56.643
+Mon Nov 21 21:06:40 2022 
+SiPM n. 10 :  V corretta:  56.672
+Mon Nov 21 21:06:40 2022 
+SiPM n. 11 :  V corretta:  57.072
+Mon Nov 21 21:06:40 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14179  14483  14179  14711  14499  14537  14727  14157  13913  13951  13929  13625  "  >> test.out' 
+Mon Nov 21 21:06:40 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 21:06:46 2022 
+
+Sensore temperatura n.:  0  T=  23.1
+Mon Nov 21 21:21:47 2022 
+
+Sensore temperatura n.:  1  T=  23.1
+Mon Nov 21 21:21:47 2022 
+
+Sensore temperatura n.:  2  T=  22.8
+Mon Nov 21 21:21:47 2022 
+
+Sensore temperatura n.:  3  T=  22.4
+Mon Nov 21 21:21:47 2022 
+      Mon 21-11-2022 @ 21:21:47
+
+T2:   22.9 , T3:   22.4 , T media alta:   22.7 , Delta V alta:  0.143 
+
+Mon Nov 21 21:21:47 2022 
+T0:   23.2 , T1:   23.1 , T media bassa:   23.1 , Delta V bassa:  0.169 
+
+Mon Nov 21 21:21:47 2022 
+Pressione:   995.1 hPa
+Mon Nov 21 21:21:47 2022 
+SiPM n. 0 :  V corretta:  56.343
+Mon Nov 21 21:21:47 2022 
+SiPM n. 1 :  V corretta:  55.943
+Mon Nov 21 21:21:47 2022 
+SiPM n. 2 :  V corretta:  56.343
+Mon Nov 21 21:21:47 2022 
+SiPM n. 3 :  V corretta:  55.643
+Mon Nov 21 21:21:47 2022 
+SiPM n. 4 :  V corretta:  55.919
+Mon Nov 21 21:21:47 2022 
+SiPM n. 5 :  V corretta:  55.869
+Mon Nov 21 21:21:47 2022 
+SiPM n. 6 :  V corretta:  55.619
+Mon Nov 21 21:21:47 2022 
+SiPM n. 7 :  V corretta:  56.369
+Mon Nov 21 21:21:47 2022 
+SiPM n. 8 :  V corretta:  56.693
+Mon Nov 21 21:21:47 2022 
+SiPM n. 9 :  V corretta:  56.643
+Mon Nov 21 21:21:47 2022 
+SiPM n. 10 :  V corretta:  56.669
+Mon Nov 21 21:21:47 2022 
+SiPM n. 11 :  V corretta:  57.069
+Mon Nov 21 21:21:47 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14179  14483  14179  14711  14501  14539  14729  14159  13913  13951  13931  13627  "  >> test.out' 
+Mon Nov 21 21:21:47 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 21:21:53 2022 
+
+Sensore temperatura n.:  0  T=  23.1
+Mon Nov 21 21:36:53 2022 
+
+Sensore temperatura n.:  1  T=  23.1
+Mon Nov 21 21:36:53 2022 
+
+Sensore temperatura n.:  2  T=  22.8
+Mon Nov 21 21:36:53 2022 
+
+Sensore temperatura n.:  3  T=  22.4
+Mon Nov 21 21:36:53 2022 
+      Mon 21-11-2022 @ 21:36:53
+
+T2:   22.8 , T3:   22.4 , T media alta:   22.6 , Delta V alta:  0.138 
+
+Mon Nov 21 21:36:53 2022 
+T0:   23.1 , T1:   23.1 , T media bassa:   23.1 , Delta V bassa:  0.167 
+
+Mon Nov 21 21:36:53 2022 
+Pressione:   994.7 hPa
+Mon Nov 21 21:36:53 2022 
+SiPM n. 0 :  V corretta:  56.338
+Mon Nov 21 21:36:53 2022 
+SiPM n. 1 :  V corretta:  55.938
+Mon Nov 21 21:36:53 2022 
+SiPM n. 2 :  V corretta:  56.338
+Mon Nov 21 21:36:53 2022 
+SiPM n. 3 :  V corretta:  55.638
+Mon Nov 21 21:36:53 2022 
+SiPM n. 4 :  V corretta:  55.917
+Mon Nov 21 21:36:53 2022 
+SiPM n. 5 :  V corretta:  55.867
+Mon Nov 21 21:36:53 2022 
+SiPM n. 6 :  V corretta:  55.617
+Mon Nov 21 21:36:53 2022 
+SiPM n. 7 :  V corretta:  56.367
+Mon Nov 21 21:36:54 2022 
+SiPM n. 8 :  V corretta:  56.688
+Mon Nov 21 21:36:54 2022 
+SiPM n. 9 :  V corretta:  56.638
+Mon Nov 21 21:36:54 2022 
+SiPM n. 10 :  V corretta:  56.667
+Mon Nov 21 21:36:54 2022 
+SiPM n. 11 :  V corretta:  57.067
+Mon Nov 21 21:36:54 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14182  14486  14182  14714  14503  14541  14731  14161  13916  13954  13933  13629  "  >> test.out' 
+Mon Nov 21 21:36:54 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 21:37:00 2022 
+
+Sensore temperatura n.:  0  T=  23.1
+Mon Nov 21 21:52:00 2022 
+
+Sensore temperatura n.:  1  T=  23.0
+Mon Nov 21 21:52:00 2022 
+
+Sensore temperatura n.:  2  T=  22.8
+Mon Nov 21 21:52:00 2022 
+
+Sensore temperatura n.:  3  T=  22.3
+Mon Nov 21 21:52:00 2022 
+      Mon 21-11-2022 @ 21:52:00
+
+T2:   22.8 , T3:   22.3 , T media alta:   22.5 , Delta V alta:  0.137 
+
+Mon Nov 21 21:52:00 2022 
+T0:   23.1 , T1:   23.0 , T media bassa:   23.0 , Delta V bassa:  0.164 
+
+Mon Nov 21 21:52:00 2022 
+Pressione:   994.6 hPa
+Mon Nov 21 21:52:00 2022 
+SiPM n. 0 :  V corretta:  56.337
+Mon Nov 21 21:52:00 2022 
+SiPM n. 1 :  V corretta:  55.937
+Mon Nov 21 21:52:00 2022 
+SiPM n. 2 :  V corretta:  56.337
+Mon Nov 21 21:52:00 2022 
+SiPM n. 3 :  V corretta:  55.637
+Mon Nov 21 21:52:00 2022 
+SiPM n. 4 :  V corretta:  55.914
+Mon Nov 21 21:52:00 2022 
+SiPM n. 5 :  V corretta:  55.864
+Mon Nov 21 21:52:00 2022 
+SiPM n. 6 :  V corretta:  55.614
+Mon Nov 21 21:52:00 2022 
+SiPM n. 7 :  V corretta:  56.364
+Mon Nov 21 21:52:00 2022 
+SiPM n. 8 :  V corretta:  56.687
+Mon Nov 21 21:52:00 2022 
+SiPM n. 9 :  V corretta:  56.637
+Mon Nov 21 21:52:00 2022 
+SiPM n. 10 :  V corretta:  56.664
+Mon Nov 21 21:52:00 2022 
+SiPM n. 11 :  V corretta:  57.064
+Mon Nov 21 21:52:00 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14184  14488  14184  14716  14505  14543  14733  14163  13918  13956  13935  13631  "  >> test.out' 
+Mon Nov 21 21:52:00 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 21:52:07 2022 
+
+Sensore temperatura n.:  0  T=  23.0
+Mon Nov 21 22:07:07 2022 
+
+Sensore temperatura n.:  1  T=  22.9
+Mon Nov 21 22:07:07 2022 
+
+Sensore temperatura n.:  2  T=  22.7
+Mon Nov 21 22:07:07 2022 
+
+Sensore temperatura n.:  3  T=  22.3
+Mon Nov 21 22:07:07 2022 
+      Mon 21-11-2022 @ 22:07:07
+
+T2:   22.8 , T3:   22.3 , T media alta:   22.5 , Delta V alta:  0.137 
+
+Mon Nov 21 22:07:07 2022 
+T0:   23.0 , T1:   22.9 , T media bassa:   23.0 , Delta V bassa:  0.160 
+
+Mon Nov 21 22:07:07 2022 
+Pressione:   994.5 hPa
+Mon Nov 21 22:07:07 2022 
+SiPM n. 0 :  V corretta:  56.337
+Mon Nov 21 22:07:07 2022 
+SiPM n. 1 :  V corretta:  55.937
+Mon Nov 21 22:07:07 2022 
+SiPM n. 2 :  V corretta:  56.337
+Mon Nov 21 22:07:07 2022 
+SiPM n. 3 :  V corretta:  55.637
+Mon Nov 21 22:07:07 2022 
+SiPM n. 4 :  V corretta:  55.910
+Mon Nov 21 22:07:07 2022 
+SiPM n. 5 :  V corretta:  55.860
+Mon Nov 21 22:07:07 2022 
+SiPM n. 6 :  V corretta:  55.610
+Mon Nov 21 22:07:07 2022 
+SiPM n. 7 :  V corretta:  56.360
+Mon Nov 21 22:07:07 2022 
+SiPM n. 8 :  V corretta:  56.687
+Mon Nov 21 22:07:07 2022 
+SiPM n. 9 :  V corretta:  56.637
+Mon Nov 21 22:07:07 2022 
+SiPM n. 10 :  V corretta:  56.660
+Mon Nov 21 22:07:07 2022 
+SiPM n. 11 :  V corretta:  57.060
+Mon Nov 21 22:07:07 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14184  14488  14184  14716  14508  14546  14736  14166  13918  13956  13938  13634  "  >> test.out' 
+Mon Nov 21 22:07:07 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 22:07:14 2022 
+
+Sensore temperatura n.:  0  T=  22.9
+Mon Nov 21 22:22:14 2022 
+
+Sensore temperatura n.:  1  T=  22.9
+Mon Nov 21 22:22:14 2022 
+
+Sensore temperatura n.:  2  T=  22.6
+Mon Nov 21 22:22:14 2022 
+
+Sensore temperatura n.:  3  T=  22.2
+Mon Nov 21 22:22:14 2022 
+      Mon 21-11-2022 @ 22:22:14
+
+T2:   22.6 , T3:   22.2 , T media alta:   22.4 , Delta V alta:  0.132 
+
+Mon Nov 21 22:22:14 2022 
+T0:   22.9 , T1:   22.9 , T media bassa:   22.9 , Delta V bassa:  0.157 
+
+Mon Nov 21 22:22:14 2022 
+Pressione:   994.3 hPa
+Mon Nov 21 22:22:14 2022 
+SiPM n. 0 :  V corretta:  56.332
+Mon Nov 21 22:22:14 2022 
+SiPM n. 1 :  V corretta:  55.932
+Mon Nov 21 22:22:14 2022 
+SiPM n. 2 :  V corretta:  56.332
+Mon Nov 21 22:22:14 2022 
+SiPM n. 3 :  V corretta:  55.632
+Mon Nov 21 22:22:14 2022 
+SiPM n. 4 :  V corretta:  55.907
+Mon Nov 21 22:22:14 2022 
+SiPM n. 5 :  V corretta:  55.857
+Mon Nov 21 22:22:14 2022 
+SiPM n. 6 :  V corretta:  55.607
+Mon Nov 21 22:22:14 2022 
+SiPM n. 7 :  V corretta:  56.357
+Mon Nov 21 22:22:14 2022 
+SiPM n. 8 :  V corretta:  56.682
+Mon Nov 21 22:22:14 2022 
+SiPM n. 9 :  V corretta:  56.632
+Mon Nov 21 22:22:14 2022 
+SiPM n. 10 :  V corretta:  56.657
+Mon Nov 21 22:22:14 2022 
+SiPM n. 11 :  V corretta:  57.057
+Mon Nov 21 22:22:14 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14187  14491  14187  14719  14510  14548  14738  14168  13921  13959  13940  13636  "  >> test.out' 
+Mon Nov 21 22:22:14 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 22:22:21 2022 
+
+Sensore temperatura n.:  0  T=  22.9
+Mon Nov 21 22:37:21 2022 
+
+Sensore temperatura n.:  1  T=  22.9
+Mon Nov 21 22:37:21 2022 
+
+Sensore temperatura n.:  2  T=  22.6
+Mon Nov 21 22:37:21 2022 
+
+Sensore temperatura n.:  3  T=  22.2
+Mon Nov 21 22:37:21 2022 
+      Mon 21-11-2022 @ 22:37:21
+
+T2:   22.6 , T3:   22.2 , T media alta:   22.4 , Delta V alta:  0.130 
+
+Mon Nov 21 22:37:21 2022 
+T0:   22.9 , T1:   22.9 , T media bassa:   22.9 , Delta V bassa:  0.157 
+
+Mon Nov 21 22:37:21 2022 
+Pressione:   994.0 hPa
+Mon Nov 21 22:37:21 2022 
+SiPM n. 0 :  V corretta:  56.330
+Mon Nov 21 22:37:21 2022 
+SiPM n. 1 :  V corretta:  55.930
+Mon Nov 21 22:37:21 2022 
+SiPM n. 2 :  V corretta:  56.330
+Mon Nov 21 22:37:21 2022 
+SiPM n. 3 :  V corretta:  55.630
+Mon Nov 21 22:37:21 2022 
+SiPM n. 4 :  V corretta:  55.907
+Mon Nov 21 22:37:21 2022 
+SiPM n. 5 :  V corretta:  55.857
+Mon Nov 21 22:37:21 2022 
+SiPM n. 6 :  V corretta:  55.607
+Mon Nov 21 22:37:21 2022 
+SiPM n. 7 :  V corretta:  56.357
+Mon Nov 21 22:37:21 2022 
+SiPM n. 8 :  V corretta:  56.680
+Mon Nov 21 22:37:21 2022 
+SiPM n. 9 :  V corretta:  56.630
+Mon Nov 21 22:37:21 2022 
+SiPM n. 10 :  V corretta:  56.657
+Mon Nov 21 22:37:21 2022 
+SiPM n. 11 :  V corretta:  57.057
+Mon Nov 21 22:37:21 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14189  14493  14189  14721  14510  14548  14738  14168  13923  13961  13940  13636  "  >> test.out' 
+Mon Nov 21 22:37:21 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 22:37:28 2022 
+
+Sensore temperatura n.:  0  T=  22.9
+Mon Nov 21 22:52:28 2022 
+
+Sensore temperatura n.:  1  T=  22.9
+Mon Nov 21 22:52:28 2022 
+
+Sensore temperatura n.:  2  T=  22.6
+Mon Nov 21 22:52:28 2022 
+
+Sensore temperatura n.:  3  T=  22.2
+Mon Nov 21 22:52:28 2022 
+      Mon 21-11-2022 @ 22:52:28
+
+T2:   22.6 , T3:   22.2 , T media alta:   22.4 , Delta V alta:  0.128 
+
+Mon Nov 21 22:52:28 2022 
+T0:   22.9 , T1:   22.9 , T media bassa:   22.9 , Delta V bassa:  0.157 
+
+Mon Nov 21 22:52:28 2022 
+Pressione:   994.2 hPa
+Mon Nov 21 22:52:28 2022 
+SiPM n. 0 :  V corretta:  56.328
+Mon Nov 21 22:52:28 2022 
+SiPM n. 1 :  V corretta:  55.928
+Mon Nov 21 22:52:28 2022 
+SiPM n. 2 :  V corretta:  56.328
+Mon Nov 21 22:52:28 2022 
+SiPM n. 3 :  V corretta:  55.628
+Mon Nov 21 22:52:28 2022 
+SiPM n. 4 :  V corretta:  55.907
+Mon Nov 21 22:52:28 2022 
+SiPM n. 5 :  V corretta:  55.857
+Mon Nov 21 22:52:28 2022 
+SiPM n. 6 :  V corretta:  55.607
+Mon Nov 21 22:52:28 2022 
+SiPM n. 7 :  V corretta:  56.357
+Mon Nov 21 22:52:28 2022 
+SiPM n. 8 :  V corretta:  56.678
+Mon Nov 21 22:52:28 2022 
+SiPM n. 9 :  V corretta:  56.628
+Mon Nov 21 22:52:28 2022 
+SiPM n. 10 :  V corretta:  56.657
+Mon Nov 21 22:52:28 2022 
+SiPM n. 11 :  V corretta:  57.057
+Mon Nov 21 22:52:28 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14190  14494  14190  14722  14510  14548  14738  14168  13924  13962  13940  13636  "  >> test.out' 
+Mon Nov 21 22:52:28 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 22:52:34 2022 
+
+Sensore temperatura n.:  0  T=  22.8
+Mon Nov 21 23:07:35 2022 
+
+Sensore temperatura n.:  1  T=  22.8
+Mon Nov 21 23:07:35 2022 
+
+Sensore temperatura n.:  2  T=  22.6
+Mon Nov 21 23:07:35 2022 
+
+Sensore temperatura n.:  3  T=  22.1
+Mon Nov 21 23:07:35 2022 
+      Mon 21-11-2022 @ 23:07:35
+
+T2:   22.6 , T3:   22.1 , T media alta:   22.3 , Delta V alta:  0.127 
+
+Mon Nov 21 23:07:35 2022 
+T0:   22.8 , T1:   22.8 , T media bassa:   22.8 , Delta V bassa:  0.152 
+
+Mon Nov 21 23:07:35 2022 
+Pressione:   993.5 hPa
+Mon Nov 21 23:07:35 2022 
+SiPM n. 0 :  V corretta:  56.327
+Mon Nov 21 23:07:35 2022 
+SiPM n. 1 :  V corretta:  55.927
+Mon Nov 21 23:07:35 2022 
+SiPM n. 2 :  V corretta:  56.327
+Mon Nov 21 23:07:35 2022 
+SiPM n. 3 :  V corretta:  55.627
+Mon Nov 21 23:07:35 2022 
+SiPM n. 4 :  V corretta:  55.902
+Mon Nov 21 23:07:35 2022 
+SiPM n. 5 :  V corretta:  55.852
+Mon Nov 21 23:07:35 2022 
+SiPM n. 6 :  V corretta:  55.602
+Mon Nov 21 23:07:35 2022 
+SiPM n. 7 :  V corretta:  56.352
+Mon Nov 21 23:07:35 2022 
+SiPM n. 8 :  V corretta:  56.677
+Mon Nov 21 23:07:35 2022 
+SiPM n. 9 :  V corretta:  56.627
+Mon Nov 21 23:07:35 2022 
+SiPM n. 10 :  V corretta:  56.652
+Mon Nov 21 23:07:35 2022 
+SiPM n. 11 :  V corretta:  57.052
+Mon Nov 21 23:07:35 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14191  14495  14191  14723  14514  14552  14742  14172  13925  13963  13944  13640  "  >> test.out' 
+Mon Nov 21 23:07:35 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 23:07:41 2022 
+
+Sensore temperatura n.:  0  T=  22.8
+Mon Nov 21 23:22:42 2022 
+
+Sensore temperatura n.:  1  T=  22.8
+Mon Nov 21 23:22:42 2022 
+
+Sensore temperatura n.:  2  T=  22.5
+Mon Nov 21 23:22:42 2022 
+
+Sensore temperatura n.:  3  T=  22.1
+Mon Nov 21 23:22:42 2022 
+      Mon 21-11-2022 @ 23:22:42
+
+T2:   22.5 , T3:   22.1 , T media alta:   22.3 , Delta V alta:  0.123 
+
+Mon Nov 21 23:22:42 2022 
+T0:   22.8 , T1:   22.8 , T media bassa:   22.8 , Delta V bassa:  0.150 
+
+Mon Nov 21 23:22:42 2022 
+Pressione:   993.3 hPa
+Mon Nov 21 23:22:42 2022 
+SiPM n. 0 :  V corretta:  56.323
+Mon Nov 21 23:22:42 2022 
+SiPM n. 1 :  V corretta:  55.923
+Mon Nov 21 23:22:42 2022 
+SiPM n. 2 :  V corretta:  56.323
+Mon Nov 21 23:22:42 2022 
+SiPM n. 3 :  V corretta:  55.623
+Mon Nov 21 23:22:42 2022 
+SiPM n. 4 :  V corretta:  55.900
+Mon Nov 21 23:22:42 2022 
+SiPM n. 5 :  V corretta:  55.850
+Mon Nov 21 23:22:42 2022 
+SiPM n. 6 :  V corretta:  55.600
+Mon Nov 21 23:22:42 2022 
+SiPM n. 7 :  V corretta:  56.350
+Mon Nov 21 23:22:42 2022 
+SiPM n. 8 :  V corretta:  56.673
+Mon Nov 21 23:22:42 2022 
+SiPM n. 9 :  V corretta:  56.623
+Mon Nov 21 23:22:42 2022 
+SiPM n. 10 :  V corretta:  56.650
+Mon Nov 21 23:22:42 2022 
+SiPM n. 11 :  V corretta:  57.050
+Mon Nov 21 23:22:42 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14194  14498  14194  14726  14515  14553  14743  14173  13928  13966  13945  13641  "  >> test.out' 
+Mon Nov 21 23:22:42 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 23:22:48 2022 
+
+Sensore temperatura n.:  0  T=  22.8
+Mon Nov 21 23:37:49 2022 
+
+Sensore temperatura n.:  1  T=  22.8
+Mon Nov 21 23:37:49 2022 
+
+Sensore temperatura n.:  2  T=  22.4
+Mon Nov 21 23:37:49 2022 
+
+Sensore temperatura n.:  3  T=  22.0
+Mon Nov 21 23:37:49 2022 
+      Mon 21-11-2022 @ 23:37:49
+
+T2:   22.4 , T3:   22.0 , T media alta:   22.2 , Delta V alta:  0.120 
+
+Mon Nov 21 23:37:49 2022 
+T0:   22.8 , T1:   22.8 , T media bassa:   22.8 , Delta V bassa:  0.148 
+
+Mon Nov 21 23:37:49 2022 
+Pressione:   993.0 hPa
+Mon Nov 21 23:37:49 2022 
+SiPM n. 0 :  V corretta:  56.320
+Mon Nov 21 23:37:49 2022 
+SiPM n. 1 :  V corretta:  55.920
+Mon Nov 21 23:37:49 2022 
+SiPM n. 2 :  V corretta:  56.320
+Mon Nov 21 23:37:49 2022 
+SiPM n. 3 :  V corretta:  55.620
+Mon Nov 21 23:37:49 2022 
+SiPM n. 4 :  V corretta:  55.898
+Mon Nov 21 23:37:49 2022 
+SiPM n. 5 :  V corretta:  55.849
+Mon Nov 21 23:37:49 2022 
+SiPM n. 6 :  V corretta:  55.599
+Mon Nov 21 23:37:49 2022 
+SiPM n. 7 :  V corretta:  56.349
+Mon Nov 21 23:37:49 2022 
+SiPM n. 8 :  V corretta:  56.670
+Mon Nov 21 23:37:49 2022 
+SiPM n. 9 :  V corretta:  56.620
+Mon Nov 21 23:37:49 2022 
+SiPM n. 10 :  V corretta:  56.648
+Mon Nov 21 23:37:49 2022 
+SiPM n. 11 :  V corretta:  57.048
+Mon Nov 21 23:37:49 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14196  14500  14196  14728  14517  14555  14745  14175  13930  13968  13947  13643  "  >> test.out' 
+Mon Nov 21 23:37:49 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 23:37:55 2022 
+
+Sensore temperatura n.:  0  T=  22.7
+Mon Nov 21 23:52:55 2022 
+
+Sensore temperatura n.:  1  T=  22.7
+Mon Nov 21 23:52:55 2022 
+
+Sensore temperatura n.:  2  T=  22.4
+Mon Nov 21 23:52:55 2022 
+
+Sensore temperatura n.:  3  T=  22.0
+Mon Nov 21 23:52:55 2022 
+      Mon 21-11-2022 @ 23:52:55
+
+T2:   22.4 , T3:   22.0 , T media alta:   22.2 , Delta V alta:  0.118 
+
+Mon Nov 21 23:52:55 2022 
+T0:   22.7 , T1:   22.7 , T media bassa:   22.7 , Delta V bassa:  0.145 
+
+Mon Nov 21 23:52:55 2022 
+Pressione:   992.8 hPa
+Mon Nov 21 23:52:55 2022 
+SiPM n. 0 :  V corretta:  56.318
+Mon Nov 21 23:52:55 2022 
+SiPM n. 1 :  V corretta:  55.918
+Mon Nov 21 23:52:55 2022 
+SiPM n. 2 :  V corretta:  56.318
+Mon Nov 21 23:52:55 2022 
+SiPM n. 3 :  V corretta:  55.618
+Mon Nov 21 23:52:55 2022 
+SiPM n. 4 :  V corretta:  55.895
+Mon Nov 21 23:52:55 2022 
+SiPM n. 5 :  V corretta:  55.845
+Mon Nov 21 23:52:55 2022 
+SiPM n. 6 :  V corretta:  55.595
+Mon Nov 21 23:52:55 2022 
+SiPM n. 7 :  V corretta:  56.345
+Mon Nov 21 23:52:55 2022 
+SiPM n. 8 :  V corretta:  56.668
+Mon Nov 21 23:52:55 2022 
+SiPM n. 9 :  V corretta:  56.618
+Mon Nov 21 23:52:55 2022 
+SiPM n. 10 :  V corretta:  56.645
+Mon Nov 21 23:52:55 2022 
+SiPM n. 11 :  V corretta:  57.045
+Mon Nov 21 23:52:55 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14198  14502  14198  14730  14519  14557  14747  14177  13932  13970  13949  13645  "  >> test.out' 
+Mon Nov 21 23:52:55 2022 
+ Ho Corretto le tensioni di bias
+Mon Nov 21 23:53:02 2022 
+
+Sensore temperatura n.:  0  T=  22.6
+Tue Nov 22 00:08:02 2022 
+
+Sensore temperatura n.:  1  T=  22.6
+Tue Nov 22 00:08:02 2022 
+
+Sensore temperatura n.:  2  T=  22.3
+Tue Nov 22 00:08:02 2022 
+
+Sensore temperatura n.:  3  T=  21.9
+Tue Nov 22 00:08:02 2022 
+      Tue 22-11-2022 @ 00:08:02
+
+T2:   22.3 , T3:   21.9 , T media alta:   22.1 , Delta V alta:  0.113 
+
+Tue Nov 22 00:08:02 2022 
+T0:   22.6 , T1:   22.6 , T media bassa:   22.6 , Delta V bassa:  0.142 
+
+Tue Nov 22 00:08:02 2022 
+Pressione:   992.4 hPa
+Tue Nov 22 00:08:02 2022 
+SiPM n. 0 :  V corretta:  56.313
+Tue Nov 22 00:08:02 2022 
+SiPM n. 1 :  V corretta:  55.913
+Tue Nov 22 00:08:02 2022 
+SiPM n. 2 :  V corretta:  56.313
+Tue Nov 22 00:08:02 2022 
+SiPM n. 3 :  V corretta:  55.613
+Tue Nov 22 00:08:02 2022 
+SiPM n. 4 :  V corretta:  55.892
+Tue Nov 22 00:08:02 2022 
+SiPM n. 5 :  V corretta:  55.842
+Tue Nov 22 00:08:02 2022 
+SiPM n. 6 :  V corretta:  55.592
+Tue Nov 22 00:08:02 2022 
+SiPM n. 7 :  V corretta:  56.342
+Tue Nov 22 00:08:02 2022 
+SiPM n. 8 :  V corretta:  56.663
+Tue Nov 22 00:08:02 2022 
+SiPM n. 9 :  V corretta:  56.613
+Tue Nov 22 00:08:02 2022 
+SiPM n. 10 :  V corretta:  56.642
+Tue Nov 22 00:08:02 2022 
+SiPM n. 11 :  V corretta:  57.042
+Tue Nov 22 00:08:02 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14202  14506  14202  14734  14522  14560  14750  14180  13936  13974  13952  13648  "  >> test.out' 
+Tue Nov 22 00:08:02 2022 
+ Ho Corretto le tensioni di bias
+Tue Nov 22 00:08:09 2022 
+
+Sensore temperatura n.:  0  T=  22.6
+Tue Nov 22 00:23:09 2022 
+
+Sensore temperatura n.:  1  T=  22.6
+Tue Nov 22 00:23:09 2022 
+
+Sensore temperatura n.:  2  T=  22.2
+Tue Nov 22 00:23:09 2022 
+
+Sensore temperatura n.:  3  T=  21.9
+Tue Nov 22 00:23:09 2022 
+      Tue 22-11-2022 @ 00:23:09
+
+T2:   22.2 , T3:   21.9 , T media alta:   22.1 , Delta V alta:  0.111 
+
+Tue Nov 22 00:23:09 2022 
+T0:   22.6 , T1:   22.6 , T media bassa:   22.6 , Delta V bassa:  0.140 
+
+Tue Nov 22 00:23:09 2022 
+Pressione:   991.9 hPa
+Tue Nov 22 00:23:09 2022 
+SiPM n. 0 :  V corretta:  56.311
+Tue Nov 22 00:23:09 2022 
+SiPM n. 1 :  V corretta:  55.911
+Tue Nov 22 00:23:09 2022 
+SiPM n. 2 :  V corretta:  56.311
+Tue Nov 22 00:23:09 2022 
+SiPM n. 3 :  V corretta:  55.611
+Tue Nov 22 00:23:09 2022 
+SiPM n. 4 :  V corretta:  55.890
+Tue Nov 22 00:23:09 2022 
+SiPM n. 5 :  V corretta:  55.840
+Tue Nov 22 00:23:09 2022 
+SiPM n. 6 :  V corretta:  55.590
+Tue Nov 22 00:23:09 2022 
+SiPM n. 7 :  V corretta:  56.340
+Tue Nov 22 00:23:09 2022 
+SiPM n. 8 :  V corretta:  56.661
+Tue Nov 22 00:23:09 2022 
+SiPM n. 9 :  V corretta:  56.611
+Tue Nov 22 00:23:09 2022 
+SiPM n. 10 :  V corretta:  56.640
+Tue Nov 22 00:23:09 2022 
+SiPM n. 11 :  V corretta:  57.040
+Tue Nov 22 00:23:09 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14203  14507  14203  14735  14523  14561  14751  14181  13937  13975  13953  13649  "  >> test.out' 
+Tue Nov 22 00:23:09 2022 
+ Ho Corretto le tensioni di bias
+Tue Nov 22 00:23:16 2022 
+
+Sensore temperatura n.:  0  T=  22.5
+Tue Nov 22 00:38:16 2022 
+
+Sensore temperatura n.:  1  T=  22.5
+Tue Nov 22 00:38:16 2022 
+
+Sensore temperatura n.:  2  T=  22.2
+Tue Nov 22 00:38:16 2022 
+
+Sensore temperatura n.:  3  T=  21.8
+Tue Nov 22 00:38:16 2022 
+      Tue 22-11-2022 @ 00:38:16
+
+T2:   22.2 , T3:   21.8 , T media alta:   22.0 , Delta V alta:  0.110 
+
+Tue Nov 22 00:38:16 2022 
+T0:   22.5 , T1:   22.5 , T media bassa:   22.5 , Delta V bassa:  0.135 
+
+Tue Nov 22 00:38:16 2022 
+Pressione:   991.6 hPa
+Tue Nov 22 00:38:16 2022 
+SiPM n. 0 :  V corretta:  56.310
+Tue Nov 22 00:38:16 2022 
+SiPM n. 1 :  V corretta:  55.910
+Tue Nov 22 00:38:16 2022 
+SiPM n. 2 :  V corretta:  56.310
+Tue Nov 22 00:38:16 2022 
+SiPM n. 3 :  V corretta:  55.610
+Tue Nov 22 00:38:16 2022 
+SiPM n. 4 :  V corretta:  55.885
+Tue Nov 22 00:38:16 2022 
+SiPM n. 5 :  V corretta:  55.835
+Tue Nov 22 00:38:16 2022 
+SiPM n. 6 :  V corretta:  55.585
+Tue Nov 22 00:38:16 2022 
+SiPM n. 7 :  V corretta:  56.335
+Tue Nov 22 00:38:16 2022 
+SiPM n. 8 :  V corretta:  56.660
+Tue Nov 22 00:38:16 2022 
+SiPM n. 9 :  V corretta:  56.610
+Tue Nov 22 00:38:16 2022 
+SiPM n. 10 :  V corretta:  56.635
+Tue Nov 22 00:38:16 2022 
+SiPM n. 11 :  V corretta:  57.035
+Tue Nov 22 00:38:16 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14204  14508  14204  14736  14527  14565  14755  14185  13938  13976  13957  13653  "  >> test.out' 
+Tue Nov 22 00:38:16 2022 
+ Ho Corretto le tensioni di bias
+Tue Nov 22 00:38:23 2022 
+
+Sensore temperatura n.:  0  T=  22.4
+Tue Nov 22 00:53:23 2022 
+
+Sensore temperatura n.:  1  T=  22.5
+Tue Nov 22 00:53:23 2022 
+
+Sensore temperatura n.:  2  T=  22.2
+Tue Nov 22 00:53:23 2022 
+
+Sensore temperatura n.:  3  T=  21.8
+Tue Nov 22 00:53:23 2022 
+      Tue 22-11-2022 @ 00:53:23
+
+T2:   22.2 , T3:   21.8 , T media alta:   22.0 , Delta V alta:  0.106 
+
+Tue Nov 22 00:53:23 2022 
+T0:   22.4 , T1:   22.5 , T media bassa:   22.5 , Delta V bassa:  0.133 
+
+Tue Nov 22 00:53:23 2022 
+Pressione:   990.9 hPa
+Tue Nov 22 00:53:23 2022 
+SiPM n. 0 :  V corretta:  56.306
+Tue Nov 22 00:53:23 2022 
+SiPM n. 1 :  V corretta:  55.906
+Tue Nov 22 00:53:23 2022 
+SiPM n. 2 :  V corretta:  56.306
+Tue Nov 22 00:53:23 2022 
+SiPM n. 3 :  V corretta:  55.606
+Tue Nov 22 00:53:23 2022 
+SiPM n. 4 :  V corretta:  55.883
+Tue Nov 22 00:53:23 2022 
+SiPM n. 5 :  V corretta:  55.833
+Tue Nov 22 00:53:23 2022 
+SiPM n. 6 :  V corretta:  55.583
+Tue Nov 22 00:53:23 2022 
+SiPM n. 7 :  V corretta:  56.333
+Tue Nov 22 00:53:23 2022 
+SiPM n. 8 :  V corretta:  56.656
+Tue Nov 22 00:53:23 2022 
+SiPM n. 9 :  V corretta:  56.606
+Tue Nov 22 00:53:23 2022 
+SiPM n. 10 :  V corretta:  56.633
+Tue Nov 22 00:53:23 2022 
+SiPM n. 11 :  V corretta:  57.033
+Tue Nov 22 00:53:23 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14207  14511  14207  14739  14528  14566  14756  14186  13941  13979  13958  13654  "  >> test.out' 
+Tue Nov 22 00:53:23 2022 
+ Ho Corretto le tensioni di bias
+Tue Nov 22 00:53:30 2022 
+
+Sensore temperatura n.:  0  T=  22.4
+Tue Nov 22 01:08:30 2022 
+
+Sensore temperatura n.:  1  T=  22.4
+Tue Nov 22 01:08:30 2022 
+
+Sensore temperatura n.:  2  T=  22.1
+Tue Nov 22 01:08:30 2022 
+
+Sensore temperatura n.:  3  T=  21.7
+Tue Nov 22 01:08:30 2022 
+      Tue 22-11-2022 @ 01:08:30
+
+T2:   22.1 , T3:   21.7 , T media alta:   21.9 , Delta V alta:  0.103 
+
+Tue Nov 22 01:08:30 2022 
+T0:   22.4 , T1:   22.4 , T media bassa:   22.4 , Delta V bassa:  0.130 
+
+Tue Nov 22 01:08:30 2022 
+Pressione:   990.4 hPa
+Tue Nov 22 01:08:30 2022 
+SiPM n. 0 :  V corretta:  56.303
+Tue Nov 22 01:08:30 2022 
+SiPM n. 1 :  V corretta:  55.903
+Tue Nov 22 01:08:30 2022 
+SiPM n. 2 :  V corretta:  56.303
+Tue Nov 22 01:08:30 2022 
+SiPM n. 3 :  V corretta:  55.603
+Tue Nov 22 01:08:30 2022 
+SiPM n. 4 :  V corretta:  55.880
+Tue Nov 22 01:08:30 2022 
+SiPM n. 5 :  V corretta:  55.830
+Tue Nov 22 01:08:30 2022 
+SiPM n. 6 :  V corretta:  55.580
+Tue Nov 22 01:08:30 2022 
+SiPM n. 7 :  V corretta:  56.330
+Tue Nov 22 01:08:30 2022 
+SiPM n. 8 :  V corretta:  56.653
+Tue Nov 22 01:08:30 2022 
+SiPM n. 9 :  V corretta:  56.603
+Tue Nov 22 01:08:30 2022 
+SiPM n. 10 :  V corretta:  56.630
+Tue Nov 22 01:08:30 2022 
+SiPM n. 11 :  V corretta:  57.030
+Tue Nov 22 01:08:30 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14209  14513  14209  14741  14531  14569  14759  14189  13943  13981  13961  13657  "  >> test.out' 
+Tue Nov 22 01:08:30 2022 
+ Ho Corretto le tensioni di bias
+Tue Nov 22 01:08:36 2022 
+
+Sensore temperatura n.:  0  T=  22.4
+Tue Nov 22 01:23:37 2022 
+
+Sensore temperatura n.:  1  T=  22.4
+Tue Nov 22 01:23:37 2022 
+
+Sensore temperatura n.:  2  T=  22.0
+Tue Nov 22 01:23:37 2022 
+
+Sensore temperatura n.:  3  T=  21.6
+Tue Nov 22 01:23:37 2022 
+      Tue 22-11-2022 @ 01:23:37
+
+T2:   22.0 , T3:   21.6 , T media alta:   21.8 , Delta V alta:  0.098 
+
+Tue Nov 22 01:23:37 2022 
+T0:   22.4 , T1:   22.4 , T media bassa:   22.4 , Delta V bassa:  0.128 
+
+Tue Nov 22 01:23:37 2022 
+Pressione:   990.0 hPa
+Tue Nov 22 01:23:37 2022 
+SiPM n. 0 :  V corretta:  56.298
+Tue Nov 22 01:23:37 2022 
+SiPM n. 1 :  V corretta:  55.898
+Tue Nov 22 01:23:37 2022 
+SiPM n. 2 :  V corretta:  56.298
+Tue Nov 22 01:23:37 2022 
+SiPM n. 3 :  V corretta:  55.598
+Tue Nov 22 01:23:37 2022 
+SiPM n. 4 :  V corretta:  55.878
+Tue Nov 22 01:23:37 2022 
+SiPM n. 5 :  V corretta:  55.828
+Tue Nov 22 01:23:37 2022 
+SiPM n. 6 :  V corretta:  55.578
+Tue Nov 22 01:23:37 2022 
+SiPM n. 7 :  V corretta:  56.328
+Tue Nov 22 01:23:37 2022 
+SiPM n. 8 :  V corretta:  56.648
+Tue Nov 22 01:23:37 2022 
+SiPM n. 9 :  V corretta:  56.598
+Tue Nov 22 01:23:37 2022 
+SiPM n. 10 :  V corretta:  56.628
+Tue Nov 22 01:23:37 2022 
+SiPM n. 11 :  V corretta:  57.028
+Tue Nov 22 01:23:37 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14213  14517  14213  14745  14532  14570  14760  14190  13947  13985  13962  13658  "  >> test.out' 
+Tue Nov 22 01:23:37 2022 
+ Ho Corretto le tensioni di bias
+Tue Nov 22 01:23:43 2022 
+
+Sensore temperatura n.:  0  T=  22.3
+Tue Nov 22 01:38:44 2022 
+
+Sensore temperatura n.:  1  T=  22.2
+Tue Nov 22 01:38:44 2022 
+
+Sensore temperatura n.:  2  T=  22.1
+Tue Nov 22 01:38:44 2022 
+
+Sensore temperatura n.:  3  T=  21.6
+Tue Nov 22 01:38:44 2022 
+      Tue 22-11-2022 @ 01:38:44
+
+T2:   22.1 , T3:   21.6 , T media alta:   21.8 , Delta V alta:  0.098 
+
+Tue Nov 22 01:38:44 2022 
+T0:   22.3 , T1:   22.2 , T media bassa:   22.3 , Delta V bassa:  0.123 
+
+Tue Nov 22 01:38:44 2022 
+Pressione:   989.5 hPa
+Tue Nov 22 01:38:44 2022 
+SiPM n. 0 :  V corretta:  56.298
+Tue Nov 22 01:38:44 2022 
+SiPM n. 1 :  V corretta:  55.898
+Tue Nov 22 01:38:44 2022 
+SiPM n. 2 :  V corretta:  56.298
+Tue Nov 22 01:38:44 2022 
+SiPM n. 3 :  V corretta:  55.598
+Tue Nov 22 01:38:44 2022 
+SiPM n. 4 :  V corretta:  55.873
+Tue Nov 22 01:38:44 2022 
+SiPM n. 5 :  V corretta:  55.823
+Tue Nov 22 01:38:44 2022 
+SiPM n. 6 :  V corretta:  55.573
+Tue Nov 22 01:38:44 2022 
+SiPM n. 7 :  V corretta:  56.323
+Tue Nov 22 01:38:44 2022 
+SiPM n. 8 :  V corretta:  56.648
+Tue Nov 22 01:38:44 2022 
+SiPM n. 9 :  V corretta:  56.598
+Tue Nov 22 01:38:44 2022 
+SiPM n. 10 :  V corretta:  56.623
+Tue Nov 22 01:38:44 2022 
+SiPM n. 11 :  V corretta:  57.023
+Tue Nov 22 01:38:44 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14213  14517  14213  14745  14536  14574  14764  14194  13947  13985  13966  13662  "  >> test.out' 
+Tue Nov 22 01:38:44 2022 
+ Ho Corretto le tensioni di bias
+Tue Nov 22 01:38:50 2022 
+
+Sensore temperatura n.:  0  T=  22.3
+Tue Nov 22 01:53:51 2022 
+
+Sensore temperatura n.:  1  T=  22.2
+Tue Nov 22 01:53:51 2022 
+
+Sensore temperatura n.:  2  T=  21.9
+Tue Nov 22 01:53:51 2022 
+
+Sensore temperatura n.:  3  T=  21.5
+Tue Nov 22 01:53:51 2022 
+      Tue 22-11-2022 @ 01:53:51
+
+T2:   21.9 , T3:   21.5 , T media alta:   21.7 , Delta V alta:  0.093 
+
+Tue Nov 22 01:53:51 2022 
+T0:   22.3 , T1:   22.2 , T media bassa:   22.2 , Delta V bassa:  0.121 
+
+Tue Nov 22 01:53:51 2022 
+Pressione:   989.5 hPa
+Tue Nov 22 01:53:51 2022 
+SiPM n. 0 :  V corretta:  56.293
+Tue Nov 22 01:53:51 2022 
+SiPM n. 1 :  V corretta:  55.893
+Tue Nov 22 01:53:51 2022 
+SiPM n. 2 :  V corretta:  56.293
+Tue Nov 22 01:53:51 2022 
+SiPM n. 3 :  V corretta:  55.593
+Tue Nov 22 01:53:51 2022 
+SiPM n. 4 :  V corretta:  55.871
+Tue Nov 22 01:53:51 2022 
+SiPM n. 5 :  V corretta:  55.822
+Tue Nov 22 01:53:51 2022 
+SiPM n. 6 :  V corretta:  55.572
+Tue Nov 22 01:53:51 2022 
+SiPM n. 7 :  V corretta:  56.322
+Tue Nov 22 01:53:51 2022 
+SiPM n. 8 :  V corretta:  56.643
+Tue Nov 22 01:53:51 2022 
+SiPM n. 9 :  V corretta:  56.593
+Tue Nov 22 01:53:51 2022 
+SiPM n. 10 :  V corretta:  56.621
+Tue Nov 22 01:53:51 2022 
+SiPM n. 11 :  V corretta:  57.022
+Tue Nov 22 01:53:51 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14217  14521  14217  14749  14537  14575  14765  14195  13951  13989  13967  13663  "  >> test.out' 
+Tue Nov 22 01:53:51 2022 
+ Ho Corretto le tensioni di bias
+Tue Nov 22 01:53:57 2022 
+
+Sensore temperatura n.:  0  T=  22.2
+Tue Nov 22 02:08:58 2022 
+
+Sensore temperatura n.:  1  T=  22.2
+Tue Nov 22 02:08:58 2022 
+
+Sensore temperatura n.:  2  T=  21.9
+Tue Nov 22 02:08:58 2022 
+
+Sensore temperatura n.:  3  T=  21.4
+Tue Nov 22 02:08:58 2022 
+      Tue 22-11-2022 @ 02:08:58
+
+T2:   21.9 , T3:   21.4 , T media alta:   21.7 , Delta V alta:  0.089 
+
+Tue Nov 22 02:08:58 2022 
+T0:   22.2 , T1:   22.2 , T media bassa:   22.2 , Delta V bassa:  0.118 
+
+Tue Nov 22 02:08:58 2022 
+Pressione:   989.0 hPa
+Tue Nov 22 02:08:58 2022 
+SiPM n. 0 :  V corretta:  56.289
+Tue Nov 22 02:08:58 2022 
+SiPM n. 1 :  V corretta:  55.889
+Tue Nov 22 02:08:58 2022 
+SiPM n. 2 :  V corretta:  56.289
+Tue Nov 22 02:08:58 2022 
+SiPM n. 3 :  V corretta:  55.589
+Tue Nov 22 02:08:58 2022 
+SiPM n. 4 :  V corretta:  55.868
+Tue Nov 22 02:08:58 2022 
+SiPM n. 5 :  V corretta:  55.818
+Tue Nov 22 02:08:58 2022 
+SiPM n. 6 :  V corretta:  55.568
+Tue Nov 22 02:08:58 2022 
+SiPM n. 7 :  V corretta:  56.318
+Tue Nov 22 02:08:58 2022 
+SiPM n. 8 :  V corretta:  56.639
+Tue Nov 22 02:08:58 2022 
+SiPM n. 9 :  V corretta:  56.589
+Tue Nov 22 02:08:58 2022 
+SiPM n. 10 :  V corretta:  56.618
+Tue Nov 22 02:08:58 2022 
+SiPM n. 11 :  V corretta:  57.018
+Tue Nov 22 02:08:58 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14220  14524  14220  14752  14540  14578  14768  14198  13954  13992  13970  13666  "  >> test.out' 
+Tue Nov 22 02:08:58 2022 
+ Ho Corretto le tensioni di bias
+Tue Nov 22 02:09:04 2022 
+
+Sensore temperatura n.:  0  T=  22.1
+Tue Nov 22 02:24:05 2022 
+
+Sensore temperatura n.:  1  T=  22.1
+Tue Nov 22 02:24:05 2022 
+
+Sensore temperatura n.:  2  T=  21.9
+Tue Nov 22 02:24:05 2022 
+
+Sensore temperatura n.:  3  T=  21.4
+Tue Nov 22 02:24:05 2022 
+      Tue 22-11-2022 @ 02:24:05
+
+T2:   21.9 , T3:   21.4 , T media alta:   21.6 , Delta V alta:  0.088 
+
+Tue Nov 22 02:24:05 2022 
+T0:   22.1 , T1:   22.1 , T media bassa:   22.1 , Delta V bassa:  0.115 
+
+Tue Nov 22 02:24:05 2022 
+Pressione:   988.9 hPa
+Tue Nov 22 02:24:05 2022 
+SiPM n. 0 :  V corretta:  56.288
+Tue Nov 22 02:24:05 2022 
+SiPM n. 1 :  V corretta:  55.888
+Tue Nov 22 02:24:05 2022 
+SiPM n. 2 :  V corretta:  56.288
+Tue Nov 22 02:24:05 2022 
+SiPM n. 3 :  V corretta:  55.588
+Tue Nov 22 02:24:05 2022 
+SiPM n. 4 :  V corretta:  55.865
+Tue Nov 22 02:24:05 2022 
+SiPM n. 5 :  V corretta:  55.815
+Tue Nov 22 02:24:05 2022 
+SiPM n. 6 :  V corretta:  55.565
+Tue Nov 22 02:24:05 2022 
+SiPM n. 7 :  V corretta:  56.315
+Tue Nov 22 02:24:05 2022 
+SiPM n. 8 :  V corretta:  56.638
+Tue Nov 22 02:24:05 2022 
+SiPM n. 9 :  V corretta:  56.588
+Tue Nov 22 02:24:05 2022 
+SiPM n. 10 :  V corretta:  56.615
+Tue Nov 22 02:24:05 2022 
+SiPM n. 11 :  V corretta:  57.015
+Tue Nov 22 02:24:05 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14221  14525  14221  14753  14542  14580  14770  14200  13955  13993  13972  13668  "  >> test.out' 
+Tue Nov 22 02:24:05 2022 
+ Ho Corretto le tensioni di bias
+Tue Nov 22 02:24:11 2022 
+
+Sensore temperatura n.:  0  T=  22.1
+Tue Nov 22 02:39:11 2022 
+
+Sensore temperatura n.:  1  T=  22.1
+Tue Nov 22 02:39:11 2022 
+
+Sensore temperatura n.:  2  T=  21.8
+Tue Nov 22 02:39:11 2022 
+
+Sensore temperatura n.:  3  T=  21.3
+Tue Nov 22 02:39:11 2022 
+      Tue 22-11-2022 @ 02:39:11
+
+T2:   21.8 , T3:   21.3 , T media alta:   21.5 , Delta V alta:  0.083 
+
+Tue Nov 22 02:39:11 2022 
+T0:   22.1 , T1:   22.1 , T media bassa:   22.1 , Delta V bassa:  0.113 
+
+Tue Nov 22 02:39:11 2022 
+Pressione:   988.7 hPa
+Tue Nov 22 02:39:11 2022 
+SiPM n. 0 :  V corretta:  56.283
+Tue Nov 22 02:39:11 2022 
+SiPM n. 1 :  V corretta:  55.883
+Tue Nov 22 02:39:11 2022 
+SiPM n. 2 :  V corretta:  56.283
+Tue Nov 22 02:39:11 2022 
+SiPM n. 3 :  V corretta:  55.583
+Tue Nov 22 02:39:11 2022 
+SiPM n. 4 :  V corretta:  55.863
+Tue Nov 22 02:39:11 2022 
+SiPM n. 5 :  V corretta:  55.813
+Tue Nov 22 02:39:11 2022 
+SiPM n. 6 :  V corretta:  55.563
+Tue Nov 22 02:39:11 2022 
+SiPM n. 7 :  V corretta:  56.313
+Tue Nov 22 02:39:11 2022 
+SiPM n. 8 :  V corretta:  56.633
+Tue Nov 22 02:39:11 2022 
+SiPM n. 9 :  V corretta:  56.583
+Tue Nov 22 02:39:11 2022 
+SiPM n. 10 :  V corretta:  56.613
+Tue Nov 22 02:39:11 2022 
+SiPM n. 11 :  V corretta:  57.013
+Tue Nov 22 02:39:11 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14225  14529  14225  14757  14544  14582  14772  14202  13959  13997  13974  13670  "  >> test.out' 
+Tue Nov 22 02:39:11 2022 
+ Ho Corretto le tensioni di bias
+Tue Nov 22 02:39:18 2022 
+
+Sensore temperatura n.:  0  T=  22.1
+Tue Nov 22 02:54:18 2022 
+
+Sensore temperatura n.:  1  T=  22.0
+Tue Nov 22 02:54:18 2022 
+
+Sensore temperatura n.:  2  T=  21.7
+Tue Nov 22 02:54:18 2022 
+
+Sensore temperatura n.:  3  T=  21.2
+Tue Nov 22 02:54:18 2022 
+      Tue 22-11-2022 @ 02:54:18
+
+T2:   21.7 , T3:   21.3 , T media alta:   21.5 , Delta V alta:  0.081 
+
+Tue Nov 22 02:54:18 2022 
+T0:   22.1 , T1:   22.0 , T media bassa:   22.0 , Delta V bassa:  0.110 
+
+Tue Nov 22 02:54:18 2022 
+Pressione:   988.5 hPa
+Tue Nov 22 02:54:18 2022 
+SiPM n. 0 :  V corretta:  56.281
+Tue Nov 22 02:54:18 2022 
+SiPM n. 1 :  V corretta:  55.881
+Tue Nov 22 02:54:18 2022 
+SiPM n. 2 :  V corretta:  56.281
+Tue Nov 22 02:54:18 2022 
+SiPM n. 3 :  V corretta:  55.581
+Tue Nov 22 02:54:18 2022 
+SiPM n. 4 :  V corretta:  55.860
+Tue Nov 22 02:54:18 2022 
+SiPM n. 5 :  V corretta:  55.810
+Tue Nov 22 02:54:18 2022 
+SiPM n. 6 :  V corretta:  55.560
+Tue Nov 22 02:54:18 2022 
+SiPM n. 7 :  V corretta:  56.310
+Tue Nov 22 02:54:18 2022 
+SiPM n. 8 :  V corretta:  56.631
+Tue Nov 22 02:54:18 2022 
+SiPM n. 9 :  V corretta:  56.581
+Tue Nov 22 02:54:18 2022 
+SiPM n. 10 :  V corretta:  56.610
+Tue Nov 22 02:54:18 2022 
+SiPM n. 11 :  V corretta:  57.010
+Tue Nov 22 02:54:18 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14226  14530  14226  14758  14546  14584  14774  14204  13960  13998  13976  13672  "  >> test.out' 
+Tue Nov 22 02:54:18 2022 
+ Ho Corretto le tensioni di bias
+Tue Nov 22 02:54:25 2022 
+
+Sensore temperatura n.:  0  T=  22.0
+Tue Nov 22 03:09:25 2022 
+
+Sensore temperatura n.:  1  T=  22.0
+Tue Nov 22 03:09:25 2022 
+
+Sensore temperatura n.:  2  T=  21.7
+Tue Nov 22 03:09:25 2022 
+
+Sensore temperatura n.:  3  T=  21.2
+Tue Nov 22 03:09:25 2022 
+      Tue 22-11-2022 @ 03:09:25
+
+T2:   21.7 , T3:   21.2 , T media alta:   21.5 , Delta V alta:  0.079 
+
+Tue Nov 22 03:09:25 2022 
+T0:   22.0 , T1:   22.0 , T media bassa:   22.0 , Delta V bassa:  0.108 
+
+Tue Nov 22 03:09:25 2022 
+Pressione:   988.3 hPa
+Tue Nov 22 03:09:25 2022 
+SiPM n. 0 :  V corretta:  56.279
+Tue Nov 22 03:09:25 2022 
+SiPM n. 1 :  V corretta:  55.879
+Tue Nov 22 03:09:25 2022 
+SiPM n. 2 :  V corretta:  56.279
+Tue Nov 22 03:09:25 2022 
+SiPM n. 3 :  V corretta:  55.579
+Tue Nov 22 03:09:25 2022 
+SiPM n. 4 :  V corretta:  55.858
+Tue Nov 22 03:09:25 2022 
+SiPM n. 5 :  V corretta:  55.808
+Tue Nov 22 03:09:25 2022 
+SiPM n. 6 :  V corretta:  55.558
+Tue Nov 22 03:09:25 2022 
+SiPM n. 7 :  V corretta:  56.308
+Tue Nov 22 03:09:25 2022 
+SiPM n. 8 :  V corretta:  56.629
+Tue Nov 22 03:09:25 2022 
+SiPM n. 9 :  V corretta:  56.579
+Tue Nov 22 03:09:25 2022 
+SiPM n. 10 :  V corretta:  56.608
+Tue Nov 22 03:09:25 2022 
+SiPM n. 11 :  V corretta:  57.008
+Tue Nov 22 03:09:25 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14227  14531  14227  14759  14547  14585  14775  14205  13961  13999  13977  13673  "  >> test.out' 
+Tue Nov 22 03:09:25 2022 
+ Ho Corretto le tensioni di bias
+Tue Nov 22 03:09:32 2022 
+
+Sensore temperatura n.:  0  T=  21.9
+Tue Nov 22 03:24:32 2022 
+
+Sensore temperatura n.:  1  T=  21.9
+Tue Nov 22 03:24:32 2022 
+
+Sensore temperatura n.:  2  T=  21.6
+Tue Nov 22 03:24:32 2022 
+
+Sensore temperatura n.:  3  T=  21.2
+Tue Nov 22 03:24:32 2022 
+      Tue 22-11-2022 @ 03:24:32
+
+T2:   21.6 , T3:   21.2 , T media alta:   21.4 , Delta V alta:  0.078 
+
+Tue Nov 22 03:24:32 2022 
+T0:   21.9 , T1:   21.9 , T media bassa:   21.9 , Delta V bassa:  0.105 
+
+Tue Nov 22 03:24:32 2022 
+Pressione:   987.9 hPa
+Tue Nov 22 03:24:32 2022 
+SiPM n. 0 :  V corretta:  56.278
+Tue Nov 22 03:24:32 2022 
+SiPM n. 1 :  V corretta:  55.878
+Tue Nov 22 03:24:32 2022 
+SiPM n. 2 :  V corretta:  56.278
+Tue Nov 22 03:24:32 2022 
+SiPM n. 3 :  V corretta:  55.578
+Tue Nov 22 03:24:32 2022 
+SiPM n. 4 :  V corretta:  55.855
+Tue Nov 22 03:24:32 2022 
+SiPM n. 5 :  V corretta:  55.805
+Tue Nov 22 03:24:32 2022 
+SiPM n. 6 :  V corretta:  55.555
+Tue Nov 22 03:24:32 2022 
+SiPM n. 7 :  V corretta:  56.305
+Tue Nov 22 03:24:32 2022 
+SiPM n. 8 :  V corretta:  56.628
+Tue Nov 22 03:24:32 2022 
+SiPM n. 9 :  V corretta:  56.578
+Tue Nov 22 03:24:32 2022 
+SiPM n. 10 :  V corretta:  56.605
+Tue Nov 22 03:24:32 2022 
+SiPM n. 11 :  V corretta:  57.005
+Tue Nov 22 03:24:32 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14229  14533  14229  14761  14550  14588  14778  14208  13963  14001  13980  13676  "  >> test.out' 
+Tue Nov 22 03:24:32 2022 
+ Ho Corretto le tensioni di bias
+Tue Nov 22 03:24:39 2022 
+
+Sensore temperatura n.:  0  T=  21.9
+Tue Nov 22 03:39:39 2022 
+
+Sensore temperatura n.:  1  T=  21.8
+Tue Nov 22 03:39:39 2022 
+
+Sensore temperatura n.:  2  T=  21.6
+Tue Nov 22 03:39:39 2022 
+
+Sensore temperatura n.:  3  T=  21.1
+Tue Nov 22 03:39:39 2022 
+      Tue 22-11-2022 @ 03:39:39
+
+T2:   21.6 , T3:   21.1 , T media alta:   21.3 , Delta V alta:  0.073 
+
+Tue Nov 22 03:39:39 2022 
+T0:   21.9 , T1:   21.8 , T media bassa:   21.8 , Delta V bassa:  0.100 
+
+Tue Nov 22 03:39:39 2022 
+Pressione:   987.3 hPa
+Tue Nov 22 03:39:39 2022 
+SiPM n. 0 :  V corretta:  56.273
+Tue Nov 22 03:39:39 2022 
+SiPM n. 1 :  V corretta:  55.873
+Tue Nov 22 03:39:39 2022 
+SiPM n. 2 :  V corretta:  56.273
+Tue Nov 22 03:39:39 2022 
+SiPM n. 3 :  V corretta:  55.573
+Tue Nov 22 03:39:39 2022 
+SiPM n. 4 :  V corretta:  55.850
+Tue Nov 22 03:39:39 2022 
+SiPM n. 5 :  V corretta:  55.800
+Tue Nov 22 03:39:39 2022 
+SiPM n. 6 :  V corretta:  55.550
+Tue Nov 22 03:39:39 2022 
+SiPM n. 7 :  V corretta:  56.300
+Tue Nov 22 03:39:39 2022 
+SiPM n. 8 :  V corretta:  56.623
+Tue Nov 22 03:39:39 2022 
+SiPM n. 9 :  V corretta:  56.573
+Tue Nov 22 03:39:39 2022 
+SiPM n. 10 :  V corretta:  56.600
+Tue Nov 22 03:39:39 2022 
+SiPM n. 11 :  V corretta:  57.000
+Tue Nov 22 03:39:39 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14232  14536  14232  14764  14554  14592  14782  14212  13966  14004  13984  13680  "  >> test.out' 
+Tue Nov 22 03:39:39 2022 
+ Ho Corretto le tensioni di bias
+Tue Nov 22 03:39:46 2022 
+
+Sensore temperatura n.:  0  T=  21.9
+Tue Nov 22 03:54:46 2022 
+
+Sensore temperatura n.:  1  T=  21.8
+Tue Nov 22 03:54:46 2022 
+
+Sensore temperatura n.:  2  T=  21.5
+Tue Nov 22 03:54:46 2022 
+
+Sensore temperatura n.:  3  T=  21.1
+Tue Nov 22 03:54:46 2022 
+      Tue 22-11-2022 @ 03:54:46
+
+T2:   21.5 , T3:   21.1 , T media alta:   21.3 , Delta V alta:  0.069 
+
+Tue Nov 22 03:54:46 2022 
+T0:   21.9 , T1:   21.8 , T media bassa:   21.8 , Delta V bassa:  0.100 
+
+Tue Nov 22 03:54:46 2022 
+Pressione:   987.3 hPa
+Tue Nov 22 03:54:46 2022 
+SiPM n. 0 :  V corretta:  56.269
+Tue Nov 22 03:54:46 2022 
+SiPM n. 1 :  V corretta:  55.869
+Tue Nov 22 03:54:46 2022 
+SiPM n. 2 :  V corretta:  56.269
+Tue Nov 22 03:54:46 2022 
+SiPM n. 3 :  V corretta:  55.569
+Tue Nov 22 03:54:46 2022 
+SiPM n. 4 :  V corretta:  55.850
+Tue Nov 22 03:54:46 2022 
+SiPM n. 5 :  V corretta:  55.800
+Tue Nov 22 03:54:46 2022 
+SiPM n. 6 :  V corretta:  55.550
+Tue Nov 22 03:54:46 2022 
+SiPM n. 7 :  V corretta:  56.300
+Tue Nov 22 03:54:46 2022 
+SiPM n. 8 :  V corretta:  56.619
+Tue Nov 22 03:54:46 2022 
+SiPM n. 9 :  V corretta:  56.569
+Tue Nov 22 03:54:46 2022 
+SiPM n. 10 :  V corretta:  56.600
+Tue Nov 22 03:54:46 2022 
+SiPM n. 11 :  V corretta:  57.000
+Tue Nov 22 03:54:46 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14235  14539  14235  14767  14554  14592  14782  14212  13969  14007  13984  13680  "  >> test.out' 
+Tue Nov 22 03:54:46 2022 
+ Ho Corretto le tensioni di bias
+Tue Nov 22 03:54:52 2022 
+
+Sensore temperatura n.:  0  T=  21.8
+Tue Nov 22 04:09:53 2022 
+
+Sensore temperatura n.:  1  T=  21.8
+Tue Nov 22 04:09:53 2022 
+
+Sensore temperatura n.:  2  T=  21.5
+Tue Nov 22 04:09:53 2022 
+
+Sensore temperatura n.:  3  T=  21.1
+Tue Nov 22 04:09:53 2022 
+      Tue 22-11-2022 @ 04:09:53
+
+T2:   21.5 , T3:   21.1 , T media alta:   21.3 , Delta V alta:  0.069 
+
+Tue Nov 22 04:09:53 2022 
+T0:   21.8 , T1:   21.8 , T media bassa:   21.8 , Delta V bassa:  0.096 
+
+Tue Nov 22 04:09:53 2022 
+Pressione:   987.2 hPa
+Tue Nov 22 04:09:53 2022 
+SiPM n. 0 :  V corretta:  56.269
+Tue Nov 22 04:09:53 2022 
+SiPM n. 1 :  V corretta:  55.869
+Tue Nov 22 04:09:53 2022 
+SiPM n. 2 :  V corretta:  56.269
+Tue Nov 22 04:09:53 2022 
+SiPM n. 3 :  V corretta:  55.569
+Tue Nov 22 04:09:53 2022 
+SiPM n. 4 :  V corretta:  55.846
+Tue Nov 22 04:09:53 2022 
+SiPM n. 5 :  V corretta:  55.796
+Tue Nov 22 04:09:53 2022 
+SiPM n. 6 :  V corretta:  55.546
+Tue Nov 22 04:09:53 2022 
+SiPM n. 7 :  V corretta:  56.296
+Tue Nov 22 04:09:53 2022 
+SiPM n. 8 :  V corretta:  56.619
+Tue Nov 22 04:09:53 2022 
+SiPM n. 9 :  V corretta:  56.569
+Tue Nov 22 04:09:53 2022 
+SiPM n. 10 :  V corretta:  56.596
+Tue Nov 22 04:09:53 2022 
+SiPM n. 11 :  V corretta:  56.996
+Tue Nov 22 04:09:53 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14235  14539  14235  14767  14556  14594  14784  14214  13969  14007  13986  13682  "  >> test.out' 
+Tue Nov 22 04:09:53 2022 
+ Ho Corretto le tensioni di bias
+Tue Nov 22 04:09:59 2022 
+
+Sensore temperatura n.:  0  T=  21.8
+Tue Nov 22 04:25:00 2022 
+
+Sensore temperatura n.:  1  T=  21.7
+Tue Nov 22 04:25:00 2022 
+
+Sensore temperatura n.:  2  T=  21.4
+Tue Nov 22 04:25:00 2022 
+
+Sensore temperatura n.:  3  T=  21.0
+Tue Nov 22 04:25:00 2022 
+      Tue 22-11-2022 @ 04:25:00
+
+T2:   21.4 , T3:   21.0 , T media alta:   21.2 , Delta V alta:  0.066 
+
+Tue Nov 22 04:25:00 2022 
+T0:   21.8 , T1:   21.7 , T media bassa:   21.7 , Delta V bassa:  0.093 
+
+Tue Nov 22 04:25:00 2022 
+Pressione:   987.1 hPa
+Tue Nov 22 04:25:00 2022 
+SiPM n. 0 :  V corretta:  56.266
+Tue Nov 22 04:25:00 2022 
+SiPM n. 1 :  V corretta:  55.866
+Tue Nov 22 04:25:00 2022 
+SiPM n. 2 :  V corretta:  56.266
+Tue Nov 22 04:25:00 2022 
+SiPM n. 3 :  V corretta:  55.566
+Tue Nov 22 04:25:00 2022 
+SiPM n. 4 :  V corretta:  55.843
+Tue Nov 22 04:25:00 2022 
+SiPM n. 5 :  V corretta:  55.793
+Tue Nov 22 04:25:00 2022 
+SiPM n. 6 :  V corretta:  55.543
+Tue Nov 22 04:25:00 2022 
+SiPM n. 7 :  V corretta:  56.293
+Tue Nov 22 04:25:00 2022 
+SiPM n. 8 :  V corretta:  56.616
+Tue Nov 22 04:25:00 2022 
+SiPM n. 9 :  V corretta:  56.566
+Tue Nov 22 04:25:00 2022 
+SiPM n. 10 :  V corretta:  56.593
+Tue Nov 22 04:25:00 2022 
+SiPM n. 11 :  V corretta:  56.993
+Tue Nov 22 04:25:00 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14237  14541  14237  14769  14559  14597  14787  14217  13971  14009  13989  13685  "  >> test.out' 
+Tue Nov 22 04:25:00 2022 
+ Ho Corretto le tensioni di bias
+Tue Nov 22 04:25:06 2022 
+
+Sensore temperatura n.:  0  T=  21.8
+Tue Nov 22 04:40:07 2022 
+
+Sensore temperatura n.:  1  T=  21.7
+Tue Nov 22 04:40:07 2022 
+
+Sensore temperatura n.:  2  T=  21.4
+Tue Nov 22 04:40:07 2022 
+
+Sensore temperatura n.:  3  T=  21.0
+Tue Nov 22 04:40:07 2022 
+      Tue 22-11-2022 @ 04:40:07
+
+T2:   21.4 , T3:   21.0 , T media alta:   21.2 , Delta V alta:  0.064 
+
+Tue Nov 22 04:40:07 2022 
+T0:   21.8 , T1:   21.7 , T media bassa:   21.7 , Delta V bassa:  0.093 
+
+Tue Nov 22 04:40:07 2022 
+Pressione:   987.2 hPa
+Tue Nov 22 04:40:07 2022 
+SiPM n. 0 :  V corretta:  56.264
+Tue Nov 22 04:40:07 2022 
+SiPM n. 1 :  V corretta:  55.864
+Tue Nov 22 04:40:07 2022 
+SiPM n. 2 :  V corretta:  56.264
+Tue Nov 22 04:40:07 2022 
+SiPM n. 3 :  V corretta:  55.564
+Tue Nov 22 04:40:07 2022 
+SiPM n. 4 :  V corretta:  55.843
+Tue Nov 22 04:40:07 2022 
+SiPM n. 5 :  V corretta:  55.793
+Tue Nov 22 04:40:07 2022 
+SiPM n. 6 :  V corretta:  55.543
+Tue Nov 22 04:40:07 2022 
+SiPM n. 7 :  V corretta:  56.293
+Tue Nov 22 04:40:07 2022 
+SiPM n. 8 :  V corretta:  56.614
+Tue Nov 22 04:40:07 2022 
+SiPM n. 9 :  V corretta:  56.564
+Tue Nov 22 04:40:07 2022 
+SiPM n. 10 :  V corretta:  56.593
+Tue Nov 22 04:40:07 2022 
+SiPM n. 11 :  V corretta:  56.993
+Tue Nov 22 04:40:07 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14239  14543  14239  14771  14559  14597  14787  14217  13973  14011  13989  13685  "  >> test.out' 
+Tue Nov 22 04:40:07 2022 
+ Ho Corretto le tensioni di bias
+Tue Nov 22 04:40:13 2022 
+
+Sensore temperatura n.:  0  T=  21.8
+Tue Nov 22 04:55:14 2022 
+
+Sensore temperatura n.:  1  T=  21.7
+Tue Nov 22 04:55:14 2022 
+
+Sensore temperatura n.:  2  T=  21.4
+Tue Nov 22 04:55:14 2022 
+
+Sensore temperatura n.:  3  T=  20.9
+Tue Nov 22 04:55:14 2022 
+      Tue 22-11-2022 @ 04:55:14
+
+T2:   21.4 , T3:   20.9 , T media alta:   21.2 , Delta V alta:  0.062 
+
+Tue Nov 22 04:55:14 2022 
+T0:   21.8 , T1:   21.7 , T media bassa:   21.8 , Delta V bassa:  0.095 
+
+Tue Nov 22 04:55:14 2022 
+Pressione:   987.0 hPa
+Tue Nov 22 04:55:14 2022 
+SiPM n. 0 :  V corretta:  56.262
+Tue Nov 22 04:55:14 2022 
+SiPM n. 1 :  V corretta:  55.862
+Tue Nov 22 04:55:14 2022 
+SiPM n. 2 :  V corretta:  56.262
+Tue Nov 22 04:55:14 2022 
+SiPM n. 3 :  V corretta:  55.562
+Tue Nov 22 04:55:14 2022 
+SiPM n. 4 :  V corretta:  55.844
+Tue Nov 22 04:55:14 2022 
+SiPM n. 5 :  V corretta:  55.794
+Tue Nov 22 04:55:14 2022 
+SiPM n. 6 :  V corretta:  55.544
+Tue Nov 22 04:55:14 2022 
+SiPM n. 7 :  V corretta:  56.294
+Tue Nov 22 04:55:14 2022 
+SiPM n. 8 :  V corretta:  56.612
+Tue Nov 22 04:55:14 2022 
+SiPM n. 9 :  V corretta:  56.562
+Tue Nov 22 04:55:14 2022 
+SiPM n. 10 :  V corretta:  56.594
+Tue Nov 22 04:55:14 2022 
+SiPM n. 11 :  V corretta:  56.995
+Tue Nov 22 04:55:14 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14240  14544  14240  14772  14558  14596  14786  14216  13974  14012  13988  13684  "  >> test.out' 
+Tue Nov 22 04:55:14 2022 
+ Ho Corretto le tensioni di bias
+Tue Nov 22 04:55:20 2022 
+
+Sensore temperatura n.:  0  T=  21.8
+Tue Nov 22 05:10:20 2022 
+
+Sensore temperatura n.:  1  T=  21.7
+Tue Nov 22 05:10:20 2022 
+
+Sensore temperatura n.:  2  T=  21.4
+Tue Nov 22 05:10:20 2022 
+
+Sensore temperatura n.:  3  T=  21.0
+Tue Nov 22 05:10:20 2022 
+      Tue 22-11-2022 @ 05:10:20
+
+T2:   21.4 , T3:   21.0 , T media alta:   21.2 , Delta V alta:  0.064 
+
+Tue Nov 22 05:10:20 2022 
+T0:   21.8 , T1:   21.7 , T media bassa:   21.8 , Delta V bassa:  0.095 
+
+Tue Nov 22 05:10:20 2022 
+Pressione:   986.7 hPa
+Tue Nov 22 05:10:20 2022 
+SiPM n. 0 :  V corretta:  56.264
+Tue Nov 22 05:10:20 2022 
+SiPM n. 1 :  V corretta:  55.864
+Tue Nov 22 05:10:20 2022 
+SiPM n. 2 :  V corretta:  56.264
+Tue Nov 22 05:10:20 2022 
+SiPM n. 3 :  V corretta:  55.564
+Tue Nov 22 05:10:20 2022 
+SiPM n. 4 :  V corretta:  55.844
+Tue Nov 22 05:10:20 2022 
+SiPM n. 5 :  V corretta:  55.794
+Tue Nov 22 05:10:20 2022 
+SiPM n. 6 :  V corretta:  55.544
+Tue Nov 22 05:10:20 2022 
+SiPM n. 7 :  V corretta:  56.294
+Tue Nov 22 05:10:21 2022 
+SiPM n. 8 :  V corretta:  56.614
+Tue Nov 22 05:10:21 2022 
+SiPM n. 9 :  V corretta:  56.564
+Tue Nov 22 05:10:21 2022 
+SiPM n. 10 :  V corretta:  56.594
+Tue Nov 22 05:10:21 2022 
+SiPM n. 11 :  V corretta:  56.995
+Tue Nov 22 05:10:21 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14239  14543  14239  14771  14558  14596  14786  14216  13973  14011  13988  13684  "  >> test.out' 
+Tue Nov 22 05:10:21 2022 
+ Ho Corretto le tensioni di bias
+Tue Nov 22 05:10:27 2022 
+
+Sensore temperatura n.:  0  T=  21.8
+Tue Nov 22 05:25:27 2022 
+
+Sensore temperatura n.:  1  T=  21.8
+Tue Nov 22 05:25:27 2022 
+
+Sensore temperatura n.:  2  T=  21.4
+Tue Nov 22 05:25:27 2022 
+
+Sensore temperatura n.:  3  T=  21.0
+Tue Nov 22 05:25:27 2022 
+      Tue 22-11-2022 @ 05:25:27
+
+T2:   21.4 , T3:   21.0 , T media alta:   21.2 , Delta V alta:  0.066 
+
+Tue Nov 22 05:25:27 2022 
+T0:   21.8 , T1:   21.8 , T media bassa:   21.8 , Delta V bassa:  0.096 
+
+Tue Nov 22 05:25:27 2022 
+Pressione:   986.5 hPa
+Tue Nov 22 05:25:27 2022 
+SiPM n. 0 :  V corretta:  56.266
+Tue Nov 22 05:25:27 2022 
+SiPM n. 1 :  V corretta:  55.866
+Tue Nov 22 05:25:27 2022 
+SiPM n. 2 :  V corretta:  56.266
+Tue Nov 22 05:25:27 2022 
+SiPM n. 3 :  V corretta:  55.566
+Tue Nov 22 05:25:27 2022 
+SiPM n. 4 :  V corretta:  55.846
+Tue Nov 22 05:25:27 2022 
+SiPM n. 5 :  V corretta:  55.796
+Tue Nov 22 05:25:27 2022 
+SiPM n. 6 :  V corretta:  55.546
+Tue Nov 22 05:25:27 2022 
+SiPM n. 7 :  V corretta:  56.296
+Tue Nov 22 05:25:27 2022 
+SiPM n. 8 :  V corretta:  56.616
+Tue Nov 22 05:25:27 2022 
+SiPM n. 9 :  V corretta:  56.566
+Tue Nov 22 05:25:27 2022 
+SiPM n. 10 :  V corretta:  56.596
+Tue Nov 22 05:25:27 2022 
+SiPM n. 11 :  V corretta:  56.996
+Tue Nov 22 05:25:27 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14237  14541  14237  14769  14556  14594  14784  14214  13971  14009  13986  13682  "  >> test.out' 
+Tue Nov 22 05:25:27 2022 
+ Ho Corretto le tensioni di bias
+Tue Nov 22 05:25:34 2022 
+
+Sensore temperatura n.:  0  T=  21.8
+Tue Nov 22 05:40:34 2022 
+
+Sensore temperatura n.:  1  T=  21.8
+Tue Nov 22 05:40:34 2022 
+
+Sensore temperatura n.:  2  T=  21.4
+Tue Nov 22 05:40:34 2022 
+
+Sensore temperatura n.:  3  T=  21.1
+Tue Nov 22 05:40:34 2022 
+      Tue 22-11-2022 @ 05:40:34
+
+T2:   21.4 , T3:   21.1 , T media alta:   21.2 , Delta V alta:  0.068 
+
+Tue Nov 22 05:40:34 2022 
+T0:   21.8 , T1:   21.8 , T media bassa:   21.8 , Delta V bassa:  0.096 
+
+Tue Nov 22 05:40:34 2022 
+Pressione:   986.5 hPa
+Tue Nov 22 05:40:34 2022 
+SiPM n. 0 :  V corretta:  56.267
+Tue Nov 22 05:40:34 2022 
+SiPM n. 1 :  V corretta:  55.867
+Tue Nov 22 05:40:34 2022 
+SiPM n. 2 :  V corretta:  56.267
+Tue Nov 22 05:40:34 2022 
+SiPM n. 3 :  V corretta:  55.568
+Tue Nov 22 05:40:34 2022 
+SiPM n. 4 :  V corretta:  55.846
+Tue Nov 22 05:40:34 2022 
+SiPM n. 5 :  V corretta:  55.796
+Tue Nov 22 05:40:34 2022 
+SiPM n. 6 :  V corretta:  55.546
+Tue Nov 22 05:40:34 2022 
+SiPM n. 7 :  V corretta:  56.296
+Tue Nov 22 05:40:34 2022 
+SiPM n. 8 :  V corretta:  56.617
+Tue Nov 22 05:40:34 2022 
+SiPM n. 9 :  V corretta:  56.568
+Tue Nov 22 05:40:34 2022 
+SiPM n. 10 :  V corretta:  56.596
+Tue Nov 22 05:40:34 2022 
+SiPM n. 11 :  V corretta:  56.996
+Tue Nov 22 05:40:34 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14236  14540  14236  14768  14556  14594  14784  14214  13970  14008  13986  13682  "  >> test.out' 
+Tue Nov 22 05:40:34 2022 
+ Ho Corretto le tensioni di bias
+Tue Nov 22 05:40:41 2022 
+
+Sensore temperatura n.:  0  T=  21.9
+Tue Nov 22 05:55:41 2022 
+
+Sensore temperatura n.:  1  T=  21.8
+Tue Nov 22 05:55:41 2022 
+
+Sensore temperatura n.:  2  T=  21.4
+Tue Nov 22 05:55:41 2022 
+
+Sensore temperatura n.:  3  T=  21.1
+Tue Nov 22 05:55:41 2022 
+      Tue 22-11-2022 @ 05:55:41
+
+T2:   21.4 , T3:   21.1 , T media alta:   21.2 , Delta V alta:  0.068 
+
+Tue Nov 22 05:55:41 2022 
+T0:   21.9 , T1:   21.8 , T media bassa:   21.8 , Delta V bassa:  0.098 
+
+Tue Nov 22 05:55:41 2022 
+Pressione:   986.3 hPa
+Tue Nov 22 05:55:41 2022 
+SiPM n. 0 :  V corretta:  56.267
+Tue Nov 22 05:55:41 2022 
+SiPM n. 1 :  V corretta:  55.867
+Tue Nov 22 05:55:41 2022 
+SiPM n. 2 :  V corretta:  56.267
+Tue Nov 22 05:55:41 2022 
+SiPM n. 3 :  V corretta:  55.568
+Tue Nov 22 05:55:41 2022 
+SiPM n. 4 :  V corretta:  55.848
+Tue Nov 22 05:55:41 2022 
+SiPM n. 5 :  V corretta:  55.798
+Tue Nov 22 05:55:41 2022 
+SiPM n. 6 :  V corretta:  55.548
+Tue Nov 22 05:55:41 2022 
+SiPM n. 7 :  V corretta:  56.298
+Tue Nov 22 05:55:41 2022 
+SiPM n. 8 :  V corretta:  56.617
+Tue Nov 22 05:55:41 2022 
+SiPM n. 9 :  V corretta:  56.568
+Tue Nov 22 05:55:41 2022 
+SiPM n. 10 :  V corretta:  56.598
+Tue Nov 22 05:55:41 2022 
+SiPM n. 11 :  V corretta:  56.998
+Tue Nov 22 05:55:41 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14236  14540  14236  14768  14555  14593  14783  14213  13970  14008  13985  13681  "  >> test.out' 
+Tue Nov 22 05:55:41 2022 
+ Ho Corretto le tensioni di bias
+Tue Nov 22 05:55:48 2022 
+
+Sensore temperatura n.:  0  T=  21.9
+Tue Nov 22 06:10:48 2022 
+
+Sensore temperatura n.:  1  T=  21.8
+Tue Nov 22 06:10:48 2022 
+
+Sensore temperatura n.:  2  T=  21.5
+Tue Nov 22 06:10:48 2022 
+
+Sensore temperatura n.:  3  T=  21.1
+Tue Nov 22 06:10:48 2022 
+      Tue 22-11-2022 @ 06:10:48
+
+T2:   21.5 , T3:   21.1 , T media alta:   21.3 , Delta V alta:  0.069 
+
+Tue Nov 22 06:10:48 2022 
+T0:   21.9 , T1:   21.8 , T media bassa:   21.8 , Delta V bassa:  0.098 
+
+Tue Nov 22 06:10:48 2022 
+Pressione:   986.1 hPa
+Tue Nov 22 06:10:48 2022 
+SiPM n. 0 :  V corretta:  56.269
+Tue Nov 22 06:10:48 2022 
+SiPM n. 1 :  V corretta:  55.869
+Tue Nov 22 06:10:48 2022 
+SiPM n. 2 :  V corretta:  56.269
+Tue Nov 22 06:10:48 2022 
+SiPM n. 3 :  V corretta:  55.569
+Tue Nov 22 06:10:48 2022 
+SiPM n. 4 :  V corretta:  55.848
+Tue Nov 22 06:10:48 2022 
+SiPM n. 5 :  V corretta:  55.798
+Tue Nov 22 06:10:48 2022 
+SiPM n. 6 :  V corretta:  55.548
+Tue Nov 22 06:10:48 2022 
+SiPM n. 7 :  V corretta:  56.298
+Tue Nov 22 06:10:48 2022 
+SiPM n. 8 :  V corretta:  56.619
+Tue Nov 22 06:10:48 2022 
+SiPM n. 9 :  V corretta:  56.569
+Tue Nov 22 06:10:48 2022 
+SiPM n. 10 :  V corretta:  56.598
+Tue Nov 22 06:10:48 2022 
+SiPM n. 11 :  V corretta:  56.998
+Tue Nov 22 06:10:48 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14235  14539  14235  14767  14555  14593  14783  14213  13969  14007  13985  13681  "  >> test.out' 
+Tue Nov 22 06:10:48 2022 
+ Ho Corretto le tensioni di bias
+Tue Nov 22 06:10:55 2022 
+
+Sensore temperatura n.:  0  T=  21.9
+Tue Nov 22 06:25:55 2022 
+
+Sensore temperatura n.:  1  T=  21.8
+Tue Nov 22 06:25:55 2022 
+
+Sensore temperatura n.:  2  T=  21.5
+Tue Nov 22 06:25:55 2022 
+
+Sensore temperatura n.:  3  T=  21.1
+Tue Nov 22 06:25:55 2022 
+      Tue 22-11-2022 @ 06:25:55
+
+T2:   21.5 , T3:   21.1 , T media alta:   21.3 , Delta V alta:  0.071 
+
+Tue Nov 22 06:25:55 2022 
+T0:   21.9 , T1:   21.8 , T media bassa:   21.8 , Delta V bassa:  0.098 
+
+Tue Nov 22 06:25:55 2022 
+Pressione:   986.3 hPa
+Tue Nov 22 06:25:55 2022 
+SiPM n. 0 :  V corretta:  56.271
+Tue Nov 22 06:25:55 2022 
+SiPM n. 1 :  V corretta:  55.871
+Tue Nov 22 06:25:55 2022 
+SiPM n. 2 :  V corretta:  56.271
+Tue Nov 22 06:25:55 2022 
+SiPM n. 3 :  V corretta:  55.571
+Tue Nov 22 06:25:55 2022 
+SiPM n. 4 :  V corretta:  55.848
+Tue Nov 22 06:25:55 2022 
+SiPM n. 5 :  V corretta:  55.798
+Tue Nov 22 06:25:55 2022 
+SiPM n. 6 :  V corretta:  55.548
+Tue Nov 22 06:25:55 2022 
+SiPM n. 7 :  V corretta:  56.298
+Tue Nov 22 06:25:55 2022 
+SiPM n. 8 :  V corretta:  56.621
+Tue Nov 22 06:25:55 2022 
+SiPM n. 9 :  V corretta:  56.571
+Tue Nov 22 06:25:55 2022 
+SiPM n. 10 :  V corretta:  56.598
+Tue Nov 22 06:25:55 2022 
+SiPM n. 11 :  V corretta:  56.998
+Tue Nov 22 06:25:55 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  '
+bash daq_set_hv.sh -N "{0..11}" -V " 14234  14538  14234  14766  14555  14593  14783  14213  13968  14006  13985  13681  "  >> test.out' 
+Tue Nov 22 06:25:55 2022 
+ Ho Corretto le tensioni di bias
+Tue Nov 22 06:26:01 2022 
+
+Fine del run: Tue Nov 22 06:35:11 2022 
+
+Tue Nov 22 06:35:11 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  'bash daq_run_stop.sh -N "{0..11}" >> test.out' 
+Tue Nov 22 06:35:11 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  'bash daq_disable_hv.sh -N "{0..11}"  >> test.out' 
+Tue Nov 22 06:35:14 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  'killall nc >> test.out' 
+Tue Nov 22 06:35:21 2022 
+
+Eseguo: sshpass -p "root" ssh root@169.254.180.39  'killall DaqReadTcp >> test.out' 
+Tue Nov 22 06:35:22 2022 
+
+Sensore temperatura n.:  0  T=  21.9
+Tue Nov 22 06:41:02 2022 
+
+Sensore temperatura n.:  1  T=  21.8
+Tue Nov 22 06:41:02 2022 
+
+Sensore temperatura n.:  2  T=  21.6
+Tue Nov 22 06:41:02 2022 
+
+Sensore temperatura n.:  3  T=  21.1
+Tue Nov 22 06:41:02 2022 
+
+Sensore temperatura n.:  0  T=  21.9
+Tue Nov 22 06:56:02 2022 
+
+Sensore temperatura n.:  1  T=  21.8
+Tue Nov 22 06:56:02 2022 
+
+Sensore temperatura n.:  2  T=  21.6
+Tue Nov 22 06:56:02 2022 
+
+Sensore temperatura n.:  3  T=  21.1
+Tue Nov 22 06:56:02 2022 
+
+Sensore temperatura n.:  0  T=  21.9
+Tue Nov 22 07:11:03 2022 
+
+Sensore temperatura n.:  1  T=  21.8
+Tue Nov 22 07:11:03 2022 
+
+Sensore temperatura n.:  2  T=  21.6
+Tue Nov 22 07:11:03 2022 
+
+Sensore temperatura n.:  3  T=  21.1
+Tue Nov 22 07:11:03 2022 
+
+Sensore temperatura n.:  0  T=  21.9
+Tue Nov 22 07:26:03 2022 
+
+Sensore temperatura n.:  1  T=  21.9
+Tue Nov 22 07:26:03 2022 
+
+Sensore temperatura n.:  2  T=  21.6
+Tue Nov 22 07:26:03 2022 
+
+Sensore temperatura n.:  3  T=  21.2
+Tue Nov 22 07:26:03 2022 
+
+Sensore temperatura n.:  0  T=  21.9
+Tue Nov 22 07:41:03 2022 
+
+Sensore temperatura n.:  1  T=  21.8
+Tue Nov 22 07:41:03 2022 
+
+Sensore temperatura n.:  2  T=  21.6
+Tue Nov 22 07:41:03 2022 
+
+Sensore temperatura n.:  3  T=  21.2
+Tue Nov 22 07:41:03 2022 
+
+Sensore temperatura n.:  0  T=  21.9
+Tue Nov 22 07:56:04 2022 
+
+Sensore temperatura n.:  1  T=  21.8
+Tue Nov 22 07:56:04 2022 
+
+Sensore temperatura n.:  2  T=  21.6
+Tue Nov 22 07:56:04 2022 
+
+Sensore temperatura n.:  3  T=  21.2
+Tue Nov 22 07:56:04 2022 
+
+Sensore temperatura n.:  0  T=  21.9
+Tue Nov 22 08:11:04 2022 
+
+Sensore temperatura n.:  1  T=  21.9
+Tue Nov 22 08:11:04 2022 
+
+Sensore temperatura n.:  2  T=  21.6
+Tue Nov 22 08:11:04 2022 
+
+Sensore temperatura n.:  3  T=  21.2
+Tue Nov 22 08:11:04 2022 
+
+Sensore temperatura n.:  0  T=  21.9
+Tue Nov 22 08:26:17 2022 
+
+Sensore temperatura n.:  1  T=  21.9
+Tue Nov 22 08:26:32 2022 
+
+Sensore temperatura n.:  2  T=  21.6
+Tue Nov 22 08:26:44 2022 
+
+Sensore temperatura n.:  3  T=  21.1
+Tue Nov 22 08:26:51 2022 
+
+Sensore temperatura n.:  0  T=  21.9
+Tue Nov 22 08:47:47 2022 
+
+Sensore temperatura n.:  1  T=  21.9
+Tue Nov 22 08:48:57 2022 
+
+Sensore temperatura n.:  2  T=  21.6
+Tue Nov 22 08:48:57 2022 
+
+Sensore temperatura n.:  3  T=  21.1
+Tue Nov 22 08:48:58 2022 
+
+Sensore temperatura n.:  0  T=  21.8
+Tue Nov 22 09:03:58 2022 
+
+Sensore temperatura n.:  1  T=  21.8
+Tue Nov 22 09:03:59 2022 
+
+Sensore temperatura n.:  2  T=  21.5
+Tue Nov 22 09:03:59 2022 
+
+Sensore temperatura n.:  3  T=  21.1
+Tue Nov 22 09:03:59 2022 
