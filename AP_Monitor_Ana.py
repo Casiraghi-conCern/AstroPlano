@@ -42,9 +42,6 @@ import os
 import numpy as np
 #import pandas as pd
 
-# stato di ritorno dalle funzioni
-BAD = False
-GOOD = True
 
 # parametri da settare all'inizio
 
