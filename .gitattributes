@@ -1,0 +1,2 @@
+AP*.txt filter=lfs diff=lfs merge=lfs -text
+AP*.bin filter=lfs diff=lfs merge=lfs -text
