@@ -274,7 +274,7 @@ if __name__ == "__main__":
     '''Leggo il file per produrre i plot di controllo '''
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-    prova4 = open(output_path + output_file, "r")
+    prova4 = open(output_file, "r")
     #aprire nuovo file per dati temperatura e pressione (in progress)
     #Wstation = open(r"C:\Users\User\AP20220224-wsd.txt", "r")'''
     eventi=[''] #inseriamo un valore per far sì che il numero dell'evento coincida con
@@ -780,12 +780,12 @@ if __name__ == "__main__":
                                     
             #if(countCoinc>0): MultiCoin.append(countCoinc)
     #print(MultiCoin)
-    file_quatro = open(inputPath + "dec.txt", "w")    
+    file_quatro = open("dec.txt", "w")    
     '''Disegno i Grafici''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''' 
     if PlotMonitor==1:    
-        file_uno = open(output_path + "Rate.txt", "w")
+        file_uno = open("Rate.txt", "w")
         if testsimp_s == 1 : file_tre = open("RateCalib.txt", "w")
-        file_due = open(output_path + "Ang.txt", "w")
+        file_due = open("Ang.txt", "w")
         
         for j in range(8):
             for i in range(len(countLS_t[j])):
