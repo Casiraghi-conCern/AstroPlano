@@ -58,3 +58,11 @@ Temporary Items
 ### macOS Patch ###
 # iCloud generated files
 *.icloud
+
+
+
+### file misure ###
+misure
+AP*.log
+AP*.txt
+AP*.bin
