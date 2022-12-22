@@ -26,18 +26,14 @@ from matplotlib.ticker import (MultipleLocator, FormatStrFormatter,
 #######################################################################################################
 #Stefano: libreria necessaria per fare grafico se non funziona mgr.canvas.height() e mgr.canvas.width()
 #######################################################################################################
-# import tkinter as tk 
-# root = tk.Tk()
+
 #######################################################################################################
 from matplotlib.backends.backend_pdf import PdfPages
-import matplotlib.mlab as mlab
 from scipy import stats
 from scipy.optimize import curve_fit
 from scipy import asarray as ar,exp
 from scipy import special as sp
-from scipy.stats import moyal
 import sys
-import os
 
 import numpy as np
 #import pandas as pd
@@ -76,16 +72,12 @@ time_win = 400    # ns,  lunghezza max finestra temporale di un evento
 rate_scan = 900     #intervallo di tempo su cui fare la media rate per scan temporale
 MyDebug    = 0      # 0 no debug, 1 minimale, 2 esteso, 3 tutto
 MyPlot     = 0
-PlotMonitor = 1    # 0 no plot, 1 plot si
-testsimp_s =0      #modilit� calibrazione sipm Angolari
+PlotMonitor = 0    # 0 no plot, 1 plot si
 PlotStop = 0
-AngPlot = 4         #0 no distrbuzione angolare, 1 set binari, 2 set alternativo, 3 set ravvicinato sinistra (e 8-10 a sinistra), 4 come tre ma con 8 e 10 a destra 
-Decadimento = 0
-sciglass = 0
-
+AngPlot = 0         #0 no distrbuzione angolare, 1 set binari, 2 set alternativo
 PlotFile    = 0     # 0 no plot, 1 plot su file
 N_DUMP_FIRST_EVENTS = 4   # numero degli eventi iniziali che vengono stampati
-N_PLOT_EVENTS = 20 # plotta evento desiderato
+N_PLOT_EVENTS = 3 # plotta evento desiderato
 
 # altro non cambiare se non sai quello che fai
 N_SIPM =12
@@ -101,6 +93,705 @@ t_s_prev=1.0
 
 plt.ion()
 
+if PlotMonitor:
+    import tkinter as tk 
+    root = tk.Tk()
+
+def myLinearRegression (x,y):
+    # calcola il fit lineare al fronte di salita del trigger
+    slope, intercept, r_value, p_value, std_err = stats.linregress(x, y)
+    if MyDebug>1: 
+        print("\nslope: %8.2f    intercept: %11.2f, correl. %5.2f, errore_slope: %8.2f " % (
+                       slope, intercept, r_value, std_err))
+    return (slope, intercept, r_value, std_err)
+    
+
+def move_figure(position="top-right"):
+    '''
+    Move and resize a window to a set of standard positions on the screen.
+    Possible positions are:
+    top, bottom, left, right, top-left, top-right, bottom-left, bottom-right
+    '''
+
+    mgr = plt.get_current_fig_manager()
+    #mgr.full_screen_toggle()  # primitive but works to get screen size
+    #############################################################################################
+    #Stefano: dovrebbe essere una versione più compatibile (Flavio verifica)
+    #############################################################################################
+    py = root.winfo_screenheight()
+    px = root.winfo_screenwidth()
+    print('Width: %i px, Height: %i px' % (px, py))
+    d = 10  # width of the window border in pixels
+    
+    if position == "top":
+        # x-top-left-corner, y-top-left-corner, x-width, y-width (in pixels)
+        mgr.window.setGeometry=(d, 4*d, px - 2*d, int(py/2) - 4*d)
+    elif position == "bottom":
+        mgr.window.setGeometry=(d, py/2 + 5*d, px - 2*d, py/2 - 4*d)
+    elif position == "left":
+        mgr.window.setGeometry=(d, 4*d, px/2 - 2*d, py - 4*d)
+    elif position == "right":
+        mgr.window.setGeometry=(px/2 + d, 4*d, px/2 - 2*d, py - 4*d)
+    elif position == "top-left":
+        mgr.window.setGeometry=(d, 4*d, px/2 - 2*d, py/2 - 4*d)
+    elif position == "top-right":
+        mgr.window.setGeometry=(int(px/2) + d, 4*d, int(px/2) - 2*d, int(py/2) - 4*d)
+    elif position == "bottom-left":
+        mgr.window.setGeometry=(d, py/2 + 5*d, px/2 - 2*d, py/2 - 4*d)
+    elif position == "bottom-right":
+        mgr.window.setGeometry=(px/2 + d, int(py/2) + 5*d, int(px/2) - 2*d, int(py/2) - 4*d)
+    ###############################################################################################
+    '''//non funziona su farm infn
+    #py = mgr.canvas.height()
+    #px = mgr.canvas.width()
+    if position == "top":
+        # x-top-left-corner, y-top-left-corner, x-width, y-width (in pixels)
+        mgr.window.setGeometry(d, 4*d, px - 2*d, int(py/2) - 4*d)
+    elif position == "bottom":
+        mgr.window.setGeometry(d, py/2 + 5*d, px - 2*d, py/2 - 4*d)
+    elif position == "left":
+        mgr.window.setGeometry(d, 4*d, px/2 - 2*d, py - 4*d)
+    elif position == "right":
+        mgr.window.setGeometry(px/2 + d, 4*d, px/2 - 2*d, py - 4*d)
+    elif position == "top-left":
+        mgr.window.setGeometry(d, 4*d, px/2 - 2*d, py/2 - 4*d)
+    elif position == "top-right":
+        mgr.window.setGeometry(int(px/2) + d, 4*d, int(px/2) - 2*d, int(py/2) - 4*d)
+    elif position == "bottom-left":
+        mgr.window.setGeometry(d, py/2 + 5*d, px/2 - 2*d, py/2 - 4*d)
+    elif position == "bottom-right":
+        mgr.window.setGeometry(px/2 + d, int(py/2) + 5*d, int(px/2) - 2*d, int(py/2) - 4*d)
+    '''
+
+
+class Trigger:
+    # classe per trattare il segnale sel singolo SiPM
+    def __init__(self):
+        self.channel =None
+        self.sequential = 0  # n. sequenziale all'interno dell'evento
+        self.tempo   = [0,0,0,0]
+        self.frag_flag =0
+        self.fifofull  = 0
+        self.carica_totale = 0
+        self.nsamples = 0
+        self.samples  = list()
+        self.tpeak = None
+        self.t50   = None
+        self.intercept = None
+        self.slope = None
+        self.quality_flag = None
+        self.Qcharge_flag = None
+        self.shift = None
+        self.peak_value = None
+    
+    def mydeepcopy(self):
+        # copia un trigger completamente
+        xx= Trigger()
+        xx.channel = self.channel
+        xx.sequential = self.sequential
+        xx.tempo = self.tempo[:]
+        xx.frag_flag = self.frag_flag
+        xx.fifofull = self.fifofull
+        xx.carica_totale = self.carica_totale
+        xx.nsamples = self.nsamples
+        xx.samples=self.samples[:]
+        xx.tpeak = self.tpeak
+        xx.intercept = self.intercept
+        xx.slope = self.slope
+        xx.t50 = self.t50
+        xx.shift = self.shift
+        xx.quality_flag = self.quality_flag
+        xx.Qcharge_flag = self.Qcharge_flag
+        xx.peak_value = self.peak_value
+        return xx
+        
+        
+    def LeggiHeader1(self):
+        # legge  header 1 e lo ritorna, se EOF ritorna None
+        key = 0X55AA
+        head1 = MyData.f_in.read(4)
+        self.f_in = MyData.f_in
+        if head1 == b'':   # EOF reached
+            return None
+        ihead1= int.from_bytes(head1, byteorder='little')
+        syncBytes = ihead1>>16
+        if syncBytes == key: return ihead1
+        # tento di ricuperare un file corrotto cercando la stringa 0x55AA
+        print("\n\n Evento %d, Trigger anomalo: Header 1: %X" %(MyData.ntot_trigger, ihead1))
+        print ("file corrotto ????")
+        sys.exit('File corrotto ?')
+
+        # c1=0
+        # nerr=0
+        # while c1 != key1:       #devo trovare 0x55
+        #     c1=self.f_in.read(1)
+        #     nerr = nerr +1
+        #     if c1 != b'\x00': print('\n nerr=%d, c1= %X' %
+        #                       (nerr, int.from_bytes(c1,byteorder='little')))
+        #     if c1 != key1: continue
+        #     c2=0                #trovato, adesso cerco 0xAA
+        #     while c2 != key2:
+        #         c2 = self.f_in.read(1)
+        #         if c2 == key2:  #trovato 0x55, leggo gli altri 2 bytes e ritorno
+        #             c3= self.f_in.read(1)
+        #             c4= self.f_in.read(1)
+        #             head1= int.from_bytes(c1,byteorder='little')
+        #             head1 = head1<<8
+        #             head1 = head1 | int.from_bytes(c2,byteorder='little')
+        #             head1 = head1<<8
+        #             head1 = head1 | int.from_bytes(c3,byteorder='little')
+        #             head1 = head1<<8
+        #             head1 = head1 | int.from_bytes(c4,byteorder='little')
+        #             return head1
+        #         elif c2 == key1:    # ho trovato 0Xaa, riprendo a cercare c2
+        #             c1=c2
+        #             continue
+        #         else:       #esco dal loop piu' interno 
+        #             break
+        #     continue     # e continuo quello esterno
+       
+    def Check_charge(self):
+        #Carica_ricalcolata =0
+        #controlliamo che la carica fornita dalla Waveboard corrisponda a quella 
+        # che possiamo calcolare noi facendo la somma dei singoli campionamenti
+        Carica_ricalcolata = sum (self.samples)
+        if self.carica_totale != Carica_ricalcolata:
+            if MyDebug >0:
+                print("\n N campioni: %d"% self.nsamples)
+                print("\n\n ATTENZIONE Q sbagliata ?? Q waveboard: %d, Q ricalcolata: %d"% \
+                  (self.carica_totale, Carica_ricalcolata))
+                Qcharge_flag_port=1
+                #self.Qcharge_flag=1
+                #Qcharge_flag=1
+            return False
+            return (nstart, tpeak, const_frac, intercept, slope, quality_flag, Qcharge_flag, peak_value)
+        else:
+            Qcharge_flag_port=0
+            #self.Qcharge_flag=0
+            #Qcharge_flag=0
+            return True
+            return (nstart, tpeak, const_frac, intercept, slope, quality_flag, Qcharge_flag, peak_value)
+    def LeggiTrigger(self):
+        # leggo header e lo ritorno in self, se EOF ritorno None, altrimenti 0
+        self.tpeak= None    # in attesa di ricalcolarli
+        self.t50=None
+        
+        ihead1 = self.LeggiHeader1()
+        if ihead1 is None: return None
+        
+        self.channel = ihead1 & 15   # estraggo ultimi 4 bit
+        if self.channel > (N_SIPM-1):
+            print ("Canale anomalo: %d, riportato a valori decenti\n\n"% self.channel)
+            # a volte capitava di trovare trigger>11, credo di avere risolto (mio bug)
+            sys.exit('File corrotto ?')
+
+        RankBoard = (ihead1>>4) % 32
+    #   halfhead = (ihead1>>0) % 32
+        if MyDebug>=2: print("\nHeader 1: %X, RankBoard: %X, canale: %X"% \
+                           (ihead1, RankBoard, self.channel))
+        self.samples =[]
+            
+        # header 2
+        head2 = self.f_in.read(8)
+        ihead2 = int.from_bytes(head2, byteorder='little')
+        if MyDebug>=3: print("Header 2: %X"% ihead2 )
+        decanno = ihead2>>60
+        anno =    (ihead2>>56) % 16
+        anno = decanno*10 + anno
+        cengiorni = (ihead2>>54) % 4
+        decgiorni = (ihead2>>50) % 16
+        giorni = (ihead2>>46)% 16
+        giorni = cengiorni*100+decgiorni*10+ giorni
+        secondi = (ihead2>>29)  & 0x1FFFF
+        us125 = (ihead2 >> 16)& 0X1FFF    
+        ns = (ihead2 &0XFFFF) * SAMPLING_TIME   # tengo conto del clock a 250 MHz
+        
+        self.tempo[0]= anno
+        self.tempo[1]= giorni 
+        self.tempo[2]= secondi
+        self.tempo[3]= us125*125000 + ns 
+
+        #header 3
+        head3 = self.f_in.read(4)
+        ihead3 = int.from_bytes(head3, byteorder='little')
+        if MyDebug>=3 : print("Header 3: %X"% ihead3 )     
+        compr_flag = ihead3 >>31
+        if compr_flag != 0:
+            print("\n\n Attenzione flag di compressione attivo!! \n NON previsto !!")
+            print ("\n Non so gestirlo, esco\n")
+            sys.exit(('formato sconosciuto'))
+                
+        self.frag_flag = (ihead3>>30) & 0x01   #flag di frammentazione
+        self.carica_totale = (ihead3>>8) & 0x3FFFFF 
+        self.fifofull = (ihead3>>7) & 1
+        self.nsamples =  ihead3 & 0X7F
+        # if MyDebug>=1: 
+        #     print("\nAnno: %d, giorno: %d, sec %d,  ns: %d, SiPM: %d, # campioni: %d, Q: %d" %
+        #         (anno, giorni, secondi, ns, self.channel, self.nsamples,\
+        #          self.carica_totale))
+        
+        if self.nsamples%2 != 0:  self.nsamples += 1    #se e' dispari
+        else:  self.nsamples = self.nsamples
+        for i in range(self.nsamples):
+            samp = self.f_in.read(2)
+            isamp = (int.from_bytes(samp, byteorder='little'))& 0X3FFF
+            self.samples.append(isamp) 
+            # if MyDebug>=2:
+            #     print("Sample n. %d: %d ossia %X"% (i, isamp, isamp))
+        rc = self.Check_charge()
+        if rc== False:
+            MyData.nWarning_charge += 1
+        return  rc  # tutto bene
+
+
+
+    def PrintTrigger(self):
+        if MyDebug > 1:
+            print ("\nTrigger n. %d"% self.sequential) 
+            print(" SiPM: %d, Year: %d, Days: %d, secs: %d,  ns: %d"% \
+                  (self.channel, self.tempo[0],self.tempo[1], self.tempo[2], self.tempo[3]) )
+            print("Fragm flag: %d, Q tot: %d, Fifo full: %d, N. samples: %d"%(
+                  self.frag_flag, self.carica_totale, self.fifofull, self.nsamples), end="")
+            try:    # definiti solo se gia' fatto fit al fronte di salita
+                print ("\nt peak: %d ns, t (50%%):%5.1f ns \n" % (self.tpeak, self.t50) )
+            except:
+                pass
+            
+        if MyDebug>=2:
+            npr=0
+            for i in self.samples: 
+                if npr%10 == 0: print(" ")  # 10 per riga
+                print (" %d, "% i, end=" ")
+                npr=npr+1
+            print(" ")
+
+            
+            
+    def TogliPed_trigger(self, baseline=5):
+        # sottrae il piedistallo dai primi "baseline" punti 
+        # se baseline == 0 non sottrae nulla
+        nsa= self.nsamples # trigger  n. samples
+        self.carica_totale = 0
+        if baseline>0:
+            if nsa<baseline:
+                print ("\nTrigger troppo corto, non posso togliere il piedistallo")
+                print ("\nn. samples= %d, baseline= %d "% (nsa, baseline))
+                self.PrintTrigger()
+                return
+            # calcola il valore medio del piedistallo sui primi 'baseline' campioni
+            pedmedio=0
+            for p in range(baseline):
+                pedmedio += self.samples[p]
+            pedmedio= pedmedio /baseline
+            # sottraiamolo
+            for p in range (nsa):
+                self.samples[p] -= pedmedio
+                if self.samples[p]<0: self.samples[p]=0
+                
+        # carica totale
+        self.carica_totale = sum (self.samples)
+        
+        # for p in range(nsa):
+        #     self.carica_totale += self.samples[p]
+            
+        
+    def findTime(self):
+        # facciamo il fit del fronte di salita
+        global MyPlot
+        LOW_CUT = 0.2#ridotto intervallo di fit
+        HIGH_CUT= 0.7
+        LOW_TIME_SHIFT= 50#in nanosec
+        LOW_TIME_CUT= 40#in nanosec
+        HIGH_TIME_CUT= 80#in nanosec
+        nsamp= self.nsamples
+        samp = self.samples
+        peak_value = max(samp)
+        npeak = samp.index(peak_value)
+        tpeak = npeak* SAMPLING_TIME
+        shift=0
+        #######
+        #Faccio un controllo sui valori adiacenti
+        #######
+        if(abs(peak_value-samp[npeak-1]) < 0.05*peak_value): 
+            peak_value=(peak_value+samp[npeak-1])/2
+            tpeak = (2*npeak-1)/2* SAMPLING_TIME
+        if((npeak+1)<(len(samp)-1)):    
+          if(abs(peak_value-samp[npeak+1]) < 0.05*peak_value): 
+              peak_value=(peak_value+samp[npeak+1])/2
+              tpeak = (2*npeak+1)/2* SAMPLING_TIME
+        if((npeak+1)<(len(samp)-1)):                  
+          if(abs(peak_value-samp[npeak-1]) < 0.05*peak_value and abs(peak_value-samp[npeak+1]) < 0.05*peak_value ): 
+              peak_value=(samp[npeak+1]+samp[npeak-1])/2
+              tpeak = npeak* SAMPLING_TIME           
+        ######
+        #tpeak = npeak* SAMPLING_TIME
+        nstart = 0
+        nstop = npeak
+        
+    #verifico che se ci sono eventi che iniziano prima e li ritardo
+        for index in range(0, npeak, 1):
+            if (samp[index+1]-samp[index])>50 and (index*SAMPLING_TIME)<LOW_TIME_SHIFT: #continue
+                shift= LOW_TIME_SHIFT - index*SAMPLING_TIME
+                #print(index)
+                #print(samp[index])
+                #print(samp[index+1])
+                break
+            	# cerco t per cui il valore <= LOW_CUT * valore massimo partendo dal picco    
+        for index in range(npeak, 0, -1):    
+            if samp[index]> LOW_CUT*peak_value and index*SAMPLING_TIME>LOW_TIME_CUT: continue
+            nstart = index
+            break
+        for index in range(nstart, nsamp):   # idem valore > HIGH_CUT * valore massimo
+            if samp[index]<HIGH_CUT*peak_value and index*SAMPLING_TIME<HIGH_TIME_CUT: continue
+            nstop=index
+            break
+        #print(shift)
+        tpeak = tpeak + shift
+        #fit del fronte di salita con retta, voglio migliorare timing
+        const_frac = 0
+        ##################################### 
+        #Stefano:Provo a correggere il fit
+        #####################################
+        #nstart=nstart+1
+        #nstop=nstop-1
+        #####################################
+        x= list(range(nstart*SAMPLING_TIME, (nstop+1)*SAMPLING_TIME, SAMPLING_TIME))
+        y= samp[nstart: nstop+1]
+        # devo avere almeno 2 punti per fare il fit
+        if (nstop-nstart) >= 2:        # posso fare fit
+           # if (nstart*SAMPLING_TIME>LOW_TIME_CUT && index*SAMPLING_TIME<HIGH_TIME_CUT)
+            slope,intercept, correlazione, errore_slope = myLinearRegression(x, y)
+            halfpeak= peak_value *0.50
+            const_frac = (halfpeak - intercept )/slope + shift
+        else:
+            slope=-1        # no fit
+            intercept=-1
+            correlazione =0
+            errore_slope = 999999
+            
+        quality_flag =0
+
+        
+
+        if correlazione<0.7 or slope <10:
+            quality_flag =1  # normalmente la correlazione e' >0.8 e la pendenza>40
+        # Calcolo del chi quadro, non usato
+        # chi2=0
+        # for ind in range(nstart, nstop+1):
+        #     yfit = intercept + slope*x[ind-nstart]
+        #     delta =(samp[ind]-yfit)
+        #     chi2 = chi2 + delta**2 
+    #        print ("x, samp y: %d %d  %d, chi2: %d"% ( x[ind-nstart], samp[ind], yfit, chi2))
+    #    print("nstart nstop: %d  %d; chi2 %d"% (nstart, nstop,chi2))
+    #    print ("t discrim. 50%%: %7.2f" % const_frac)
+        # if Plot and (nstop-nstart>4) or slope==0:
+            
+    # se il fit e' cattivo vediamo com'e' il trigger        
+        if MyPlot == 1 and (slope<10 or correlazione<0.7 or errore_slope>500):
+            print("\n ATTENZIONE fit al leading edge cattivo")
+            print ("correlazione %4.2f, errore %.1f, slope %.2f"% \
+                (correlazione, errore_slope, slope))   
+        return (nstart, tpeak, const_frac, intercept, slope, quality_flag, shift, peak_value)
+     
+        
+     
+    def PlotTrigger(self, nstart, npeak, intercept, slope, quality_flag, shift):
+        # grafica un trigger in funzione del tempo   
+        global MyPlot
+        tempi= list(range(0+shift, self.nsamples*SAMPLING_TIME+shift, SAMPLING_TIME))
+        n0 = nstart
+        n1= min (self.nsamples, npeak+1)
+        if (quality_flag==0 or quality_flag==1): #faccio graficare solo eventi buoni
+            gr=plt.subplot()#aggiunto per avere le griglie custom
+            #fig = plt.figure()
+            labelplot="Sipm_" + str(self.channel)
+            plt.plot(tempi, self.samples, '--o', label=labelplot)
+            yfit = [intercept + slope*xd for xd in tempi[n0:n1]]
+            #plt.plot(tempi[n0:n1], yfit, 'r', label='fitted line')
+            #######################################################################################
+            #Stefano: aggiunte griglie custom
+            #plt.grid(visible=True, which='both', axis='both')
+            ###################################################################################
+            # Change major ticks to show every 200 & 20.
+            #plt.xaxis.grid(True, which='minor')
+            gr.xaxis.set_major_locator(MultipleLocator(20))
+            gr.yaxis.set_major_locator(MultipleLocator(10))
+
+            # Change minor ticks to show every 50 and 5.(200/4=50)
+            gr.xaxis.set_minor_locator(AutoMinorLocator(10))
+            gr.yaxis.set_minor_locator(AutoMinorLocator(2))
+
+            # Turn grid on for both major and minor ticks and style minor slightly
+            # differently.
+            plt.grid(which='major', color='#CCCCCC', linestyle='--')
+            plt.grid(which='minor', color='#CCCCCC', linestyle=':')
+            ######################################################################################
+            plt.xlabel('ns')
+            plt.legend()
+            plt.title("Evt: %d, N. seq trg: %d, SiPM: %d" % \
+                      (evento.nevt, self.sequential, self.channel))
+            print("evento n: ", evento.nevt) 
+            print("evento da mostrare: ", N_PLOT_EVENTS) 
+           ## plt.gcf().number + 1
+            
+            if N_PLOT_EVENTS == (evento.nevt):
+                
+                '''with PdfPages('monitor.pdf') as pdf:
+                    fig = plt.figure()
+                    plt.savefig('monitor.pdf')'''
+                plt.show()    
+                move_figure()
+                plt.pause(0.05)
+                evento.PrintEvento()
+                
+                rc= input ("Batti 0 per continuare, 1 per smettere di plottare")
+                try:   # cerco di recuperare input sbagliati senza abortire
+                    rc=int(rc)
+                except:
+                    rc=0
+                if rc == 1: MyPlot = 0
+                if rc == 1: PlotFile = 0
+                plt.close() #se sotto l'if mostra tutte le curve fino a N_PLOT_EVENTS, se fuori mostra solo N_PLOT_EVENTS    
+                return rc
+            #plt.close() #se sotto l'if mostra tutte le curve fino a N_PLOT_EVENTS, se fuori mostra solo N_PLOT_EVENTS    
+
+        
+
+class Evento:
+    
+    def __init__(self):
+        self.nevt           = 0     # N. evento corrente
+        self.ntrigger       = 0     # quanti trigger compongono l'evento
+        self.scintil_active = [0]*N_SIPM   # per ogni SiPM attivo metto parola a 1
+        self.trigger_list   = []
+
+ 
+    def CreaEvento(self, last_trigger):
+        # mette insieme i trigger se quasi contemporanei
+        if last_trigger.frag_flag > 0 :       # fragmentation flag
+            if MyDebug > 1:
+                print("\n Trigger n. %d frammentato"% self.ntrigger)
+                last_trigger.PrintTrigger()
+    ###            self.PrintEvento()
+            if self.ntrigger ==0 :
+                print ("\n inizia evento con fragmentation flag ==1")
+                print ("\n Errore interno o dei dati - esco \n")
+                sys.exit('file corrotto ?')
+    		# aggiungo questo trigger frammentato al precedente con stesso SiPM
+            base_trigger_found= False
+            for sipm in range(self.ntrigger):
+                if last_trigger.channel == self.trigger_list[sipm].channel:  #il numero del SiPM deve essere uguale
+                    # if MyDebug>1:
+                    #     self.PrintTrigger(last_trigger)
+                    #     if MyDebug>1:
+                    #         self.PrintEvento()
+                    base_trigger_found = True
+                    self.trigger_list[sipm].nsamples += last_trigger.nsamples # aggiorno n. samples
+                    self.trigger_list[sipm].samples.extend(last_trigger.samples) # e li copio in coda ai precedenti
+                    if MyDebug>2:
+                        print("\n dopo aggiunta")
+                        self.PrintEvento()
+                        print("\n\n\n")
+                    break
+   # ogni trigger frammentato deve avere un trigger precedente con lo stesso SiPM                
+            if not base_trigger_found: 
+                if MyDebug > 1:
+                    print ("\n\n ATTENZIONE c'e' un trigger frammentato senza trigger di base !")
+                    self.PrintEvento()
+                    last_trigger.PrintTrigger()
+                    # sys.exit()
+                
+            return 
+        
+        if  self.ntrigger==0: # se e' vuoto, puo' capitare solo all'inizio
+            self.trigger_list= []
+            self.trigger_list.append(last_trigger.mydeepcopy()) 
+            self.ntrigger=1
+            self.scintil_active=[0]*N_SIPM
+            chan = self.trigger_list[0].channel
+            self.scintil_active[chan] = 1   # registro il segnale sullo scintillatore
+            return 
+
+    	# controllo se questo trigger e' dentro la finestra temporale col primo
+        ## ignoro i secondi e i giorni
+        if abs(last_trigger.tempo[3]-self.trigger_list[0].tempo[3]) < time_win : 
+            chan = last_trigger.channel
+            last_trigger.sequential = self.ntrigger
+            self.ntrigger   += 1
+            self.trigger_list.append(last_trigger.mydeepcopy() )
+            self.scintil_active[chan] += 1 # registro il segnale sullo scintillatore
+            return   # ho aggiunto trigger
+    		
+        else: # ho completato un blocco dati simultanei
+            self.nevt += 1
+            #if PlotFile ==1: pdf = matplotlib.backends.backend_pdf.PdfPages("output_graph.pdf")
+            for tt in self.trigger_list:
+                # if tt.nsamples>126:
+                #     print ("\n trigger lungo ", tt.nsamples)
+                tt.TogliPed_trigger() 
+                (nstart, tpeak, t50, intercept, slope, quality_flag, shift, peak_value) = tt.findTime()
+                #aggiungo informazioni temporali (t picco e t fit per constant fraction)
+                tt.tpeak = tpeak #+ shift
+                tt.t50=t50 #+ shift
+                tt.intercept=intercept ##da modificare
+                tt.slope=slope
+                tt.quality_flag = quality_flag
+                tt.Qcharge_flag = Qcharge_flag_port
+                tt.peak_value = peak_value
+                npeak = int (tpeak / SAMPLING_TIME)
+                if MyPlot ==1 or PlotFile==1: tt.PlotTrigger(nstart, npeak, intercept, slope, quality_flag, shift, peak_value)
+                
+                if tt.nsamples> 200: 
+                    # tt.PlotTrigger(nstart, npeak, intercept, slope)
+                    MyData.nWarning_leng +=1 # trigger molto lungo
+            # contiamo il numero di eventi per vari numeri di trigger
+            if evento.ntrigger==1: MyData.ntot_single  += 1
+            if evento.ntrigger==2: MyData.ntot_coinc2  += 1
+            if evento.ntrigger==3: MyData.ntot_coinc3  += 1
+            if evento.ntrigger==4: MyData.ntot_coinc4  += 1
+            if evento.ntrigger>=5: MyData.ntot_coinc5  += 1
+            # contiamo quali scintillatori hanno dato segnale
+            MyData.total_count_per_sipm = [MyData.total_count_per_sipm[i] + \
+                        evento.scintil_active[i] for i in range(N_SIPM)]
+            MyData.ntot_evt = evento.nevt     
+            #if MyPlot ==1 or PlotFile==1 : pdf.close()
+                
+    
+            if MyDebug >0 : self.PrintEvento()
+            MyData.scrivi_evento(self)
+            
+    # mostriamo i primi eventi
+            if (self.nevt < N_DUMP_FIRST_EVENTS) and (MyDebug ==0): self.PrintEvento()
+    
+            #azzero  l'evento appena scritto e inserisco il trigger appena letto
+            self.scintil_active=[0]*N_SIPM
+            self.trigger_list.clear()
+            self.trigger_list = list() #pronti per il prossimo
+            # metto il primo che ho trovato
+            self.trigger_list.append(last_trigger.mydeepcopy() )
+            chan = last_trigger.channel
+            self.scintil_active[chan]=1 # registro il segnale sullo scintillatore
+            self.ntrigger = 1
+            
+
+
+
+    def TogliPed(self, baseline):
+        # # togli i primi valori dai dati (assumendoli costanti)
+        # baseline  # n. punti utilizzati per calcolare piedistallo
+        for tt in self.trigger_list:
+            tt.TogliPed_trigger(baseline)
+
+
+    def PrintEvento(self):
+        if MyDebug > 1:
+            print("\n ************ ev. %d "% self.nevt)
+            print("Evento costituito dai seguenti %d trigger" % self.ntrigger)
+            for tt in self.trigger_list:
+                tt.PrintTrigger ()
+            print("\nScintillatori attivi: ", end="")
+            print([i for i in range(N_SIPM) if self.scintil_active[i] !=0])
+            print("\n --- Fine evento -----------\n\n")
+        
+
+class AP_DataRead():
+    # classe per aprire il file di input, leggerlo trigger dopo trigger
+    # creare i singoli eventi e scriverli in output
+        
+    
+    
+    def __init__(self, NEVMAX):            
+        # dati globali del file
+        self.ntot_trigger = 0  # n. trigger letti
+        self.fragmented   = 0 # N. trigger frammentati
+        self.nWarning_leng    = 0  # trigger molto lunghi
+        self.nWarning_charge  = 0  # trigger per cui la carica calcolata non coincide con quella fornita
+        self.ntot_evt    = 0  # n. eventi letti
+        self.ntot_single = 0 # eventi con un solo SiPM
+        self.ntot_coinc2 = 0 # eventi con  2 SiPM
+        self.ntot_coinc3 = 0 # eventi con  3 SiPM
+        self.ntot_coinc4 = 0 # eventi con  4 SiPM
+        self.ntot_coinc5 = 0 # eventi con almeno 5 SiPM
+        self.total_count_per_sipm = [0]*N_SIPM  # conteggio totale dei trigger su ogni SiPM
+        
+        # file di input e output, N. eventi da analizzare
+        self.f_in  = None # file di input da analizzare   (.bin)
+        self.f_out = None # file di output in formato txt
+        self.NEVMAX = NEVMAX # numero di eventi da processare
+        
+    def OpenInputFile(self, InputFile, InputLog):
+        self.f_in = open(InputFile, "rb")
+        #self.fl_in = open(InputLog, "rb")
+        print('File di input %s aperto correttamente: '% InputFile)
+        #print('File di input %s aperto correttamente: '% InputLog)
+        
+    def OpenOutputFile (self, OutputFile, OutputLog):
+        self.f_out = open(OutputFile,'wt')
+        #self.fl_out = open(OutputLog,'wt')
+        print ('File di output %s aperto correttamente\n' % OutputFile)
+        #print ('File di output %s aperto correttamente\n' % OutputLog)
+        
+    def CloseAllOutputFile (self):
+        self.f_in.close()
+        self.f_out.close()
+        #self.fl_in.close()
+        #self.fl_out.close()
+        print ("\n File di input e output chiusi correttamente\n")
+        
+  
+        
+    
+    
+    
+    
+    def scrivi_evento(self, evento):
+        global t_a_prev
+        global t_g_prev
+        global d_a
+        global d_g
+        self.f_out.write("%d  %d \n" % (evento.nevt, evento.ntrigger))
+        for tt in evento.trigger_list:
+            if(tt.tempo[1]==364): 
+                
+                t_a_prev=2
+            if(tt.tempo[2]==86399): 
+                
+                t_g_prev=2
+            if(t_a_prev==2 and tt.tempo[1]==0): 
+                
+                d_a=(d_a-1)+2 #incremento per tenere conto del reset dei secondi e gioni(?)
+                
+                t_a_prev=1
+            if(t_g_prev==2 and tt.tempo[2]==0): 
+                
+                d_g=(d_g-1)+2 #incremento per tenere conto del reset dei secondi e gioni(?)
+                
+                t_g_prev=1           
+            #print("%d %d %d %d %d %d %d %d \n" % (tt.tempo[0], tt.tempo[1], tt.tempo[2], t_a_prev, t_g_prev, t_s_prev, d_a, d_g))
+            tt.tempo[0] = tt.tempo[0] + d_a-1
+            tt.tempo[1] = tt.tempo[1] + d_g-1
+            #print("%d %d %d %d %d %d %d %d \n" % (tt.tempo[0], tt.tempo[1], tt.tempo[2], t_a_prev, t_g_prev, t_s_prev, d_a, d_g))
+            
+            # sipm, secondi,  ns, Q tot, # campioni
+            self.f_out.write("%d %d %d %d %d %d %d " % (tt.channel, \
+                    tt.tempo[0], tt.tempo[1], tt.tempo[2], tt.tempo[3], \
+                    tt.carica_totale, tt.nsamples))
+            #print("QchargFlatPort= ", Qcharge_flag_port)
+            #print("QchargFlat= ", self.Qcharge_flag)    
+            # indice  picco , indice campionamento dal fit al 50%, flag di qualita'
+            self.f_out.write("%d %5.1f %d %d %d %d \n" % (tt.tpeak, \
+                   tt.t50, tt.quality_flag, tt.intercept, tt.slope, tt.peak_value))
+            #t_a_prev = tt.tempo[0]
+            #t_g_prev = tt.tempo[1] 
+            #t_s_prev = tt.tempo[2]
+            # print("Distribuzione dei conteggi per SiPM")
+            # [print (" %5d" % nn, end="") for nn in range(N_SIPM)]
+            # print("\n")
+            # [print (" %5d" % nn, end="") for nn in MyData.total_count_per_sipm]
+            # print("\n")
+            
+
+                
 
 if __name__ == "__main__":
     # ------------------------------------------------------------------
@@ -109,18 +800,18 @@ if __name__ == "__main__":
     print ("Gennaio 2022   - Flavio Fontanelli \n")
     
 
-    #MyData = AP_DataRead(NEVMAX)
+    MyData = AP_DataRead(NEVMAX)
     filedati_in = inputPath+inputFile + '.bin'
     filelog_in = inputPath+inputlog
-    #MyData.OpenInputFile(filedati_in, filelog_in)
+    MyData.OpenInputFile(filedati_in, filelog_in)
     
     filedati_out = output_path + output_file
     fileWSVT_out = output_path + output_log
-    #MyData.OpenOutputFile(filedati_out, fileWSVT_out)
+    MyData.OpenOutputFile(filedati_out, fileWSVT_out)
     
 
-    #evento =Evento()
-    #last_trigger = Trigger()
+    evento =Evento()
+    last_trigger = Trigger()
  
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''    
     '''Leggo il file log per parametri run e WS '''
@@ -236,7 +927,7 @@ if __name__ == "__main__":
     t_g_prev=1
     t_a_prev=1
     t_s_prev=1 
-    '''
+
     while MyData.ntot_trigger <  NEVMAX  or NEVMAX <0:      
         # leggo i dati relativi al singolo trigger (un SIPM)
         rc =last_trigger.LeggiTrigger() 
@@ -244,7 +935,8 @@ if __name__ == "__main__":
         # if MyData.ntot_trigger==77:
         #     print ("trigger: %d"% MyData.ntot_trigger)
         #     last_trigger.PrintTrigger()
-        if MyData.ntot_trigger % 10000 == 0: print ("Trigger n. %d"% MyData.ntot_trigger) 
+        if MyData.ntot_trigger % 10000 == 0: 
+            print (f"Trigger n. {MyData.ntot_trigger}", end="\r") 
         # if last_trigger.nsamples >126:
         #     print ("\n\n  -- trigger molto lungo %d   --\n\n"% last_trigger.nsamples)
     
@@ -266,85 +958,79 @@ if __name__ == "__main__":
      
     #fine del run
     MyData.CloseAllOutputFile ()
-    '''
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''    
     '''Leggo il file per produrre i plot di controllo '''
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-    prova4 = open(output_file, "r")
-    #aprire nuovo file per dati temperatura e pressione (in progress)
-    #Wstation = open(r"C:\Users\User\AP20220224-wsd.txt", "r")'''
-    eventi=[''] #inseriamo un valore per far sì che il numero dell'evento coincida con
+    if PlotMonitor==1:
+        prova4 = open(output_file, "r")
+        #aprire nuovo file per dati temperatura e pressione (in progress)
+        #Wstation = open(r"C:\Users\User\AP20220224-wsd.txt", "r")'''
+        eventi=[''] #inseriamo un valore per far sì che il numero dell'evento coincida con
                     #l'indice inserito di sotto.
-    rate=[0,0,0,0,0,0,0,0,0,0,0,0]
-    rateLS=[0,0,0,0,0,0,0,0]            
+        rate=[0,0,0,0,0,0,0,0,0,0,0,0]
+        rateLS=[0,0,0,0,0,0,0,0]            
          
-    #check=True    #romosso perche mi sono accorto essere inutile
+        #check=True    #romosso perche mi sono accorto essere inutile
 
-    #Trun = 6; # tempo run espresso in ore
-    print("leggo il file Output", output_file)
-    while True:            #sostituisco check con True
-        riga = prova4.readline()
-
-        if riga == '':  # ho sostituito riga==False con riga=='' perchè            
-            break       # a quanto pare è una stringa vuota e non una variabile booleana
-        elif riga == '\n':
-            continue
-        # '''  #aggiungere una condizione per leggere la data che verra messa nel file  (probabilmente come primo dato)
-        #   if riga == 'Tempo inizio Run:'
-        #      testo = riga.split()
-        #       tstart = datetime.datetime.strptime(testo, '%c\n')
-          
-        n_trigger = riga.split() #separa numero evento dal numero di trigger
-
-        evento_n = []
-        #print("evento n. ", n_trigger[0])
-        for i in range(int(n_trigger[1])):
+        #Trun = 6; # tempo run espresso in ore
+        print("leggo il file Output", output_file)
+        while True:            #sostituisco check con True
             riga = prova4.readline()
-            #if i<10: print(riga)
-            riga_vect = riga.split()   #separa gli elementi di ogni trigger (n. SIM/
+
+            if riga == '':  # ho sostituito riga==False con riga=='' perchè            
+                break       # a quanto pare è una stringa vuota e non una variabile booleana
+            elif riga == '\n':
+                continue
+         # '''  #aggiungere una condizione per leggere la data che verra messa nel file  (probabilmente come primo dato)
+         #   if riga == 'Tempo inizio Run:'
+          #      testo = riga.split()
+         #       tstart = datetime.datetime.strptime(testo, '%c\n')
+          
+            n_trigger = riga.split() #separa numero evento dal numero di trigger
+
+            evento_n = []
+            #print("evento n. ", n_trigger[0])
+            for i in range(int(n_trigger[1])):
+                riga = prova4.readline()
+
+                riga_vect = riga.split()   #separa gli elementi di ogni trigger (n. SIM/
                                            #tempo in sec ecc...)
 
-            for j in range(len(riga_vect)):     # sarà sempre 9
-                riga_vect[j] = float(riga_vect[j])    #creiamo la terza dimensione
+                for j in range(len(riga_vect)):     # sarà sempre 9
+                    riga_vect[j] = float(riga_vect[j])    #creiamo la terza dimensione
             evento_n.append(riga_vect)   #creiamo la seconda dimensione
-            #if i<10: print(riga_vect)
-        eventi.append(evento_n)   #creiamo la prima dimensione   
-        #print(eventi[1])
-    print("Ultimo evento n. ", n_trigger[0])   
-    tempos =[[],[],[],[],[],[],[],[],[],[],[],[]]
-    carica = [[],[],[],[],[],[],[],[],[],[],[],[]]
-    carica_barra_L = [[],[],[],[],[]]
-    tcf = [[],[],[],[],[],[],[],[],[],[],[],[]]
-    last_event=len(eventi)-1        
-    #Trun = eventi[last_event][0][1]-eventi[1][0][1]+(eventi[last_event][0][2]-eventi[1][0][2])/1e9
-    #nuova definizione del formato dati che comprende anche anno e giorno
-    Trun = (eventi[last_event][0][1]-eventi[1][0][1])*3.154e+7+(eventi[last_event][0][2]-eventi[1][0][2])*86400+eventi[last_event][0][3]-eventi[1][0][3]+(eventi[last_event][0][4]-eventi[1][0][4])/1e9
-    '''
+            
+            eventi.append(evento_n)   #creiamo la prima dimensione   
+        print("Ultimo evento n. ", n_trigger[0])   
+        tempos =[[],[],[],[],[],[],[],[],[],[],[],[]]
+        carica = [[],[],[],[],[],[],[],[],[],[],[],[]]
+        carica_barra_L = [[],[],[],[],[]]
+        tcf = [[],[],[],[],[],[],[],[],[],[],[],[]]
+        last_event=len(eventi)-1        
+        #Trun = eventi[last_event][0][1]-eventi[1][0][1]+(eventi[last_event][0][2]-eventi[1][0][2])/1e9
+        #nuova definizione del formato dati che comprende anche anno e giorno
+        Trun = (eventi[last_event][0][1]-eventi[1][0][1])*3.154e+7+(eventi[last_event][0][2]-eventi[1][0][2])*86400+eventi[last_event][0][3]-eventi[1][0][3]+(eventi[last_event][0][4]-eventi[1][0][4])/1e9
+        '''
         if(eventi[last_event][0][1]<eventi[1][0][1]):#nel caso il contatore dei secondi si resetti durante il run
             for i in range(len(eventi)):
                 j=i-1
                 if(j!=-1):
                     if(eventi[i][0][1]==0 and eventi[j][0][1]>eventi[i][0][1]): Trun = eventi[j][0][1]-eventi[1][0][1]+eventi[last_event][0][1]+(eventi[j][0][2]-eventi[1][0][2]+eventi[last_event][0][2])/1e9
-    '''       
-    #SGpe=[0.04,0.06,0.028,0.031,0.042,0.026,0.037,0.139,0.038,1,1,1]
-    SGpe=[1,1,1,1,1,1,1,1,1,1,1,1]    
-    #print("Tempo totale Run: ", Trun)  
-    for i in range (len(eventi)):
-        for j in range (len(eventi[i])):
-          if (eventi[i][j][5]>0):
-            channel = int(eventi[i][j][0])
-            valore = rate[channel]
-            #rate[channel] =  valore + 1/(Trun*60*60)
-            t=eventi[i][j][3]*1e9+eventi[i][j][4]-(eventi[1][0][3]*1e9+eventi[1][0][4])
-            tempos[channel].append(t)
-            if(eventi[i][j][5]>1000 and sciglass==1): carica[channel].append(eventi[i][j][5]/10000/1.2/SGpe[channel])
-            if(sciglass>1 ): carica[channel].append(eventi[i][j][5]/10000*1.1)            
-            if(sciglass==0): carica[channel].append(eventi[i][j][5]/10000)            
-                        
-    print("Disegno Multiplot carica singola")   
+        '''       
+        #print("Tempo totale Run: ", Trun)  
+        for i in range (len(eventi)):
+            for j in range (len(eventi[i])):
+              if (eventi[i][j][9]!=1):
+                channel = int(eventi[i][j][0])
+                valore = rate[channel]
+                #rate[channel] =  valore + 1/(Trun*60*60)
+                t=eventi[i][j][3]*1e9+eventi[i][j][4]-(eventi[1][0][3]*1e9+eventi[1][0][4])
+                tempos[channel].append(t)
+                carica[channel].append(eventi[i][j][5]/10000)
+      
+        print("Disegno Multiplot carica singola")   
         #fig, ax = plt.subplots(nrows=3, ncols=4, figsize=(18, 5))
-    ''' for i in range(4):
+        ''' for i in range(4):
             plt.subplot(1, 2, 1)
             n, bins, patches = plt.hist(carica[i], 60, density=1, facecolor='green', alpha=0.75)
             ax[0,i].plot()
@@ -356,7 +1042,7 @@ if __name__ == "__main__":
             #ax[1,i].hist(carica[j], 60, density=1, facecolor='green', alpha=0.75) '''           
  
         
-    if PlotMonitor==1:    
+        
         #rate=[0,0,0,0,0,0,0,0,0,0,0,0]
         #rateLS=[0,0,0,0,0,0,0,0]   
         '''Calcolo Coincidenze LS'''
@@ -370,8 +1056,6 @@ if __name__ == "__main__":
         #8-8_10,10-8_10,9-9_11,11-9_11
         caricaSSd = [[],[],[],[],[]]
         tempoG=[[],[],[],[],[],[],[],[]]
-        tempoGL=[[],[]]
-        tempoGS=[[],[]]
         #8-8_11,11-8_11,9-9_10,10-9_10
         ind=0
         ind2=1 
@@ -535,10 +1219,10 @@ if __name__ == "__main__":
         #print('Stampo vettore rate tempo: ') 
         #print(countLS_t)
         '''Calcolo coincidenze Angoli''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-        1 XXXXXXXXXXXXXXXXXX 0
+        # XXXXXXXXXXXXXXXXXX #
            X              X           PIANO SUPERIORE
            X              X
-        3 XXXXXXXXXXXXXXXXXX 2
+        # XXXXXXXXXXXXXXXXXX #
            X              X
            8              9
        
@@ -551,11 +1235,6 @@ if __name__ == "__main__":
         '''
         countAng=[0,0,0,0,0,0] 
         countAng_err=[0,0,0,0,0,0]
-        countSS_ref=[0,0]
-        countSS_test=[0,0,0,0]
-        #calib=[0.9990592306897463, 0.983787871943739, 0.65868146882135, 0.6839139183857759]#calibrazioni con treshold 15 mV
-        calib=[1.0314053113413315, 1.0046311906735867, 0.6538601266444812, 0.6714588464092348]#calibrazioni con treshold 10 mV
-        
         ##Set Binari
         if AngPlot==1:
             Ang=[0,42.3,59.9,67.8,73.0,76.5]        
@@ -564,250 +1243,43 @@ if __name__ == "__main__":
         if AngPlot==2:
             Ang=[0,24.4,51.8,71.0,75.0,76.5]        
             Ang_err=[12.8,9.9,4.5,1.3,0.8,0.7]
-        ##Set Ravvicinato
-        if AngPlot>2:
-            Ang=[0,24.4,42.3,51.8,59.9,76.5]        
-            Ang_err=[12.8,9.9,6.35,4.5,3.0,0.7]            
         
         if AngPlot>0:
-            print("calcolo Distribuzione angolare")
             for i in range (len(eventi)):
                 for j in range(len(eventi[i])):
-                    if AngPlot<3:
-                        if (eventi[i][j][0] == 8 and eventi[i][j][9]!=1): # cerco primo canale corto
-                            for l in range(len(eventi[i])):
-                                if (l!=j and eventi[i][l][0] == 10 and eventi[i][l][9]!=1): countAng[0]=countAng[0]+1/Trun
-                                if (l!=j and eventi[i][l][0] == 0 and eventi[i][l][9]!=1): countAng[1]=countAng[1]+1/Trun/calib[0]
-                                if (l!=j and eventi[i][l][0] == 1 and eventi[i][l][9]!=1): countAng[2]=countAng[2]+1/Trun/calib[1]
-                                if (l!=j and eventi[i][l][0] == 2 and eventi[i][l][9]!=1): countAng[3]=countAng[3]+1/Trun/calib[2]
-                                if (l!=j and eventi[i][l][0] == 3 and eventi[i][l][9]!=1): countAng[4]=countAng[4]+1/Trun/calib[3]
-                                if (l!=j and eventi[i][l][0] == 11 and eventi[i][l][9]!=1): countAng[5]=countAng[5]+1/Trun
-                    if AngPlot==3:
-                        if (eventi[i][j][0] == 8 and eventi[i][j][9]!=1): # cerco primo canale corto
-                            for l in range(len(eventi[i])):
-                                if (l!=j and eventi[i][l][0] == 10 and eventi[i][l][9]!=1): countAng[0]=countAng[0]+1/Trun
-                                if (l!=j and eventi[i][l][0] == 0 and eventi[i][l][9]!=1): countAng[1]=countAng[1]+1/Trun/calib[0]
-                                if (l!=j and eventi[i][l][0] == 1 and eventi[i][l][9]!=1): countAng[2]=countAng[2]+1/Trun/calib[1]
-                                if (l!=j and eventi[i][l][0] == 2 and eventi[i][l][9]!=1): countAng[3]=countAng[3]+1/Trun/calib[2]
-                                if (l!=j and eventi[i][l][0] == 3 and eventi[i][l][9]!=1): countAng[4]=countAng[4]+1/Trun/calib[3]
-                                if (l!=j and eventi[i][l][0] == 11 and eventi[i][l][9]!=1): countAng[5]=countAng[5]+1/Trun  
-                                '''                                          
-                    if AngPlot==3:    
-                        if (eventi[i][j][0] == 8 and eventi[i][j][9]!=1): # cerco primo canale corto
-                            for l in range(len(eventi[i])):
-                                if (l!=j and eventi[i][l][0] == 10 and eventi[i][l][9]!=1): countAng[0]=countAng[0]+1/Trun
-                                if (l!=j and eventi[i][l][0] == 0 and eventi[i][l][9]!=1): countAng[4]=countAng[4]+1/Trun/calib[3]
-                                if (l!=j and eventi[i][l][0] == 1 and eventi[i][l][9]!=1): countAng[3]=countAng[3]+1/Trun/calib[2]
-                                if (l!=j and eventi[i][l][0] == 2 and eventi[i][l][9]!=1): countAng[2]=countAng[2]+1/Trun/calib[1]
-                                if (l!=j and eventi[i][l][0] == 3 and eventi[i][l][9]!=1): countAng[1]=countAng[1]+1/Trun/calib[0]
-                                if (l!=j and eventi[i][l][0] == 11 and eventi[i][l][9]!=1): countAng[5]=countAng[5]+1/Trun
-                                '''
-                    if AngPlot==4:    
-                        if (eventi[i][j][0] == 9 and eventi[i][j][9]!=1): # cerco primo canale corto
-                            for l in range(len(eventi[i])):
-                                if (l!=j and eventi[i][l][0] == 10 and eventi[i][l][9]!=1): countAng[5]=countAng[5]+1/Trun
-                                if (l!=j and eventi[i][l][0] == 0 and eventi[i][l][9]!=1): countAng[1]=countAng[1]+1/Trun/calib[0]
-                                if (l!=j and eventi[i][l][0] == 1 and eventi[i][l][9]!=1): countAng[2]=countAng[2]+1/Trun/calib[1]
-                                if (l!=j and eventi[i][l][0] == 2 and eventi[i][l][9]!=1): countAng[3]=countAng[3]+1/Trun/calib[2]
-                                if (l!=j and eventi[i][l][0] == 3 and eventi[i][l][9]!=1): countAng[4]=countAng[4]+1/Trun/calib[3]
-                                if (l!=j and eventi[i][l][0] == 11 and eventi[i][l][9]!=1): countAng[0]=countAng[0]+1/Trun                                
-        if testsimp_s == 1 :
-            print("calibrazione sipm misura angolare")
-            for i in range (len(eventi)):
-                for j in range(len(eventi[i])):
-                    if (eventi[i][j][0] == 8 and eventi[i][j][9]!=1): # cerco primo canale corto
-                        #print("trovato evento su sipm 8")
+                    if (eventi[i][j][0] == 8 and eventi[i][j][7]!=1): # cerco primo canale corto
                         for l in range(len(eventi[i])):
-                            if (l!=j and eventi[i][l][0] == 10 and eventi[i][l][9]!=1): countSS_ref[0]=countSS_ref[0]+1/Trun
-                            if (l!=j and eventi[i][l][0] == 1 and eventi[i][l][9]!=1): countSS_test[1]=countSS_test[1]+1/Trun
-                            if (l!=j and eventi[i][l][0] == 3 and eventi[i][l][9]!=1): countSS_test[3]=countSS_test[3]+1/Trun
-                    if (eventi[i][j][0] == 9 and eventi[i][j][9]!=1): # cerco primo canale corto
-                        #print("trovato evento su sipm 9")
+                            if (l!=j and eventi[i][l][0] == 10 and eventi[i][l][7]!=1): countAng[0]=countAng[0]+1/Trun
+                            if (l!=j and eventi[i][l][0] == 0 and eventi[i][l][7]!=1): countAng[1]=countAng[1]+1/Trun
+                            if (l!=j and eventi[i][l][0] == 1 and eventi[i][l][7]!=1): countAng[2]=countAng[2]+1/Trun
+                            if (l!=j and eventi[i][l][0] == 2 and eventi[i][l][7]!=1): countAng[3]=countAng[3]+1/Trun
+                            if (l!=j and eventi[i][l][0] == 3 and eventi[i][l][7]!=1): countAng[4]=countAng[4]+1/Trun
+                            if (l!=j and eventi[i][l][0] == 11 and eventi[i][l][7]!=1): countAng[5]=countAng[5]+1/Trun
+                    if (eventi[i][j][0] == 9 and eventi[i][j][7]!=1): # cerco primo canale corto
                         for l in range(len(eventi[i])):
-                            if (l!=j and eventi[i][l][0] == 11 and eventi[i][l][9]!=1): countSS_ref[1]=countSS_ref[1]+1/Trun
-                            if (l!=j and eventi[i][l][0] == 0 and eventi[i][l][9]!=1): countSS_test[0]=countSS_test[0]+1/Trun
-                            if (l!=j and eventi[i][l][0] == 2 and eventi[i][l][9]!=1): countSS_test[2]=countSS_test[2]+1/Trun
+                            if (l!=j and eventi[i][l][0] == 10 and eventi[i][l][7]!=1): countAng[5]=countAng[5]+1/Trun
+                            if (l!=j and eventi[i][l][0] == 0 and eventi[i][l][7]!=1): countAng[4]=countAng[4]+1/Trun
+                            if (l!=j and eventi[i][l][0] == 1 and eventi[i][l][7]!=1): countAng[3]=countAng[3]+1/Trun
+                            if (l!=j and eventi[i][l][0] == 2 and eventi[i][l][7]!=1): countAng[2]=countAng[2]+1/Trun
+                            if (l!=j and eventi[i][l][0] == 3 and eventi[i][l][7]!=1): countAng[1]=countAng[1]+1/Trun
+                            if (l!=j and eventi[i][l][0] == 11 and eventi[i][l][7]!=1): countAng[0]=countAng[0]+1/Trun                            
         
-        ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    dec=0
-    index=0
-    refj=0
-    refi=0
-    time_dec=[]
-    time_d_cal=0
-    g=0
-    
-    if Decadimento>0:
-        print("calcolo tempi decadimento")
-        #print(eventi[62])
-            
-        for i in range (len(eventi)):
-            #if(i<20):
-            #print(i, j, refi, refj)
-                #print(i, eventi[i])
-            if (dec==0):
-                for j in range(len(eventi[i])):
-                    if ((eventi[i][j][0] == 1 or eventi[i][j][0] == 0) and eventi[i][j][9]!=1):
-                        #for g in range(len(eventi[i])):
-                         #   if (j!=g and eventi[i][g][0] == 0 and eventi[i][g][9]!=1):# cerco hit su primo piano
-                                #print(i)
-                        for l in range(len(eventi[i])):
-                                if (l!=j and l!=g and (eventi[i][l][0] == 2 or eventi[i][l][0] == 3) and eventi[i][l][9]!=1): # cerco hit su secondo piano
-                                    for h in range(len(eventi[i])):
-                                        if (h!=j and h!=l and h!=g and (eventi[i][h][0] == 4 or eventi[i][h][0] == 5) and eventi[i][h][9]!=1): 
-                                            dec=0 # cerco hit su terzo piano piano
-                                            continue
-                                        if (h!=j and h!=l and h!=g and eventi[i][h][0] != 4 and eventi[i][h][0] != 5 and eventi[i][h][9]!=1): 
-                                            dec=1
-                                            refj=l
-                                            refi=i
-
-                                        
-            if(dec==1):                         
-                for j in range(len(eventi[i])):
-                    if (i!=refi  and (eventi[i][j][0] == 2 or eventi[i][j][0] == 3) and eventi[i][j][4]>eventi[refi][refj][4] and eventi[i][j][9]!=1): # cerco hit su secondo piano in evento sucessivo    
-                        time_d_cal=((eventi[i][j][1]-eventi[refi][refj][1])*3.154e+7+(eventi[i][j][2]-eventi[refi][refj][2])*86400+eventi[i][j][3]-eventi[refi][refj][3]+(eventi[i][j][4]-eventi[refi][refj][4])/1e9)*1e3
-
-                        for g in range(len(eventi[i])):
-                            if (j!=g and eventi[i][g][0] != 5 or eventi[i][g][0] != 4 and eventi[i][g][9]!=1):# cerco hit su primo piano
-                           
-                                '''if(i<100):
-                                print(i, j, refi, refj)
-                                print(eventi[i][j])
-                                print(eventi[refi][refj])
-                                print(eventi[i][j][4], eventi[refi][refj][4])'''
-                                
-                                if (time_d_cal>0.004):
-                                    time_dec.append(time_d_cal)
-                                dec=0
-                                index=index+1
-                                refi=i
-                                #print(time_dec)
-                                continue
-                            
         
-    '''matrice''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''' 
-               
-    contRC=0
-    #########################
-    #        Plastica       #
-    #########################
-    #       #       #       #
-    #       #       #       #
-    #       #       #       #
-    #########################
-    #       #       #       #
-    #       #       #       #
-    #       #       #       #
-    #########################
-    #       #       #       #
-    #       #       #       #
-    #       #       #       #
-    #########################
-    #        Plastica       #
-    #########################
-    
-    
-    if sciglass>0:
-        caricaCoin = [[],[],[],[],[],[],[],[],[],[],[],[]]
-        caricaCoin3 = [[],[],[],[],[],[],[],[],[],[],[],[]]
-        Coinc2 = [0,0,0,0,0,0,0,0,0,0,0,0]
-        Coinc3 = [0,0,0,0,0,0,0,0,0,0,0,0]
         
-        print("Glass Matrix analisys")
-        #print(eventi[62])
-            
-        for i in range (len(eventi)):
-            #if i<10: print(len(eventi[i]), i)
-            countriemp = 0
-            countriemp1 = 0
-            
-            countCoinc = 0
-            countCoinc3 = 0
-            #if(i<20):
-            #print(i, j, refi, refj)
-                #print(i, eventi[i])    
-            for j in range(len(eventi[i])):
-                #if (countriemp ==1): break
-                if (eventi[i][j][0] == 9 or eventi[i][j][0] == 11 and eventi[i][j][9]!=1 and countriemp == 0 and countriemp1 == 0):#cerco un evento da una delle plastiche
-                    for l in range(len(eventi[i])):
-                       
-                        if (l!=j and (eventi[i][l][0] == 9 or eventi[i][l][0] == 11) and eventi[i][l][9]!=1 and eventi[i][l][0] != eventi[i][j][0] and countriemp == 0 and countriemp1 == 0): #chiedo coincidenza barre plastica
-                            for h in range(len(eventi[i])):
-                                if (h!=j and h!=l and eventi[i][h][0] != 9 and eventi[i][h][0] != 11 and eventi[i][h][9]!=1): # chiedo coincidenza con un vetro o plastica corta
-                                    if(countriemp == 0):# escludo coincidenze con se stessi
-                                        channel1 = int(eventi[i][j][0])
-                                        channel2 = int(eventi[i][l][0])
-                                
-                                        caricaCoin[channel1].append(eventi[i][j][5]/10000)
-                                        caricaCoin[channel2].append(eventi[i][l][5]/10000)
-                                        Coinc2[channel1]=Coinc2[channel1]+1
-                                        Coinc2[channel2]=Coinc2[channel2]+1
-                                    
-                                    channel3 = int(eventi[i][h][0])
-                                    if(eventi[i][h][5]>1000 and sciglass==1): caricaCoin[channel3].append(eventi[i][h][5]/10000/1.2/SGpe[channel3])
-                                    if(sciglass>1): caricaCoin[channel3].append(eventi[i][h][5]/10000)
-                                    Coinc2[channel3]=Coinc2[channel3]+1
-                                    #print(countriemp, channel3, countCoinc)
-                                    countriemp = 1
-                                if (h!=j and h!=l and eventi[i][h][0] == 10 and eventi[i][h][9]!=1):  #chiedo coincidenza barretta corta
-                                    for p in range(len(eventi[i])):
-                                        if (p!=h and p!=j and p!=l and eventi[i][p][0] != 9 and eventi[i][p][0] != 10 and eventi[i][p][0] != 11 and eventi[i][p][9]!=1):
-                                            #chiedo coincidenza con un vetro
-                                            if(countriemp1 == 0):
-                                                channel1 = int(eventi[i][j][0])
-                                                channel2 = int(eventi[i][l][0])
-                                                channel4 = int(eventi[i][h][0])
-                                            
-                                
-                                                caricaCoin3[channel1].append(eventi[i][j][5]/10000)
-                                                caricaCoin3[channel2].append(eventi[i][l][5]/10000)
-                                                caricaCoin3[channel4].append(eventi[i][h][5]/10000)
-                                                Coinc3[channel1]=Coinc3[channel1]+1
-                                                Coinc3[channel2]=Coinc3[channel2]+1
-                                                Coinc3[channel4]=Coinc3[channel4]+1
-                                    
-                                            channel3 = int(eventi[i][p][0])
-                                            if(eventi[i][p][5]>1000 and sciglass==1): caricaCoin3[channel3].append(eventi[i][p][5]/10000/1.2/SGpe[channel3])
-                                            if(sciglass>1): caricaCoin3[channel3].append(eventi[i][p][5]/10000)
-                                            Coinc3[channel3]=Coinc3[channel3]+1
-                                            countCoinc3=countCoinc3+1
-                                            #print(countriemp, channel3, countCoinc)
-                                            countriemp1 = 1
-                                    
-            #if(countCoinc>0): MultiCoin.append(countCoinc)
-    #print(MultiCoin)
-    file_quatro = open("dec.txt", "w")    
-    '''Disegno i Grafici''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''' 
-    if PlotMonitor==1:    
+        '''Disegno i Grafici''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''' 
         file_uno = open("Rate.txt", "w")
-        if testsimp_s == 1 : file_tre = open("RateCalib.txt", "w")
-        file_due = open("Ang.txt", "w")
-        
+
         for j in range(8):
             for i in range(len(countLS_t[j])):
                 tempoG[j].append(i*rate_scan)
                 #if((countLS_t[j]-countLS[j])/countLS[j]>0 and (countLS_t[j]-countLS[j])/countLS[j]>0.1): countLS_t[j]=countLS[j]+countLS[j]*0.1
                 #if((countLS_t[j]-countLS[j])/countLS[j]<0 and (countLS_t[j]-countLS[j])/countLS[j]<-0.1): countLS_t[j]=countLS[j]-countLS[j]*0.1
-        for j in range(2):
-            for i in range(len(countLL_t[j])):
-                tempoGL[j].append(i*rate_scan)
-                #if((countLS_t[j]-countLS[j])/countLS[j]>0 and (countLS_t[j]-countLS[j])/countLS[j]>0.1): countLS_t[j]=countLS[j]+countLS[j]*0.1
-                #if((countLS_t[j]-countLS[j])/countLS[j]<0 and (countLS_t[j]-countLS[j])/countLS[j]<-0.1): countLS_t[j]=countLS[j]-countLS[j]*0.1
-        for j in range(2):
-            for i in range(len(countSS_t[j])):
-                tempoGS[j].append(i*rate_scan)
-                #if((countLS_t[j]-countLS[j])/countLS[j]>0 and (countLS_t[j]-countLS[j])/countLS[j]>0.1): countLS_t[j]=countLS[j]+countLS[j]*0.1
-                #if((countLS_t[j]-countLS[j])/countLS[j]<0 and (countLS_t[j]-countLS[j])/countLS[j]<-0.1): countLS_t[j]=countLS[j]-countLS[j]*0.1
-
         with PdfPages(outmonitor) as pdf:
             fig = plt.figure(figsize=(15,7.5))
             for i in range(12):
                 j=i+1
-                plt.subplot(3, 4, j)   
-       
-                n, bins, patches = plt.hist(carica[i], 100, range=[0, 15], density=False, facecolor='green', alpha=0.75)
-          
+                plt.subplot(3, 4, j)
+                n, bins, patches = plt.hist(carica[i], 100, range=[0, 20], density=False, facecolor='green', alpha=0.75)
                 plt.title(r'Q SiPM %d' %(i))
                 plt.xlabel("Charge(Arbitrary Unit)")
                 plt.ylabel("Event(number)")                
@@ -879,7 +1351,7 @@ if __name__ == "__main__":
                 #plt.title(r'Q SiPM %d coinc %d' %(i))   
                 #ax[2,i].plot()
                 
-                print("Valore medio coinc LS ", LS_string[i], " = ", round(statistics.mean(carica_barra_LS[i]),3), " +- ", round(3*statistics.stdev(carica_barra_LS[i]),3))
+                print("Valore medio coinc LS ", LS_string[i], " = ", round(statistics.mean(carica_barra_LS[i]),3), " +- ", round(statistics.stdev(carica_barra_LS[i]),3))
                 file_uno.write("Valore medio Rate coinc LS %s = %.3f +- %.3f hz \n"% ( LS_string[i], round(statistics.mean(carica_barra_LS[i]),3),  round(statistics.stdev(carica_barra_LS[i]),3)))
                 
             plt.legend(loc='best', fontsize=11)
@@ -929,19 +1401,19 @@ if __name__ == "__main__":
             for i in range(2):
                 countSS[i]=countSS[i]/2
                 countSSd[i]=countSSd[i]/2
-                print("Rate coinc SS  ", SS_string[i], " = ", round(countSS[i],3), " +- ", round(3*math.sqrt(countSS[i]/Trun),3), " Hz")
+                print("Rate coinc SS  ", SS_string[i], " = ", round(countSS[i],3), " +- ", round(math.sqrt(countSS[i]/Trun),3), " Hz")
                 file_uno.write("Valore medio Rate coinc SS %s = %.3f +- %.3f hz \n"% ( SS_string[i], round(countSS[i],3),  round(math.sqrt(countSS[i]/Trun),3)))
 
             for i in range(2):    
-                print("Rate coinc SSd ", SSd_string[i], " = ", round(countSSd[i],3), " +- ", round(3*math.sqrt(countSSd[i]/Trun),3), " Hz")
+                print("Rate coinc SSd ", SSd_string[i], " = ", round(countSSd[i],3), " +- ", round(math.sqrt(countSSd[i]/Trun),3), " Hz")
                 file_uno.write("Valore medio Rate coinc SSd %s = %.3f +- %.3f hz \n"% ( SSd_string[i], round(countSSd[i],3),  round(math.sqrt(countSSd[i]/Trun),3)))
                 
             for i in range(2):
-                print("Rate coinc LL  ", LL_string[i], " = ", round(countLL[i],3), " +- ", round(3*math.sqrt(countLL[i]/Trun),3), " Hz")
+                print("Rate coinc LL  ", LL_string[i], " = ", round(countLL[i],3), " +- ", round(math.sqrt(countLL[i]/Trun),3), " Hz")
                 file_uno.write("Valore medio Rate coinc LL %s = %.3f +- %.3f hz \n"% ( LL_string[i], round(countLL[i],3),  round(math.sqrt(countLL[i]/Trun),3)))
                 
             for i in range(2):
-                print("Rate coinc LLd ", LLd_string[i], " = ", round(countLLd[i],3), " +- ", round(3*math.sqrt(countLLd[i]/Trun),3), " Hz")
+                print("Rate coinc LLd ", LLd_string[i], " = ", round(countLLd[i],3), " +- ", round(math.sqrt(countLLd[i]/Trun),3), " Hz")
                 file_uno.write("Valore medio Rate coinc LLd %s = %.3f +- %.3f hz \n"% ( LLd_string[i], round(countLLd[i],3),  round(math.sqrt(countLLd[i]/Trun),3)))
                 
             fig = plt.figure(figsize=(15,7.5))
@@ -1020,10 +1492,10 @@ if __name__ == "__main__":
                 j=i+1
                 plt.subplot(2, 4, j)
                 plt.errorbar(tempoG[i],countLS_t[i], countLS_t_err[i], marker='.', linestyle='none')
-                plt.ylim([0.1, 0.6])
+                plt.ylim([0.2, 0.5])
                 plt.axhline(y=countLS[i], color='r', linestyle='-')
-                plt.axhline(y=countLS[i]+3*math.sqrt(countLS[i]/Trun), color='grey', linestyle='--')
-                plt.axhline(y=countLS[i]-3*math.sqrt(countLS[i]/Trun), color='grey', linestyle='--')
+                plt.axhline(y=countLS[i]+math.sqrt(countLS[i]/Trun), color='grey', linestyle='--')
+                plt.axhline(y=countLS[i]-math.sqrt(countLS[i]/Trun), color='grey', linestyle='--')
                 plt.title('Rate LS' + LS_string[i])
                 #plt.text(500, .45, "Rate coinc LS ", LS_string[i], " = ", round(countLS[i],3), " +- ", round(math.sqrt(countLS[i]/Trun),3), " Hz")
             plt.suptitle(r'Plot Rate LS')
@@ -1035,41 +1507,41 @@ if __name__ == "__main__":
             
             fig = plt.figure(figsize=(15,7.5)) 
             plt.subplot(2, 2, 1)
-            plt.errorbar(tempoGL[0],countLL_t[0], countLL_t_err[0], marker='.', linestyle='none')
-            plt.ylim([0.5, 1.5])
+            plt.errorbar(tempoG[0],countLL_t[0], countLL_t_err[0], marker='.', linestyle='none')
+            plt.ylim([0.5, 0.9])
             plt.axhline(y=countLL[0], color='r', linestyle='-')
-            plt.axhline(y=countLL[0]+3*math.sqrt(countLL[0]/Trun), color='grey', linestyle='--')
-            plt.axhline(y=countLL[0]-3*math.sqrt(countLL[0]/Trun), color='grey', linestyle='--')            
+            plt.axhline(y=countLL[0]+math.sqrt(countLL[0]/Trun), color='grey', linestyle='--')
+            plt.axhline(y=countLL[0]-math.sqrt(countLL[0]/Trun), color='grey', linestyle='--')            
             plt.title('Rate LL ' + LL_string[0])
             plt.ylabel("Rate(Hz)")
             plt.xlabel("Time(second)") 
             
             plt.subplot(2, 2, 2)
-            plt.errorbar(tempoGL[1],countLL_t[1], countLL_t_err[1], marker='.', linestyle='none')
-            plt.ylim([0.5, 1.5])
+            plt.errorbar(tempoG[1],countLL_t[1], countLL_t_err[1], marker='.', linestyle='none')
+            plt.ylim([0.5, 0.9])
             plt.axhline(y=countLL[1], color='r', linestyle='-')
-            plt.axhline(y=countLL[1]+3*math.sqrt(countLL[1]/Trun), color='grey', linestyle='--')
-            plt.axhline(y=countLL[1]-3*math.sqrt(countLL[1]/Trun), color='grey', linestyle='--')              
+            plt.axhline(y=countLL[1]+math.sqrt(countLL[1]/Trun), color='grey', linestyle='--')
+            plt.axhline(y=countLL[1]-math.sqrt(countLL[1]/Trun), color='grey', linestyle='--')              
             plt.title('Rate LL ' + LL_string[1])
             plt.ylabel("Rate(Hz)")
             plt.xlabel("Time(second)") 
                       
             plt.subplot(2, 2, 3)
-            plt.errorbar(tempoGS[0],countSS_t[0], countSS_t_err[0], marker='.', linestyle='none')
-            plt.ylim([0.1, 0.6])
+            plt.errorbar(tempoG[0],countSS_t[0], countSS_t_err[0], marker='.', linestyle='none')
+            plt.ylim([0.1, 0.4])
             plt.axhline(y=countSS[0], color='r', linestyle='-')
-            plt.axhline(y=countSS[0]+3*math.sqrt(countSS[0]/Trun), color='grey', linestyle='--')
-            plt.axhline(y=countSS[0]-3*math.sqrt(countSS[0]/Trun), color='grey', linestyle='--')             
+            plt.axhline(y=countSS[0]+math.sqrt(countSS[0]/Trun), color='grey', linestyle='--')
+            plt.axhline(y=countSS[0]-math.sqrt(countSS[0]/Trun), color='grey', linestyle='--')             
             plt.title('Rate SS ' + SS_string[0])
             plt.ylabel("Rate(Hz)")
             plt.xlabel("Time(second)") 
             
             plt.subplot(2, 2, 4)
-            plt.errorbar(tempoGS[1],countSS_t[1], countSS_t_err[1], marker='.', linestyle='none')
-            plt.ylim([0.1, 0.6])
+            plt.errorbar(tempoG[1],countSS_t[1], countSS_t_err[1], marker='.', linestyle='none')
+            plt.ylim([0.1, 0.4])
             plt.axhline(y=countSS[1], color='r', linestyle='-')
-            plt.axhline(y=countSS[1]+3*math.sqrt(countSS[1]/Trun), color='grey', linestyle='--')
-            plt.axhline(y=countSS[1]-3*math.sqrt(countSS[1]/Trun), color='grey', linestyle='--')              
+            plt.axhline(y=countSS[1]+math.sqrt(countSS[1]/Trun), color='grey', linestyle='--')
+            plt.axhline(y=countSS[1]-math.sqrt(countSS[1]/Trun), color='grey', linestyle='--')              
             plt.title('Rate SS ' + SS_string[1])
             plt.ylabel("Rate(Hz)")
             plt.xlabel("Time(second)") 
@@ -1087,10 +1559,8 @@ if __name__ == "__main__":
                     #print("The variable, x is of type:", type(x))
                     return a*(np.cos(np.pi*x/180*x0)**2)
                 x = np.array(Ang)
-                xf = np.arange(Ang[0],Ang[5])
                 y = np.array(countAng)
-                popt , pcov = curve_fit(cosq,x,y,bounds=((countAng[0]*0.95), [(countAng[0]*1.05), 1.5]))
-                
+                popt , pcov = curve_fit(cosq,x,y,p0=[2, 2])
                 print(popt)
                 '''
                 print("The variable, popt is of type:", type(popt))
@@ -1103,11 +1573,11 @@ if __name__ == "__main__":
                 '''
                 fig = plt.figure(figsize=(15,7.5)) 
                 for i in range(6):
-                    countAng_err[i]=math.sqrt(countAng[i]/Trun)
+                    countAng_err[i]=math.sqrt(countAng[i]*Trun)/Trun
 
                 #plt.plot(x,y,label='data')
                 plt.errorbar(Ang,countAng, countAng_err, Ang_err, marker='.', linestyle='none') 
-                plt.plot(xf,cosq(xf,*popt),':',label='fit') 
+                plt.plot(x,cosq(x,*popt),'ro:',label='fit') 
                                
                 plt.title('Rate Angular Distribution')
                 plt.ylabel("Rate(Hz)")
@@ -1115,212 +1585,9 @@ if __name__ == "__main__":
                 if(PlotStop==1): plt.show(block=True)
                 fig.tight_layout()            
                 pdf.savefig(fig) 
-                
-
         
-        print(countSS_test)
-        print(countSS_ref)
-        for i in range(6): 
-          file_due.write("%.3f %.3f %.3f %.3f \n"% (Ang[i], countAng[i], Ang_err[i], countAng_err[i]))
-        if testsimp_s == 1 :
-          plt.close()
-          ratioSS=[0,0,0,0]
-          for i in range(2):
-            ratioSS[i]=countSS_test[i]/countSS_ref[i]
-            ratioSS[i+2]=countSS_test[i+2]/countSS_ref[i]
-            file_tre.write("%.3f %.3f %.3f \n"% (countSS_ref[i], countSS_test[i],ratioSS[i]))
-            file_tre.write("rate coinc 8_10 & %.3f %.3f %.3f %.3f \n"% (i*2, countSS_ref[i], countSS_test[i+2],ratioSS[i+2]))
-            file_tre.write("rate coinc 9_11 & %.3f %.3f %.3f %.3f \n"% (i+1, countSS_ref[i], countSS_test[i+2],ratioSS[i+2]))
-            
-    if Decadimento>0:
-        #print(time_dec)
-        with PdfPages(outmonitor) as pdf:
-            fig = plt.figure(figsize=(15,7.5))
-            #fig = plt.figure(figsize=(15,7.5))
-            #for i in range(8):
-            #j=i+1
-            #plt.subplot(2, 4, j)
-            n, bins, patches = plt.hist(time_dec, 50, range=[0, 15], density=False, facecolor='blue', alpha=0.75)
-            binscenters = np.array([(i*15/50) for i in range(50)])
-            print(n,bins)
-            for i in range(len(n)):
-                file_quatro.write("%.3f %.3f %.3f %.3f \n"% (bins[i], n[i], 0.15, math.sqrt(bins[i])))
-                
-            #n, bins, patches = plt.hist(carica_barra_LS[i], 100, range=[0, 15], facecolor = "white", edgecolor=_get_lines.color_cycle, density=1, alpha=0.75, label=LS_string[i])
-            #plt.title(r'Q SiPM %d coinc %d' %(i))   
-            #ax[2,i].plot()
-            #def exp(x,a,b,c):
-            #    return  a * np.exp(b * x) + c
-            #popte , pcove = curve_fit(exp,xdata=binscenters,ydata=n)       
-            #print(popte)    
-            #print("Valore medio coinc LS ", LS_string[i], " = ", round(statistics.mean(carica_barra_LS[i]),3), " +- ", round(statistics.stdev(carica_barra_LS[i]),3))
-            #file_uno.write("Valore medio Rate coinc LS %s = %.3f +- %.3f hz \n"% ( LS_string[i], round(statistics.mean(carica_barra_LS[i]),3),  round(statistics.stdev(carica_barra_LS[i]),3)))
-                    
-            plt.legend(loc='best', fontsize=11)
-            plt.xlabel("Decay time (mu_second)")
-            plt.ylabel("Event(number)")   
-            plt.suptitle(r'Plot tempo decadimento')  
-            if(PlotStop==1): plt.show(block=True)
-            fig.tight_layout()            
-            pdf.savefig(fig)      
-            
-            
-    if sciglass==1:
-        with PdfPages(outmonitor) as pdf:
-            fig = plt.figure(figsize=(15,7.5))
-            #[0]*(exp(-0.5*(((x-[1])/[2])+exp(-((x-[1])/[2]))))/sqrt(2.*3.1415))
-            for i in range(12):
-                j=i+1
-                mean, var = moyal.fit(carica[i])                
-                plt.subplot(3, 4, j)   
-                if i==1:
-                  n, bins, patches = plt.hist(carica[i], 100, range=[6, 30], density=False, facecolor='green', alpha=0.75)
-                if i==0 or 1<i<7 or i==8:                
-                  n, bins, patches = plt.hist(carica[i], 50, range=[2, 16], density=False, facecolor='green', alpha=0.75)
-                if i>8 and i <11:
-                  n, bins, patches = plt.hist(carica[i], 50, range=[2, 16], density=False, facecolor='green', alpha=0.75)
-                if i==11:
-                  n, bins, patches = plt.hist(carica[i], 50, range=[2, 16], density=False, facecolor='green', alpha=0.75)    
-                if i==7:
-                  n, bins, patches = plt.hist(carica[i], 50, range=[2, 16], density=False, facecolor='green', alpha=0.75)  
-                '''
-                if(i==8):
-                  mean, var = moyal.fit(carica[i])
-                  plt.title(r'Q SiPM %d - Fit: mean=%.3f, var=%.3f' %(i,mean, var))  
-                if(i!=8):plt.title(r'Q SiPM %d' %(i))'''
-                y = moyal.pdf(bins, loc=mean, scale=1)
-                #print(y)
-                l = plt.plot(bins, y, 'r--', linewidth=2)
-                
-                plt.title(r'Q SiPM %d - Fit: mean=%.3f, var=%.3f' %(i,mean, var))
-                plt.xlabel("PE")
-                plt.ylabel("Event(number)")                
-                #ax[2,i].plot()     
-            plt.suptitle(r'Plot carica singolo SiPM')
-            fig.tight_layout()            
-            if(PlotStop==1): plt.show(block=True)                   
-            L_string=["0_1", "2_3", "4_5", "6_7"]
-            pdf.savefig(fig)
-            
-            fig = plt.figure(figsize=(15,7.5))
-            '''def cosq(x,a,b,c):
-                #print("The variable, a is of type:", type(a))
-                #print("The variable, x0 is of type:", type(x0))
-                #print("The variable, x is of type:", type(x))
-                return a*(exp(-0.5*(((x-b)/c)+exp(-((x-b)/c))))/sqrt(2.*3.1415)'''
-
-                        
-            for i in range(12):
-                j=i+1
-                '''x = np.array(Ang)
-                xf = np.arange(Ang[0],Ang[5])
-                y = np.array(countAng)
-                popt , pcov = curve_fit(cosq,x,y,bounds=((countAng[0]*0.95), [(countAng[0]*1.05), 1.5]))'''
-                mean, var = moyal.fit(caricaCoin[i])
-                plt.subplot(3, 4, j)   
-                if i==1:
-                  n, bins, patches = plt.hist(caricaCoin[i], 50, range=[0, 1], density=False, facecolor='green', alpha=0.75)
-                if i==0 or 1<i<7 or i==8:             
-                  n, bins, patches = plt.hist(caricaCoin[i], 50, range=[0, 1], density=False, facecolor='green', alpha=0.75)
-                if i>8 and i <11:
-                  n, bins, patches = plt.hist(caricaCoin[i], 50, range=[0, 1], density=False, facecolor='green', alpha=0.75)
-                if i==11:
-                  n, bins, patches = plt.hist(caricaCoin[i], 50, range=[0, 1], density=False, facecolor='green', alpha=0.75)    
-                if i==7:
-                  n, bins, patches = plt.hist(caricaCoin[i], 150, range=[0, 2.5], density=False, facecolor='green', alpha=0.75)  
-                y = moyal.pdf(bins, loc=mean, scale=1)
-                #print(y)
-                l = plt.plot(bins, y, 'r--', linewidth=2)
-                print("Coincidenze vetro canale ", i, " 2 barre plastica: ", Coinc2[i])
-                plt.title(r'Q SiPM %d - Fit: mean=%.3f, var=%.3f' %(i,mean, var))
-                plt.xlabel("PE")
-                plt.ylabel("Event(number)")                
-                #ax[2,i].plot()     
-            plt.suptitle(r'Plot carica singolo SiPM in coincidenza con PlastScint')
-            fig.tight_layout()            
-            if(PlotStop==1): plt.show(block=True)                   
-            L_string=["0_1", "2_3", "4_5", "6_7"]
-            pdf.savefig(fig)
-            
-            fig = plt.figure(figsize=(15,7.5))
-            
-            for i in range(12):
-                j=i+1
-                '''x = np.array(Ang)
-                xf = np.arange(Ang[0],Ang[5])
-                y = np.array(countAng)
-                popt , pcov = curve_fit(cosq,x,y,bounds=((countAng[0]*0.95), [(countAng[0]*1.05), 1.5]))'''
-                mean, var = moyal.fit(caricaCoin3[i])
-                plt.subplot(3, 4, j)
-                if i==1:
-                  n, bins, patches = plt.hist(caricaCoin3[i], 50, range=[2, 16], density=False, facecolor='green', alpha=0.75)
-                if i==0 or 1<i<7 or i==8:             
-                  n, bins, patches = plt.hist(caricaCoin3[i], 50, range=[2, 16], density=False, facecolor='green', alpha=0.75)
-                if i>8 and i <11:
-                  n, bins, patches = plt.hist(caricaCoin3[i], 50, range=[2, 16], density=False, facecolor='green', alpha=0.75)
-                if i==11:
-                  n, bins, patches = plt.hist(caricaCoin3[i], 50, range=[2, 16], density=False, facecolor='green', alpha=0.75)    
-                if i==7:
-                  n, bins, patches = plt.hist(caricaCoin3[i], 50, range=[2, 16], density=False, facecolor='green', alpha=0.75)  
-                y = moyal.pdf(bins, loc=mean, scale=1)
-                #print(y)
-                l = plt.plot(bins, y, 'r--', linewidth=2)
-                print("Coincidenze vetro canale ", i, " 3 barre plastica: ", Coinc3[i])
-
-                plt.title(r'Q SiPM %d - Fit: mean=%.3f, var=%.3f' %(i,mean, var))
-                plt.xlabel("Charge(Arbitrary Unit)")
-                plt.ylabel("Event(number)")                
-                #ax[2,i].plot()     
-            plt.suptitle(r'Plot carica singolo SiPM in coincidenza con PlastScint')
-            fig.tight_layout()            
-            if(PlotStop==1): plt.show(block=True)                   
-            L_string=["0_1", "2_3", "4_5", "6_7"]
-            pdf.savefig(fig)
-            
-            fig = plt.figure(figsize=(15,7.5))
-            
-    if sciglass>1:
-      with PdfPages(outmonitor) as pdf:
-        fig = plt.figure(figsize=(15,7.5))
-        for i in range(12):
-            j=i+1
-                               
-            plt.subplot(3, 4, j)   
-            if i<7 or i==8:             
-              n, bins, patches = plt.hist(carica[i], 400, range=[0, 0.2], density=False, facecolor='green', alpha=0.75)
-            if i>8 and i <11:
-              n, bins, patches = plt.hist(carica[i], 700, range=[0, 35], density=False, facecolor='green', alpha=0.75)
-            if i==11:
-              n, bins, patches = plt.hist(carica[i], 400, range=[0, 20], density=False, facecolor='green', alpha=0.75)    
-            if i==7:
-              n, bins, patches = plt.hist(carica[i], 200, range=[0, 0.4], density=False, facecolor='green', alpha=0.75)  
-            '''
-                if(i==8):
-                  mean, var = moyal.fit(carica[i])
-                  plt.title(r'Q SiPM %d - Fit: mean=%.3f, var=%.3f' %(i,mean, var))  
-                if(i!=8):plt.title(r'Q SiPM %d' %(i))'''
-                
-                
-            #print(y)
-            #l = plt.plot(bins, y, 'r--', linewidth=2)
-            if not carica[i]:
-              print("list channel ", i ," empty")
-            else:
-              mean, var = moyal.fit(carica[i])   
-              y = moyal.pdf(bins, loc=mean, scale=1)
-              plt.title(r'Q SiPM %d - Fit: mean=%.3f, var=%.3f' %(i,mean, var))
-              plt.xlabel("PE")
-              plt.ylabel("Event(number)")                
-            #ax[2,i].plot()     
-        plt.suptitle(r'Plot carica singolo SiPM')
-        fig.tight_layout()            
-        if(PlotStop==1): plt.show(block=True)                   
-        L_string=["0_1", "2_3", "4_5", "6_7"]
-        pdf.savefig(fig)
-            
-        fig = plt.figure(figsize=(15,7.5))
-            
-    '''  
+        plt.close()
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''    
     if MyDebug>1:
         print ("\nFine del run      N. trigger analizzati: %d "%MyData.ntot_trigger)
         print ("N. trigger frammentati: %d "% MyData.fragmented)
@@ -1337,4 +1604,3 @@ if __name__ == "__main__":
         print("\n")
         [print (" %5d" % nn, end="") for nn in MyData.total_count_per_sipm]
         print("\n")
-    '''
