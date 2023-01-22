@@ -38,6 +38,7 @@ import sys
 import numpy as np
 #import pandas as pd
 
+from numerize.numerize import numerize
 
 # parametri da settare all'inizio
 
@@ -936,7 +937,7 @@ if __name__ == "__main__":
         #     print ("trigger: %d"% MyData.ntot_trigger)
         #     last_trigger.PrintTrigger()
         if MyData.ntot_trigger % 10000 == 0: 
-            print (f"Trigger n. {MyData.ntot_trigger:_}", end="\r") 
+            print (f"Trigger n. {numerize(MyData.ntot_trigger)}", end="\r") 
         # if last_trigger.nsamples >126:
         #     print ("\n\n  -- trigger molto lungo %d   --\n\n"% last_trigger.nsamples)
     
