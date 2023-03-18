@@ -62,7 +62,7 @@ Temporary Items
 
 
 ### file misure ###
-misure/*
+reader/misure/*
 AP*.log
 AP*.txt
 AP*.bin
