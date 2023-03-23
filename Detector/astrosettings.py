@@ -1,7 +1,7 @@
 # variables to be shared across modules
 #
-real_daq =  True   # False  # per eseguirlo in simulazione mettere falso
-real_sensors = True   # False # if you have no sensor set it False
+real_daq =  False   # False  # per eseguirlo in simulazione mettere falso
+real_sensors = False   # False # if you have no sensor set it False
 
 if real_daq:    print('\n Acquisizione reale (non simulata)\n')
 else:           print('\n ACQUISIZIONE SIMULATA !!!\n')
