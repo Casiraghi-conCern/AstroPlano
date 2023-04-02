@@ -62,8 +62,10 @@ Temporary Items
 
 
 ### file misure ###
-reader/misure/*
-__pycache__
+misure
 AP*.log
 AP*.txt
 AP*.bin
+
+### python cache files ###
+__pycache__
