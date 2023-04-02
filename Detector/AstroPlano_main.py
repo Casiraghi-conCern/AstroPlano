@@ -5,19 +5,37 @@
     Flavio Fontanelli
 """
 
+import os
 import time
 import astrosettings as A_S 
 import AstroSensori 
 import AstroPlanoGui_class as gui
 from sys import exit
-from astro_detector_rp import astro_detector 
+from astro_detector_rp import astro_detector
 
 
 print ("\nProgramma di controllo per AstroPlano ")
 print ("Versione %s Autore: Flavio Fontanelli\n"% A_S.astrodata.VERSIONE)
 
-# creiamo il nome del file per il log del run
+# creiamo la cartella misure (se non esiste)
+if not os.path.exists("misure"):
+    os.mkdir("misure")
+
 timestr = time.strftime("%Y%m%d-%H%M")
+
+# nome cartella output
+outdir = 'AP'+ timestr
+
+# settiamo la home directory
+A_S.astrodata.homedir = f'./misure/{outdir}/'
+
+# creaiamo la cartella di output (se non esiste)
+if not os.path.exists(A_S.astrodata.homedir):
+    os.mkdir(A_S.astrodata.homedir)
+else: 
+    raise f"La cartella '{outdir}' esiste già, fai passare un minuto"
+
+# creiamo il nome del file per il log del run
 A_S.astrodata.log_file  =  A_S.astrodata.homedir +'APlog'+ timestr +'.log' 
 
 #apro un file per scrivere info sulle attivita' in corso

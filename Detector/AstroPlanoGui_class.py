@@ -677,7 +677,7 @@ class  AstroGui():
         aggiornaMessaggio('durata %d m. '%(tot_run_time))
         tot_run_time = tot_run_time *60000  #to milliseconds
 
-        detect.astro_detector.StartRun (self)       #non e' bello, lo so
+        detect.astro_detector.StartRun()       #non e' bello, lo so
         # aggiorniamo le tensioni in base alla temperatura
         self.UpdatePTRH()  
   
