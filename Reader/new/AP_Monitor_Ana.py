@@ -51,17 +51,17 @@ GOOD = True
 #inputPath = "../AstroPlano_sep21/"	#path input file
 #inputFile = "AP_ven_cfg_old" 		# file corrotto (sipm>11)
 
-inputPath = "./"		        # path input file
-inputFile = "20231012-2104"
+inputPath = "./misure/AP20231027-1631/"		        # path input file
+inputFile = "20231027-1631"
 #inputFile = "20220517-1201"
 #inputFile = "20220428-0940"   	    # input file name without AP and extension
 #inputFile = "20220321-2128"   	    # input file name without extension
 inputlog = "APlog" + inputFile + ".log"
-outmonitor = "Monitor-AP" +  inputFile + "testnofrag.pdf"
+outmonitor = inputPath + "Monitor-AP" +  inputFile + "testnofrag.pdf"
 
 inputFile = "AP" + inputFile
 print("Apro File: ", inputFile, " ", inputlog)
-output_path = "./"		#idem for output
+output_path = inputPath		#idem for output
 output_file = inputFile+ "provaPlot" + "_dst.txt"
 output_log = inputFile+ "_WSVT.txt"
 output_root = inputFile+ "_tree.root"
@@ -75,7 +75,7 @@ rate_scan = 900     #intervallo di tempo su cui fare la media rate per scan temp
 MyDebug    = 0      # 0 no debug, 1 minimale, 2 esteso, 3 tutto
 MyPlot     = 1
 PlotMonitor = 1    # 0 no plot, 1 plot si
-testsimp_s =0      #modilità calibrazione sipm Angolari
+testsimp_s =0      #modilitï¿½ calibrazione sipm Angolari
 PlotStop = 0
 AngPlot = 0         #0 no distrbuzione angolare, 1 set binari, 2 set alternativo, 3 set ravvicinato sinistra (e 8-10 a sinistra), 4 come tre ma con 8 e 10 a destra 
 Decadimento = 0
@@ -278,7 +278,7 @@ if __name__ == "__main__":
     '''Leggo il file per produrre i plot di controllo '''
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-    prova4 = open(output_file, "r")
+    prova4 = open(filedati_out, "r")
     #aprire nuovo file per dati temperatura e pressione (in progress)
     #Wstation = open(r"C:\Users\User\AP20220224-wsd.txt", "r")'''
     eventi=[''] #inseriamo un valore per far sÃ¬ che il numero dell'evento coincida con
@@ -848,15 +848,15 @@ if __name__ == "__main__":
         
         print("Glass Matrix analisys")
         #print(eventi[62])
-        hc_sipm0=ROOT.TH1D("hc_sipm0-g9","hc_sipm0-g9",100,0,3);
-        hc_sipm1=ROOT.TH1D("hc_sipm1-g10","hc_sipm1-g10",100,0,3);
-        hc_sipm2=ROOT.TH1D("hc_sipm2-g11","hc_sipm2-g11",100,0,3);
-        hc_sipm3=ROOT.TH1D("hc_sipm3-g13","hc_sipm3-g13",100,0,3);
-        hc_sipm4=ROOT.TH1D("hc_sipm4-g14","hc_sipm4-g14",100,0,3);
-        hc_sipm5=ROOT.TH1D("hc_sipm5-g15","hc_sipm5-g15",100,0,3);
-        hc_sipm6=ROOT.TH1D("hc_sipm6-g16","hc_sipm6-g16",100,0,3);
-        hc_sipm7=ROOT.TH1D("hc_sipm7-g18","hc_sipm7-g18",100,0,3);
-        hc_sipm8=ROOT.TH1D("hc_sipm8-g19","hc_sipm8-g19",100,0,3);        
+        hc_sipm0=np.ROOT.TH1D("hc_sipm0-g9","hc_sipm0-g9",100,0,3);
+        hc_sipm1=np.ROOT.TH1D("hc_sipm1-g10","hc_sipm1-g10",100,0,3);
+        hc_sipm2=np.ROOT.TH1D("hc_sipm2-g11","hc_sipm2-g11",100,0,3);
+        hc_sipm3=np.ROOT.TH1D("hc_sipm3-g13","hc_sipm3-g13",100,0,3);
+        hc_sipm4=np.ROOT.TH1D("hc_sipm4-g14","hc_sipm4-g14",100,0,3);
+        hc_sipm5=np.ROOT.TH1D("hc_sipm5-g15","hc_sipm5-g15",100,0,3);
+        hc_sipm6=np.ROOT.TH1D("hc_sipm6-g16","hc_sipm6-g16",100,0,3);
+        hc_sipm7=np.ROOT.TH1D("hc_sipm7-g18","hc_sipm7-g18",100,0,3);
+        hc_sipm8=np.ROOT.TH1D("hc_sipm8-g19","hc_sipm8-g19",100,0,3);        
         for i in range (len(eventi)):
             #if i<10: print(len(eventi[i]), i)
             countriemp = 0
@@ -892,16 +892,16 @@ if __name__ == "__main__":
                                     if(eventi[i][j][5]>2000 and eventi[i][j][0] == 7): hc_sipm7.Fill(eventi[i][j][5]/10000)
                                     if(eventi[i][j][5]>2000 and eventi[i][j][0] == 8): hc_sipm8.Fill(eventi[i][j][5]/10000)
     
-    file_quatro = open("dec.txt", "w")    
+    file_quatro = open(f"{output_path}dec.txt", "w")    
     '''Cancello vettori per liberare memoria'''
     print("Cancello vettori per liberare memoria")
     del eventi
     
     '''Disegno i Grafici''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''' 
     if PlotMonitor==1:    
-        file_uno = open("Rate.txt", "w")
-        if testsimp_s == 1 : file_tre = open("RateCalib.txt", "w")
-        file_due = open("Ang.txt", "w")
+        file_uno = open(f"{output_path}Rate.txt", "w")
+        if testsimp_s == 1 : file_tre = open(f"{output_path}RateCalib.txt", "w")
+        file_due = open(f"{output_path}Ang.txt", "w")
         
         for j in range(8):
             for i in range(len(countLS_t[j])):
@@ -920,7 +920,7 @@ if __name__ == "__main__":
                 #if((countLS_t[j]-countLS[j])/countLS[j]<0 and (countLS_t[j]-countLS[j])/countLS[j]<-0.1): countLS_t[j]=countLS[j]-countLS[j]*0.1
 
         with PdfPages(outmonitor) as pdf:
-            '''fig = plt.figure(figsize=(15,7.5))
+            fig = plt.figure(figsize=(15,7.5))
             #for i in range(12):
             #j=i+1
             #plt.subplot(3, 4, j)   
@@ -953,7 +953,7 @@ if __name__ == "__main__":
             fig.tight_layout()            
             if(PlotStop==1): plt.show(block=True)                   
             L_string=["0_1", "2_3", "4_5", "6_7"]
-            pdf.savefig(fig)'''
+            pdf.savefig(fig)
             
             fig = plt.figure(figsize=(15,7.5))
             for i in range(4):
