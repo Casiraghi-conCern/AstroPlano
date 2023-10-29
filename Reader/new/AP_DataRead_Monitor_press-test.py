@@ -48,8 +48,8 @@ GOOD = True
 #inputPath = "../AstroPlano_sep21/"	#path input file
 #inputFile = "AP_ven_cfg_old" 		# file corrotto (sipm>11)
 
-inputPath = "./misure/AP20231027-1631/"		        # path input file
-inputFile = "20231027-1631"
+inputFile = "20231028-1848"
+inputPath = f"./misure/AP{inputFile}/"	# path input file
 #inputFile = "20220517-1201"
 #inputFile = "20220428-0940"   	    # input file name without AP and extension
 #inputFile = "20220321-2128"   	    # input file name without extension
@@ -58,7 +58,7 @@ outmonitor = "Monitor-AP" +  inputFile + ".pdf"
 
 inputFile = "AP" + inputFile
 print("Apro File: ", inputFile, " ", inputlog)
-output_path = "./"		#idem for output
+output_path = inputPath		#idem for output
 output_file = inputFile+ "provaPlot" + "_dst.txt"
 output_log = inputFile+ "_WSVT.txt"
 
