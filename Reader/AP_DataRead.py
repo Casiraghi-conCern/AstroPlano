@@ -36,7 +36,7 @@ from scipy import special as sp
 import sys
 
 import numpy as np
-#import pandas as pd
+import pandas as pd
 
 from numerize.numerize import numerize
 
@@ -69,7 +69,7 @@ outmonitor = output_path + "Monitor-AP" +  inputFile + ".pdf"
 NEVMAX =  -1   # 9999999    
 
 # costanti che potremmo dover cambiare
-time_win = 400    # ns,  lunghezza max finestra temporale di un evento
+time_win = 4000    # ns,  lunghezza max finestra temporale di un evento
 rate_scan = 900     #intervallo di tempo su cui fare la media rate per scan temporale
 MyDebug    = 0      # 0 no debug, 1 minimale, 2 esteso, 3 tutto
 MyPlot     = 0
@@ -78,7 +78,7 @@ PlotStop = 0
 AngPlot = 0         #0 no distrbuzione angolare, 1 set binari, 2 set alternativo
 PlotFile    = 0     # 0 no plot, 1 plot su file
 N_DUMP_FIRST_EVENTS = 4   # numero degli eventi iniziali che vengono stampati
-N_PLOT_EVENTS = 3 # plotta evento desiderato
+N_PLOT_EVENTS = 5 # plotta evento desiderato
 
 # altro non cambiare se non sai quello che fai
 N_SIPM =12
@@ -351,8 +351,7 @@ class Trigger:
             print ("\nTrigger n. %d"% self.sequential) 
             print(" SiPM: %d, Year: %d, Days: %d, secs: %d,  ns: %d"% \
                   (self.channel, self.tempo[0],self.tempo[1], self.tempo[2], self.tempo[3]) )
-            print("Fragm flag: %d, Q tot: %d, Fifo full: %d, N. samples: %d"%(
-                  self.frag_flag, self.carica_totale, self.fifofull, self.nsamples), end="")
+            print("Fragm flag: %d, Q tot: %d, Fifo full: %d, N. samples: %d"%(self.frag_flag, self.carica_totale, self.fifofull, self.nsamples), end="")
             try:    # definiti solo se gia' fatto fit al fronte di salita
                 print ("\nt peak: %d ns, t (50%%):%5.1f ns \n" % (self.tpeak, self.t50) )
             except:
@@ -496,7 +495,7 @@ class Trigger:
      
         
      
-    def PlotTrigger(self, nstart, npeak, intercept, slope, quality_flag, shift):
+    def PlotTrigger(self, nstart, npeak, intercept, slope, quality_flag, shift, peak_value):
         # grafica un trigger in funzione del tempo   
         global MyPlot
         tempi= list(range(0+shift, self.nsamples*SAMPLING_TIME+shift, SAMPLING_TIME))
@@ -820,6 +819,7 @@ if __name__ == "__main__":
     voltage=[[],[],[],[],[],[],[],[],[],[],[],[]]
     soglie=[[],[],[],[],[],[],[],[],[],[],[],[]]
     temperatura=[[],[],[],[]]
+    tensione=[[],[],[],[]]
     temp_media=[[],[]]
     deltaV=[[],[]]
     pressione=[]
@@ -849,6 +849,10 @@ if __name__ == "__main__":
             for i in range(12):
                 voltage[i]=float(Testo.split()[i])
              #print(voltage)
+        if Testo.startswith("Tensioni V del Sistema"):
+            Testo=log.readline()
+            for i in range(4):
+                tensione[i]=float(Testo.split()[i])     
                 
         if Testo.startswith("Start threshold"):
             #leggo Soglie
@@ -937,7 +941,7 @@ if __name__ == "__main__":
         #     print ("trigger: %d"% MyData.ntot_trigger)
         #     last_trigger.PrintTrigger()
         if MyData.ntot_trigger % 10000 == 0: 
-            print (f"Trigger n. {numerize(MyData.ntot_trigger)}", end="\r") 
+            print (f"Trigger n. {numerize(MyData.ntot_trigger)}{" "*10}", end="\r") 
         # if last_trigger.nsamples >126:
         #     print ("\n\n  -- trigger molto lungo %d   --\n\n"% last_trigger.nsamples)
     
