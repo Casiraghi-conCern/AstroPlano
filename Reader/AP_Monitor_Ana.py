@@ -26,8 +26,7 @@ from matplotlib.ticker import (MultipleLocator, FormatStrFormatter,
 #######################################################################################################
 #Stefano: libreria necessaria per fare grafico se non funziona mgr.canvas.height() e mgr.canvas.width()
 #######################################################################################################
-# import tkinter as tk 
-# root = tk.Tk()
+
 #######################################################################################################
 from matplotlib.backends.backend_pdf import PdfPages
 import matplotlib.mlab as mlab
@@ -37,7 +36,7 @@ from scipy import asarray as ar,exp
 from scipy import special as sp
 from scipy.stats import moyal
 import sys
-import os
+#import ROOT
 
 import numpy as np
 #import pandas as pd
@@ -65,6 +64,7 @@ output_path = inputPath         	#idem for output
 #output_path = inputPath + "output/"
 output_file = inputFile+ "provaPlot" + "_dst.txt"
 output_log = inputFile+ "_WSVT.txt"
+output_root = inputFile+ "_tree.root"
 outmonitor = output_path + "Monitor-AP" +  inputFile + ".pdf"
 
 
@@ -72,14 +72,14 @@ outmonitor = output_path + "Monitor-AP" +  inputFile + ".pdf"
 NEVMAX =  -1   # 9999999    
 
 # costanti che potremmo dover cambiare
-time_win = 400    # ns,  lunghezza max finestra temporale di un evento
+time_win = 4000    # ns,  lunghezza max finestra temporale di un evento
 rate_scan = 900     #intervallo di tempo su cui fare la media rate per scan temporale
 MyDebug    = 0      # 0 no debug, 1 minimale, 2 esteso, 3 tutto
-MyPlot     = 0
+MyPlot     = 1
 PlotMonitor = 1    # 0 no plot, 1 plot si
 testsimp_s =0      #modilit� calibrazione sipm Angolari
 PlotStop = 0
-AngPlot = 4         #0 no distrbuzione angolare, 1 set binari, 2 set alternativo, 3 set ravvicinato sinistra (e 8-10 a sinistra), 4 come tre ma con 8 e 10 a destra 
+AngPlot = 0         #0 no distrbuzione angolare, 1 set binari, 2 set alternativo, 3 set ravvicinato sinistra (e 8-10 a sinistra), 4 come tre ma con 8 e 10 a destra 
 Decadimento = 0
 sciglass = 0
 
@@ -101,6 +101,9 @@ t_s_prev=1.0
 
 plt.ion()
 
+if PlotMonitor:
+    import tkinter as tk 
+    root = tk.Tk()
 
 if __name__ == "__main__":
     # ------------------------------------------------------------------
@@ -127,6 +130,7 @@ if __name__ == "__main__":
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     voltage=[[],[],[],[],[],[],[],[],[],[],[],[]]
     soglie=[[],[],[],[],[],[],[],[],[],[],[],[]]
+    tensione=[[],[],[],[]]
     temperatura=[[],[],[],[]]
     temp_media=[[],[]]
     deltaV=[[],[]]
@@ -157,6 +161,10 @@ if __name__ == "__main__":
             for i in range(12):
                 voltage[i]=float(Testo.split()[i])
              #print(voltage)
+        if Testo.startswith("Vbat"):
+            #Testo=log.readline()
+            for i in range(4):
+                tensione[i].append(float(Testo.split()[i*3+1]))        
                 
         if Testo.startswith("Start threshold"):
             #leggo Soglie
@@ -224,6 +232,10 @@ if __name__ == "__main__":
         print(temperatura[1])
         print(temperatura[2])
         print(temperatura[3])
+        print(tensione[0])
+        print(tensione[1])
+        print(tensione[2])
+        print(tensione[3])
         print(temp_media[0])
         print(temp_media[1])
         print(deltaV[0])
@@ -283,7 +295,9 @@ if __name__ == "__main__":
 
     #Trun = 6; # tempo run espresso in ore
     print("leggo il file Output", output_file)
-    while True:            #sostituisco check con True
+    iw=0
+    while True:
+        iw=iw+1;            #sostituisco check con True
         riga = prova4.readline()
 
         if riga == '':  # ho sostituito riga==False con riga=='' perchè            
@@ -310,15 +324,22 @@ if __name__ == "__main__":
             evento_n.append(riga_vect)   #creiamo la seconda dimensione
             #if i<10: print(riga_vect)
         eventi.append(evento_n)   #creiamo la prima dimensione   
-        #print(eventi[1])
+        
+        if(NEVMAX>0 and iw>NEVMAX):
+          print("i= ", iw) 
+          break        
+    del evento_n      
+    #print(eventi[1])
     print("Ultimo evento n. ", n_trigger[0])   
     tempos =[[],[],[],[],[],[],[],[],[],[],[],[]]
     carica = [[],[],[],[],[],[],[],[],[],[],[],[]]
+    caricaO =[[]]
     carica_barra_L = [[],[],[],[],[]]
     tcf = [[],[],[],[],[],[],[],[],[],[],[],[]]
     last_event=len(eventi)-1        
     #Trun = eventi[last_event][0][1]-eventi[1][0][1]+(eventi[last_event][0][2]-eventi[1][0][2])/1e9
     #nuova definizione del formato dati che comprende anche anno e giorno
+    print("Calcolo durata Run") 
     Trun = (eventi[last_event][0][1]-eventi[1][0][1])*3.154e+7+(eventi[last_event][0][2]-eventi[1][0][2])*86400+eventi[last_event][0][3]-eventi[1][0][3]+(eventi[last_event][0][4]-eventi[1][0][4])/1e9
     '''
         if(eventi[last_event][0][1]<eventi[1][0][1]):#nel caso il contatore dei secondi si resetti durante il run
@@ -330,18 +351,24 @@ if __name__ == "__main__":
     #SGpe=[0.04,0.06,0.028,0.031,0.042,0.026,0.037,0.139,0.038,1,1,1]
     SGpe=[1,1,1,1,1,1,1,1,1,1,1,1]    
     #print("Tempo totale Run: ", Trun)  
+    c=0;
     for i in range (len(eventi)):
         for j in range (len(eventi[i])):
           if (eventi[i][j][5]>0):
             channel = int(eventi[i][j][0])
             valore = rate[channel]
             #rate[channel] =  valore + 1/(Trun*60*60)
-            t=eventi[i][j][3]*1e9+eventi[i][j][4]-(eventi[1][0][3]*1e9+eventi[1][0][4])
-            tempos[channel].append(t)
+            #t=eventi[i][j][3]*1e9+eventi[i][j][4]-(eventi[1][0][3]*1e9+eventi[1][0][4])
+            #tempos[channel].append(t)
             if(eventi[i][j][5]>1000 and sciglass==1): carica[channel].append(eventi[i][j][5]/10000/1.2/SGpe[channel])
             if(sciglass>1 ): carica[channel].append(eventi[i][j][5]/10000*1.1)            
-            if(sciglass==0): carica[channel].append(eventi[i][j][5]/10000)            
-                        
+            if(sciglass==0): 
+              carica[channel].append(eventi[i][j][5]/10000)
+              #if eventi[i][j][5] > 4 :
+              if eventi[i][j][5] > 4 and eventi[i][j][6]>150:               
+                #caricaO[channel].append(eventi[i][j][5])  
+                c=c+1        
+    print("eventi filtrati: ", c) 
     print("Disegno Multiplot carica singola")   
         #fig, ax = plt.subplots(nrows=3, ncols=4, figsize=(18, 5))
     ''' for i in range(4):
@@ -529,6 +556,7 @@ if __name__ == "__main__":
                                                 t0.append(eventi[i][j][6])
                                                 c0.append(eventi[i][j][3]/1000)    '''
                 
+
                 ind=ind+3
                 ind2=ind2+3
                 ind3=ind3+3
@@ -708,7 +736,7 @@ if __name__ == "__main__":
     #########################
     
     
-    if sciglass>0:
+    if sciglass==0:
         caricaCoin = [[],[],[],[],[],[],[],[],[],[],[],[]]
         caricaCoin3 = [[],[],[],[],[],[],[],[],[],[],[],[]]
         Coinc2 = [0,0,0,0,0,0,0,0,0,0,0,0]
@@ -729,12 +757,14 @@ if __name__ == "__main__":
                 #print(i, eventi[i])    
             for j in range(len(eventi[i])):
                 #if (countriemp ==1): break
-                if (eventi[i][j][0] == 9 or eventi[i][j][0] == 11 and eventi[i][j][9]!=1 and countriemp == 0 and countriemp1 == 0):#cerco un evento da una delle plastiche
+                if (eventi[i][j][0] == 9 or eventi[i][j][0] == 10 and eventi[i][j][9]!=1 and countriemp == 0 and countriemp1 == 0):#cerco un evento da una delle plastiche
                     for l in range(len(eventi[i])):
                        
-                        if (l!=j and (eventi[i][l][0] == 9 or eventi[i][l][0] == 11) and eventi[i][l][9]!=1 and eventi[i][l][0] != eventi[i][j][0] and countriemp == 0 and countriemp1 == 0): #chiedo coincidenza barre plastica
+                        if (l!=j and (eventi[i][l][0] != 9 or eventi[i][l][0] != 10) and eventi[i][l][9]!=1 and eventi[i][l][0] != eventi[i][j][0] and countriemp == 0 and countriemp1 == 0): #chiedo che non ci sia coincidenza barre plastica
+                        
+                        #if (l!=j and (eventi[i][l][0] == 9 or eventi[i][l][0] == 11) and eventi[i][l][9]!=1 and eventi[i][l][0] != eventi[i][j][0] and countriemp == 0 and countriemp1 == 0): #chiedo coincidenza barre plastica
                             for h in range(len(eventi[i])):
-                                if (h!=j and h!=l and eventi[i][h][0] != 9 and eventi[i][h][0] != 11 and eventi[i][h][9]!=1): # chiedo coincidenza con un vetro o plastica corta
+                                if (h!=j and h!=l and eventi[i][h][0] != 9 and eventi[i][h][0] != 10 and eventi[i][h][9]!=1): # chiedo coincidenza con un vetro o plastica corta
                                     if(countriemp == 0):# escludo coincidenze con se stessi
                                         channel1 = int(eventi[i][j][0])
                                         channel2 = int(eventi[i][l][0])
@@ -777,12 +807,106 @@ if __name__ == "__main__":
                                     
             #if(countCoinc>0): MultiCoin.append(countCoinc)
     #print(MultiCoin)
-    file_quatro = open(inputPath + "dec.txt", "w")    
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    if sciglass==2:
+        caricaCoin = [[],[],[],[],[],[],[],[],[],[],[],[]]
+        caricaCoin3 = [[],[],[],[],[],[],[],[],[],[],[],[]]
+        Coinc2 = [0,0,0,0,0,0,0,0,0,0,0,0]
+        Coinc3 = [0,0,0,0,0,0,0,0,0,0,0,0]
+        
+        print("Glass Matrix analisys")
+        #print(eventi[62])
+            
+        for i in range (len(eventi)):
+            #if i<10: print(len(eventi[i]), i)
+            countriemp = 0
+            countriemp1 = 0
+            
+            countCoinc = 0
+            countCoinc3 = 0
+            #if(i<20):
+            #print(i, j, refi, refj)
+                #print(i, eventi[i])    
+            for j in range(len(eventi[i])):
+                if (eventi[i][j][0] == 0 or eventi[i][j][0] == 1  or eventi[i][j][0] == 2):
+                    for l in range(len(eventi[i])):
+                        if (l!=j and eventi[i][l][0] == 3 or eventi[i][l][0] == 4  or eventi[i][l][0] == 5):
+                            for h in range(len(eventi[i])):
+                                if (h!=j and h!=l and eventi[i][h][0] == 6 or eventi[i][h][0] == 7  or eventi[i][h][0] == 8): # chiedo coincidenza con un vetro o plastica corta
+                                    channel1 = int(eventi[i][j][0])
+                                    channel2 = int(eventi[i][l][0])
+                                
+                                    if(eventi[i][j][5]>1):caricaCoin[channel1].append(eventi[i][j][5]/10000)
+                                    if(eventi[i][l][5]>1):caricaCoin[channel2].append(eventi[i][l][5]/10000)
+                                    #Coinc2[channel1]=Coinc2[channel1]+1
+                                    #Coinc2[channel2]=Coinc2[channel2]+1
+                                    
+                                    channel3 = int(eventi[i][h][0])
+                                    if(eventi[i][h][5]>1):caricaCoin[channel3].append(eventi[i][h][5]/10000)
+                          
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''        
+    if sciglass==3:
+        caricaCoin = [[],[],[],[],[],[],[],[],[],[],[],[]]
+        caricaCoin3 = [[],[],[],[],[],[],[],[],[],[],[],[]]
+        Coinc2 = [0,0,0,0,0,0,0,0,0,0,0,0]
+        Coinc3 = [0,0,0,0,0,0,0,0,0,0,0,0]
+        
+        print("Glass Matrix analisys")
+        #print(eventi[62])
+        hc_sipm0=np.ROOT.TH1D("hc_sipm0-g9","hc_sipm0-g9",100,0,3);
+        hc_sipm1=np.ROOT.TH1D("hc_sipm1-g10","hc_sipm1-g10",100,0,3);
+        hc_sipm2=np.ROOT.TH1D("hc_sipm2-g11","hc_sipm2-g11",100,0,3);
+        hc_sipm3=np.ROOT.TH1D("hc_sipm3-g13","hc_sipm3-g13",100,0,3);
+        hc_sipm4=np.ROOT.TH1D("hc_sipm4-g14","hc_sipm4-g14",100,0,3);
+        hc_sipm5=np.ROOT.TH1D("hc_sipm5-g15","hc_sipm5-g15",100,0,3);
+        hc_sipm6=np.ROOT.TH1D("hc_sipm6-g16","hc_sipm6-g16",100,0,3);
+        hc_sipm7=np.ROOT.TH1D("hc_sipm7-g18","hc_sipm7-g18",100,0,3);
+        hc_sipm8=np.ROOT.TH1D("hc_sipm8-g19","hc_sipm8-g19",100,0,3);        
+        for i in range (len(eventi)):
+            #if i<10: print(len(eventi[i]), i)
+            countriemp = 0
+            countriemp1 = 0
+            
+            countCoinc = 0
+            countCoinc3 = 0
+            #if(i<20):
+            #print(i, j, refi, refj)
+                #print(i, eventi[i])
+            for n in range (len(eventi[i])):
+                if (eventi[i][n][0] == 9 or eventi[i][n][0] == 10 and eventi[i][n][9]!=1):#cerco un evento in plastica sopra
+                    #for m in range (len(eventi[i])):
+                        #if (m!=n and eventi[i][m][0] == 10 and eventi[i][m][9]!=1):#cerco un evento in plastica sopra
+
+                            for j in range(len(eventi[i])):
+                                if (j!=n and eventi[i][j][0] != 9 and eventi[i][j][0] != 10  and eventi[i][j][0] != 11):
+
+                                                
+                                    #if(eventi[i][j][5]>1):caricaCoin[channel1].append(eventi[i][j][5]/10000)
+                                    #if(eventi[i][l][5]>1):caricaCoin[channel2].append(eventi[i][l][5]/10000)
+
+                                                    
+                                    channel3 = int(eventi[i][j][0])
+                                    if(eventi[i][j][5]>2000):caricaCoin[channel3].append(eventi[i][j][5]/10000)
+                                    if(eventi[i][j][5]>2000 and eventi[i][j][0] == 0): hc_sipm0.Fill(eventi[i][j][5]/10000)
+                                    if(eventi[i][j][5]>2000 and eventi[i][j][0] == 1): hc_sipm1.Fill(eventi[i][j][5]/10000)
+                                    if(eventi[i][j][5]>2000 and eventi[i][j][0] == 2): hc_sipm2.Fill(eventi[i][j][5]/10000)
+                                    if(eventi[i][j][5]>2000 and eventi[i][j][0] == 3): hc_sipm3.Fill(eventi[i][j][5]/10000)
+                                    if(eventi[i][j][5]>2000 and eventi[i][j][0] == 4): hc_sipm4.Fill(eventi[i][j][5]/10000)
+                                    if(eventi[i][j][5]>2000 and eventi[i][j][0] == 5): hc_sipm5.Fill(eventi[i][j][5]/10000)
+                                    if(eventi[i][j][5]>2000 and eventi[i][j][0] == 6): hc_sipm6.Fill(eventi[i][j][5]/10000)
+                                    if(eventi[i][j][5]>2000 and eventi[i][j][0] == 7): hc_sipm7.Fill(eventi[i][j][5]/10000)
+                                    if(eventi[i][j][5]>2000 and eventi[i][j][0] == 8): hc_sipm8.Fill(eventi[i][j][5]/10000)
+    
+    file_quatro = open(f"{output_path}dec.txt", "w")    
+    '''Cancello vettori per liberare memoria'''
+    print("Cancello vettori per liberare memoria")
+    del eventi
+    
     '''Disegno i Grafici''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''' 
     if PlotMonitor==1:    
-        file_uno = open(output_path + "Rate.txt", "w")
-        if testsimp_s == 1 : file_tre = open("RateCalib.txt", "w")
-        file_due = open(output_path + "Ang.txt", "w")
+        file_uno = open(f"{output_path}Rate.txt", "w")
+        if testsimp_s == 1 : file_tre = open(f"{output_path}RateCalib.txt", "w")
+        file_due = open(f"{output_path}Ang.txt", "w")
         
         for j in range(8):
             for i in range(len(countLS_t[j])):
@@ -802,11 +926,29 @@ if __name__ == "__main__":
 
         with PdfPages(outmonitor) as pdf:
             fig = plt.figure(figsize=(15,7.5))
+            #for i in range(12):
+            #j=i+1
+            #plt.subplot(3, 4, j)   
+       
+            n, bins, patches = plt.hist(caricaO, 500, range=[0, 100000], density=False, facecolor='green', alpha=0.75)
+            #plt.yscale("log")
+            plt.title(r'Q SiPM %d' %(0))
+            plt.xlabel("Charge(Arbitrary Unit)")
+            plt.ylabel("Event(number)")                
+                #ax[2,i].plot()     
+            plt.suptitle(r'Plot carica singolo SiPM')
+            fig.tight_layout()  
+            #plt.show(block=True)          
+            #if(PlotStop==1): plt.show(block=True)                   
+            #L_string=["0_1", "2_3", "4_5", "6_7"]
+            pdf.savefig(fig)
+            
+            fig = plt.figure(figsize=(15,7.5))
             for i in range(12):
                 j=i+1
                 plt.subplot(3, 4, j)   
        
-                n, bins, patches = plt.hist(carica[i], 100, range=[0, 15], density=False, facecolor='green', alpha=0.75)
+                n, bins, patches = plt.hist(carica[i], 100, range=[0, 5], density=False, facecolor='green', alpha=0.75)
           
                 plt.title(r'Q SiPM %d' %(i))
                 plt.xlabel("Charge(Arbitrary Unit)")
@@ -879,8 +1021,8 @@ if __name__ == "__main__":
                 #plt.title(r'Q SiPM %d coinc %d' %(i))   
                 #ax[2,i].plot()
                 
-                print("Valore medio coinc LS ", LS_string[i], " = ", round(statistics.mean(carica_barra_LS[i]),3), " +- ", round(3*statistics.stdev(carica_barra_LS[i]),3))
-                file_uno.write("Valore medio Rate coinc LS %s = %.3f +- %.3f hz \n"% ( LS_string[i], round(statistics.mean(carica_barra_LS[i]),3),  round(statistics.stdev(carica_barra_LS[i]),3)))
+                ###print("Valore medio coinc LS ", LS_string[i], " = ", round(statistics.mean(carica_barra_LS[i]),3), " +- ", round(3*statistics.stdev(carica_barra_LS[i]),3))
+                ###file_uno.write("Valore medio Rate coinc LS %s = %.3f +- %.3f hz \n"% ( LS_string[i], round(statistics.mean(carica_barra_LS[i]),3),  round(statistics.stdev(carica_barra_LS[i]),3)))
                 
             plt.legend(loc='best', fontsize=11)
             plt.xlabel("Charge(Arbitrary Unit)")
@@ -991,8 +1133,24 @@ if __name__ == "__main__":
             plt.title('T media')
             plt.legend(loc='best', fontsize=11)
             plt.ylabel("Temperature(°C)")
-            plt.xlabel("Time(second)")   
+            plt.xlabel("Time(second)") 
             
+            #plt.subplot(2, 2, 3)
+            plt.subplot(2, 2, 2)
+            plt.errorbar(tempolog,tensione[0], 0.0005, linestyle='none',marker='.', label="Vbat")
+            plt.legend(loc='best', fontsize=11)
+            #plt.title('DV sipm piano:  0')
+            #plt.subplot(2, 2, 4)
+            plt.errorbar(tempolog,tensione[1], 0.000125, linestyle='none',marker='.', label="Vrasp")
+            plt.errorbar(tempolog,tensione[2], 0.000125, linestyle='none',marker='.', label="Vsens1")
+            plt.errorbar(tempolog,tensione[3], 0.000250, linestyle='none',marker='.', label="Vsens2")
+            plt.title('Tensioni di controllo (Vbat, Vrasp, Vsens)')
+            plt.legend(loc='best', fontsize=11)
+            plt.ylabel("Voltage(Volt)")
+            plt.xlabel("Time(second)")      
+            
+            #sostituisco DV con il monitor tensioni
+            '''
             #plt.subplot(2, 2, 3)
             plt.subplot(2, 2, 2)
             plt.errorbar(tempolog,deltaV[0], 0.054, linestyle='none',marker='.', label="DV sipm piano basso")
@@ -1004,7 +1162,7 @@ if __name__ == "__main__":
             plt.legend(loc='best', fontsize=11)
             plt.ylabel("DeltaV(Volt)")
             plt.xlabel("Time(second)")               
-            
+            '''
             plt.subplot(2, 2, 3)
             plt.errorbar(tempolog,pressione, 1, linestyle='none',marker='.')
             plt.title('Pressione')
@@ -1116,12 +1274,12 @@ if __name__ == "__main__":
                 fig.tight_layout()            
                 pdf.savefig(fig) 
                 
+                for i in range(6): 
+                    file_due.write("%.3f %.3f %.3f %.3f \n"% (Ang[i], countAng[i], Ang_err[i], countAng_err[i]))
 
         
         print(countSS_test)
         print(countSS_ref)
-        for i in range(6): 
-          file_due.write("%.3f %.3f %.3f %.3f \n"% (Ang[i], countAng[i], Ang_err[i], countAng_err[i]))
         if testsimp_s == 1 :
           plt.close()
           ratioSS=[0,0,0,0]
@@ -1279,7 +1437,7 @@ if __name__ == "__main__":
             
             fig = plt.figure(figsize=(15,7.5))
             
-    if sciglass>1:
+'''    if sciglass>1:
       with PdfPages(outmonitor) as pdf:
         fig = plt.figure(figsize=(15,7.5))
         for i in range(12):
@@ -1287,40 +1445,103 @@ if __name__ == "__main__":
                                
             plt.subplot(3, 4, j)   
             if i<7 or i==8:             
-              n, bins, patches = plt.hist(carica[i], 400, range=[0, 0.2], density=False, facecolor='green', alpha=0.75)
+              n, bins, patches = plt.hist(caricaCoin[i], 100, range=[0, 3], density=False, facecolor='green', alpha=0.75)
             if i>8 and i <11:
-              n, bins, patches = plt.hist(carica[i], 700, range=[0, 35], density=False, facecolor='green', alpha=0.75)
+              n, bins, patches = plt.hist(caricaCoin[i], 700, range=[0, 35], density=False, facecolor='green', alpha=0.75)
             if i==11:
-              n, bins, patches = plt.hist(carica[i], 400, range=[0, 20], density=False, facecolor='green', alpha=0.75)    
+              n, bins, patches = plt.hist(caricaCoin[i], 400, range=[0, 20], density=False, facecolor='green', alpha=0.75)    
             if i==7:
-              n, bins, patches = plt.hist(carica[i], 200, range=[0, 0.4], density=False, facecolor='green', alpha=0.75)  
-            '''
+              n, bins, patches = plt.hist(caricaCoin[i], 100, range=[0, 3], density=False, facecolor='green', alpha=0.75)  
+            ''''''
                 if(i==8):
                   mean, var = moyal.fit(carica[i])
                   plt.title(r'Q SiPM %d - Fit: mean=%.3f, var=%.3f' %(i,mean, var))  
-                if(i!=8):plt.title(r'Q SiPM %d' %(i))'''
+                if(i!=8):plt.title(r'Q SiPM %d' %(i))''''''
                 
-                
+                   
             #print(y)
-            #l = plt.plot(bins, y, 'r--', linewidth=2)
-            if not carica[i]:
+            
+            if not caricaCoin[i]:
               print("list channel ", i ," empty")
             else:
-              mean, var = moyal.fit(carica[i])   
-              y = moyal.pdf(bins, loc=mean, scale=1)
+              mean, var = moyal.fit(caricaCoin[i])   
+              #y = moyal.pdf(bins, loc=mean, scale=1)
+              y = moyal.rvs(loc=0, scale=1, size=1, random_state=None)
+              #l = plt.plot(bins, y, 'r--', linewidth=2)
               plt.title(r'Q SiPM %d - Fit: mean=%.3f, var=%.3f' %(i,mean, var))
-              plt.xlabel("PE")
+              plt.xlabel("Charge")
               plt.ylabel("Event(number)")                
             #ax[2,i].plot()     
         plt.suptitle(r'Plot carica singolo SiPM')
         fig.tight_layout()            
-        if(PlotStop==1): plt.show(block=True)                   
+                           
         L_string=["0_1", "2_3", "4_5", "6_7"]
         pdf.savefig(fig)
-            
+        #f = ROOT.TF1("f1", "sin(x)/x", 0., 10.)
+        #f.Draw()
+        outHistFile = ROOT.TFile(output_root, "RECREATE")
+        Canvas = ROOT.TCanvas("cc","",10,10,800,600)
+        Canvas.Divide(3,4)
+        ROOT.gStyle.SetOptFit(1);
+        
+        Canvas.cd(1)
+        hc_sipm0.Draw()
+        hc_sipm0.Write()
+        hc_sipm0.Fit("landau", "RL", "SAME", 0.4, 0.9) 
+        hc_sipm0.Write()
+        
+        Canvas.cd(2)
+        hc_sipm1.Draw()
+        hc_sipm1.Write()
+        hc_sipm1.Fit("landau", "RL", "SAME", 0.4, 0.9) 
+        hc_sipm1.Write()
+        
+        Canvas.cd(3)
+        hc_sipm2.Draw()
+        hc_sipm2.Write()
+        hc_sipm2.Fit("landau", "RL", "SAME", 0.4, 0.9) 
+        hc_sipm2.Write()
+        
+        Canvas.cd(4)
+        hc_sipm3.Draw()
+        hc_sipm3.Write()
+        hc_sipm3.Fit("landau", "RL", "SAME", 0.35, 0.9) 
+        hc_sipm3.Write()
+        
+        Canvas.cd(5)
+        hc_sipm4.Draw()
+        hc_sipm4.Write()
+        hc_sipm4.Fit("landau", "RL", "SAME", 0.4, 0.9) 
+        hc_sipm4.Write()
+        
+        Canvas.cd(6)
+        hc_sipm5.Draw()
+        hc_sipm5.Write()
+        hc_sipm5.Fit("landau", "RL", "SAME", 0.4, 0.9) 
+        hc_sipm5.Write()
+        
+        Canvas.cd(7)
+        hc_sipm6.Draw()
+        hc_sipm6.Write()
+        hc_sipm6.Fit("landau", "RL", "SAME", 0.4, 0.9) 
+        hc_sipm6.Write()
+        
+        Canvas.cd(8)
+        hc_sipm7.Draw()
+        hc_sipm7.Write()
+        hc_sipm7.Fit("landau", "RL", "SAME", 0.4, 0.9) 
+        hc_sipm7.Write()
+        
+        Canvas.cd(9)
+        hc_sipm8.Draw()
+        hc_sipm8.Write()
+        hc_sipm8.Fit("landau", "RL", "SAME", 0.4, 0.9) 
+        hc_sipm8.Write()
+        
         fig = plt.figure(figsize=(15,7.5))
-            
-    '''  
+        outHistFile.Close()
+        if(PlotStop==1): plt.show(block=True)    ''''''
+      
     if MyDebug>1:
         print ("\nFine del run      N. trigger analizzati: %d "%MyData.ntot_trigger)
         print ("N. trigger frammentati: %d "% MyData.fragmented)
