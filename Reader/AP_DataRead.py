@@ -759,12 +759,12 @@ class AP_DataRead():
                 t_g_prev=2
             if(t_a_prev==2 and tt.tempo[1]==0): 
                 
-                d_a=(d_a-1)+2 #incremento per tenere conto del reset dei secondi e gioni(?)
+                d_a=(d_a-1)+1 #incremento per tenere conto del reset dei secondi e gioni(?)
                 
                 t_a_prev=1
             if(t_g_prev==2 and tt.tempo[2]==0): 
                 
-                d_g=(d_g-1)+2 #incremento per tenere conto del reset dei secondi e gioni(?)
+                d_g=(d_g-1)+1 #incremento per tenere conto del reset dei secondi e gioni(?)
                 
                 t_g_prev=1           
             #print("%d %d %d %d %d %d %d %d \n" % (tt.tempo[0], tt.tempo[1], tt.tempo[2], t_a_prev, t_g_prev, t_s_prev, d_a, d_g))
