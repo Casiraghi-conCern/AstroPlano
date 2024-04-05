@@ -2,7 +2,7 @@ Content associated with AstroPlano.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-AP_DataRead_Monitor_press-test.py >>> .bin to .txt 
+AP_DataRead.py >>> .bin to .txt 
 
 AP_Monitor_Ana.py >>> analisi dati file .txt
 
