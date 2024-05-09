@@ -33,21 +33,27 @@ from scipy import stats
 from scipy.optimize import curve_fit
 from scipy import asarray as ar,exp
 from scipy import special as sp
+from numerize.numerize import numerize
+from tkinter import filedialog
 import sys
 
 import numpy as np
 import pandas as pd
 
-from numerize.numerize import numerize
 
 # parametri da settare all'inizio
 
 #inputPath = "../AstroPlano_sep21/"	#path input file
 #inputFile = "AP_ven_cfg_old" 		# file corrotto (sipm>11)
 
-fileDate = input("Data acquisizione 'YYYYMMDD-HHMM' : ")
+# fileDate = input("Data acquisizione 'YYYYMMDD-HHMM' : ")
+# inputPath = "./misure/" + inputFile + "/"     # path input file
+inputFilePath = filedialog.askopenfilename(filetypes=[("Binary files", "*.bin")])     # path input file
+inputPath = inputFilePath[:-19]
+print("Percorso della cartella selezionata:", inputPath)
+fileDate = inputFilePath.split("/")[-1][2:15]
 inputFile = "AP" + fileDate
-inputPath = "./misure/" + inputFile + "/"     # path input file
+# inputPath = "./misure/" + inputFile + "/"     # path input file
 
 #os.mkdir(inputPath + "output")
 

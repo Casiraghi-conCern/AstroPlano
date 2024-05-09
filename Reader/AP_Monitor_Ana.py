@@ -35,6 +35,7 @@ from scipy.optimize import curve_fit
 from scipy import asarray as ar,exp
 from scipy import special as sp
 from scipy.stats import moyal
+from tkinter import filedialog
 import sys
 #import ROOT
 
@@ -47,10 +48,13 @@ import numpy as np
 #inputPath = "../AstroPlano_sep21/"	#path input file
 #inputFile = "AP_ven_cfg_old" 		# file corrotto (sipm>11)
 
-fileDate = input("Data acquisizione 'YYYYMMDD-HHMM' : ")
+# fileDate = input("Data acquisizione 'YYYYMMDD-HHMM' : ")
+# inputPath = "./misure/" + inputFile + "/"     # path input file
+inputFilePath = filedialog.askopenfilename(filetypes=[("Text file", "*.txt")])     # path input file
+inputPath = inputFilePath[:-32]
+print("Percorso della cartella selezionata:", inputPath)
+fileDate = inputFilePath.split("/")[-1][2:15]
 inputFile = "AP" + fileDate
-inputPath = "./misure/" + inputFile + "/"     # path input file
-
 #os.mkdir(inputPath + "output")
 
 #inputFile = "20220517-1201"
@@ -897,7 +901,7 @@ if __name__ == "__main__":
                                     if(eventi[i][j][5]>2000 and eventi[i][j][0] == 7): hc_sipm7.Fill(eventi[i][j][5]/10000)
                                     if(eventi[i][j][5]>2000 and eventi[i][j][0] == 8): hc_sipm8.Fill(eventi[i][j][5]/10000)
     
-    file_quatro = open(f"{output_path}dec.txt", "w")    
+    if Decadimento: file_quatro = open(f"{output_path}dec.txt", "w")    
     '''Cancello vettori per liberare memoria'''
     print("Cancello vettori per liberare memoria")
     del eventi
@@ -906,7 +910,7 @@ if __name__ == "__main__":
     if PlotMonitor==1:    
         file_uno = open(f"{output_path}Rate.txt", "w")
         if testsimp_s == 1 : file_tre = open(f"{output_path}RateCalib.txt", "w")
-        file_due = open(f"{output_path}Ang.txt", "w")
+        if AngPlot: file_due = open(f"{output_path}Ang.txt", "w")
         
         for j in range(8):
             for i in range(len(countLS_t[j])):
